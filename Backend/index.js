@@ -54,7 +54,7 @@ if (!JWT_SECRET) {
 
 
 
-console.log('JWT Secret:', JWT_SECRET);
+
 
 // Middleware
 app.use(express.json());
