@@ -1,0 +1,13 @@
+/* Optional enhancements */
+textarea.form-control {
+  resize: none;
+  font-size: 0.9rem;
+}
+
+.btn-link i {
+  transition: transform 0.2s ease;
+}
+
+.btn-link:hover i {
+  transform: scale(1.2);
+}

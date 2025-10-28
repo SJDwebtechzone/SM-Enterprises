@@ -1,0 +1,23 @@
+.testimony-wrap {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.user-img {
+  position: relative;
+  overflow: hidden;
+}
+
+.quote i {
+  font-size: 2rem;
+  color: #ff9933;
+}
+.btn-dark{
+  background-color: gray;
+  color:black
+}
+.btn-dark:hover {
+    background-color: #0c1354ff;
+    border-color: #a91b5bff;
+  }

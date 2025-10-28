@@ -1,0 +1,61 @@
+
+
+/* .............. */
+
+/* Product Detail Modal Styling */
+
+.product-modal {
+  border-radius: 15px;
+  padding: 15px; 
+}
+
+.product-image {
+  height: 280px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.product-info h6 {
+  margin-bottom: 8px;
+}
+
+.product-info p {
+  margin-bottom: 6px;
+}
+
+.offers-list li {
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: #333;
+}
+
+.quantity-selector input {
+  width: 70px;
+  height: 38px;
+}
+
+.purchase-actions .btn {
+  border-radius: 8px;
+  font-size: 14px;
+  padding: 8px 12px;
+}
+.zoom-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.zoom-lens {
+  position: absolute;
+  border: 2px solid #ccc;
+  width: 100px;
+  height: 100px;
+  pointer-events: none;
+  background-repeat: no-repeat;
+  background-size: 200% 200%;
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+  display: none;
+}
+
+
+

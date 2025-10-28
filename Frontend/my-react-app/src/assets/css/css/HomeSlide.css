@@ -1,0 +1,136 @@
+
+.hero {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.carousel-item {
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  color:white;
+  
+}
+
+
+
+/* Services Section */
+.ftco-services .media {
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  transition: transform 0.3s ease;
+}
+
+.ftco-services .media:hover {
+  transform: translateY(-5px);
+}
+
+.ftco-services .icon {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  font-size: 30px;
+  color: #fff;
+}
+
+.bg-color-1 {
+  background-color: #ff9800;
+}
+
+.bg-color-2 {
+  background-color: #4caf50;
+}
+
+.bg-color-3 {
+  background-color: #2196f3;
+}
+
+.bg-color-4 {
+  background-color: #9c27b0;
+}
+
+/* Category Section */
+.category-wrap,
+.category-wrap-2 {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+.category-wrap:hover,
+.category-wrap-2:hover {
+  transform: scale(1.02);
+}
+
+.category-wrap .text,
+.category-wrap-2 .text {
+  position: relative;
+  z-index: 2;
+}
+
+.category-wrap::before,
+.category-wrap-2::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.05);
+  z-index: 1;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .ftco-services .media {
+    padding: 15px;
+  }
+
+  .category-wrap,
+  .category-wrap-2 {
+    min-height: 200px;
+  }
+}
+
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.product-img {
+  height: 300px;
+  object-fit: cover;
+  width: 100%;
+  border-radius: 0.25rem;
+}
+
+
+.carousel-item {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  min-height: 100vh;
+}
+
+@media (max-width: 768px) {
+  .carousel-item {
+    background-position: top center;
+  }
+}
+
+

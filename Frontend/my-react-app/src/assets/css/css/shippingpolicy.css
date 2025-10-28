@@ -1,0 +1,120 @@
+/* Wrapper and Layout */
+.sp-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  color: #333;
+  background-color: #f9f9f9;
+}
+
+/* Header */
+.sp-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.sp-title {
+  font-size: 2.2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #222;
+}
+
+.sp-subtitle {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.6;
+}
+
+.sp-link {
+  color: #007bff;
+  text-decoration: none;
+}
+.sp-link:hover {
+  text-decoration: underline;
+}
+
+/* Card Container */
+.sp-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Section Styling */
+.sp-section {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.sp-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f1f1f1;
+  padding: 1rem 1.25rem;
+  cursor: pointer;
+  border-bottom: 1px solid #ddd;
+  width: 100%;
+  text-align: left;
+}
+
+.sp-section-title {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.sp-chevron {
+  font-size: 1.5rem;
+  color: #666;
+}
+
+/* Section Body */
+.sp-section-body {
+  padding: 1rem 1.25rem;
+  background-color: #fff;
+}
+
+/* List Styling */
+.sp-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.sp-list li {
+  margin-bottom: 0.75rem;
+  line-height: 1.6;
+  text-align: left;
+  text-indent: 0;
+  padding-left: 0;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .sp-wrapper {
+    padding: 1rem;
+  }
+
+  .sp-title {
+    font-size: 1.8rem;
+  }
+
+  .sp-section-title {
+    font-size: 1rem;
+  }
+
+  .sp-section-header {
+    padding: 0.75rem 1rem;
+  }
+
+  .sp-section-body {
+    padding: 0.75rem 1rem;
+  }
+}

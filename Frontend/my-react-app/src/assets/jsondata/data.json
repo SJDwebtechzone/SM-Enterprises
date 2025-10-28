@@ -1,0 +1,8 @@
+
+{
+  "vegetables": [
+    { "name": "Carrot", "price": 30 },
+    { "name": "Potato", "price": 20 },
+    { "name": "Tomato", "price": 25 }
+  ]
+}

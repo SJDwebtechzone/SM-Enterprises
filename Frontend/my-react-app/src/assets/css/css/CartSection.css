@@ -1,0 +1,41 @@
+.cart-table th, .cart-table td {
+  vertical-align: middle;
+  padding: 1rem;
+}
+
+.cart-table tbody tr:hover {
+  background-color: #fff8e1;
+}
+
+.cart-image {
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.quantity-pill {
+  background-color: #0c1354;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 50px;
+  font-weight: bold;
+}
+
+.total-card {
+  border-left: 5px solid #0c1354;
+  background-color: #f8f9fa;
+}
+@media (max-width: 768px) {
+  .cart-table td {
+    font-size: 0.9rem;
+  }
+  .total-card {
+    margin-top: 2rem;
+  }
+}
+
+
+.total-card {
+  border-left: 5px solid #0c1354;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}

@@ -1,0 +1,96 @@
+/* Full-page center alignment */
+.login-wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #fdfcfb, #e2d1c3); /* soft devotional tones */
+  padding: 20px;
+}
+
+/* Card styling */
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 16px;
+  background-color: #fff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e6e6e6;
+}
+
+/* Heading */
+.login-card h3 {
+  font-weight: 600;
+  color: #6c757d;
+  background: linear-gradient(to right, #007bff, #17a2b8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Form labels */
+.form-label {
+  font-weight: 500;
+  color: #495057;
+}
+
+/* Input fields */
+.form-control {
+  border-radius: 8px;
+  border: 1px solid #ced4da;
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: #007bff;
+  border: none;
+}
+.btn-primary:hover {
+  background-color: #0069d9;
+}
+
+/* Links */
+.text-decoration-none {
+  color: #007bff;
+}
+.text-decoration-none:hover {
+  text-decoration: underline;
+}
+
+/* Responsive tweaks */
+@media (max-width: 576px) {
+  .login-card {
+    padding: 20px;
+  }
+  .login-card h3 {
+    font-size: 1.5rem;
+  }
+}
+
+
+
+/* Link row styling */
+.link-row {
+  font-size: 0.95rem;
+}
+
+/* Individual links */
+.auth-link {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.auth-link:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+/* Responsive tweak */
+@media (max-width: 576px) {
+  .link-row {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+  }
+}

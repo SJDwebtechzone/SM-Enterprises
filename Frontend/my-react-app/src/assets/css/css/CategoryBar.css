@@ -1,0 +1,67 @@
+/* Container Styling */
+/* .container-fluid {
+  background-color: #fffaf0;
+  padding: 2rem;
+  border-radius: 12px;
+} */
+
+/* Sidebar Title */
+ h5 {
+  font-family: 'Gloock', serif;
+  font-size: 1.2rem;
+  color: #8b0000;
+  /* border-bottom: 2px solid #d4af37; */
+  padding-bottom: 0.5rem;
+} 
+
+/* Category List */
+.list-group-item {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  color: #6b4226;
+  border: 1px solid #d4af37;
+  background-color: #fff;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.list-group-item:hover {
+  background-color: #fdf6e3;
+  transform: translateX(4px);
+}
+
+.list-group-item.active {
+  background-color: #d4af37;
+  color: white;
+  font-weight: bold;
+  border-color: #d4af37;
+}
+
+/* Price Filter */
+.form-range {
+  accent-color: #d4af37;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  background-color: #d4af37;
+  border: none;
+}
+
+input[type="range"]::-moz-range-thumb {
+  background-color: #d4af37;
+  border: none;
+}
+
+/* Price Label */
+.price-label {
+  font-size: 14px;
+  color: #6c757d;
+  font-weight: 500;
+}
+
+/* Product Grid */
+.col-md-9 {
+  /* background-color: #fdf6e3; */
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: none;
+}

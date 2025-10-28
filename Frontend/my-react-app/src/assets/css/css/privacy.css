@@ -1,0 +1,14 @@
+/* src/assets/css/privacy.css */
+h2, h5 {
+  font-family: 'Poppins', sans-serif;
+  color: #a91b5b;
+}
+
+ul {
+  padding-left: 1.2rem;
+}
+
+p, li {
+  font-size: 1rem;
+  line-height: 1.6;
+}
