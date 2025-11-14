@@ -171,7 +171,7 @@ const shippingEstimate = subtotal > 1000 ? 0 : 50; // Free shipping over ₹1000
                         </td>
                         <td>
                           <img
-                            src={item.image?.startsWith('http') ? item.image : `http://localhost:5000${item.image}`}
+                            src={item.image?.startsWith('http') ? item.image : `${import.meta.env.VITE_BACKEND_URL}${item.image}`}
                             alt={item.name}
                             className="cart-image"
                             style={{ width: '60px', height: '60px', objectFit: 'cover' }}

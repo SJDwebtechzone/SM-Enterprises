@@ -22,7 +22,8 @@ router.post('/create',authenticateUser, async (req, res) => {
 
     // ✅ Assign public URL (served via Express)
     const fileName = `${order.orderId}.pdf`;
-    order.pdfUrl = `http://localhost:5000/invoices/${fileName}`;
+    const baseUrl = process.env.BASE_URL || 'http://localhost:5000';
+    order.pdfUrl = `${baseUrl}/invoices/${fileName}`;
     await order.save();
 
     

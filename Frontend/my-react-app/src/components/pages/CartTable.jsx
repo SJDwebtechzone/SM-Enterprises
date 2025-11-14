@@ -46,7 +46,7 @@ const CartTable = ({ wishlist = [], onRemoveItem, onAddToCart }) => {
                     </td>
                     <td>
                       <img
-                        src={item.image?.startsWith('http') ? item.image : `http://localhost:5000${item.image}`}
+                        src={item.image?.startsWith('http') ? item.image : `${import.meta.env.VITE_BACKEND_URL}${item.image}`}
                         alt={item.name}
                         className="rounded shadow-sm"
                         style={{ width: '70px', height: '70px', objectFit: 'cover' }}
