@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import PaymentButton from './PaymentButton';
-import ThankYouScreen from './ThankYouScreen';
+import ThankYouScreen from './ThankyouScreen'; 
 import InvoiceSummary from './InvoiceSummary';
 import { useLocation, useNavigate } from 'react-router-dom';
 

@@ -119,7 +119,7 @@ const PaymentButton = ({ billing, amount, gateway, onPaymentVerified }) => {
     // 🔗 Step 1: Create order from backend
     let order;
     try {
-      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/create-order`, {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/create-order`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ amount })
@@ -171,7 +171,7 @@ const PaymentButton = ({ billing, amount, gateway, onPaymentVerified }) => {
         };
 
         try {
-          const verifyRes = await fetch(`${import.meta.env.VITE_BACKEND_URL}/verify-payment`, {
+          const verifyRes = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/verify-payment`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(verifyPayload)

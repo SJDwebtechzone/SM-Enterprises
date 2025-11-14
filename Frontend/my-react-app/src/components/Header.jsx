@@ -8,7 +8,7 @@ import bg_121 from '../assets/images/bg_121.jpg'
 import devspectra from '../assets/images/smlogo6.png'
 import NavigationBar from './nav';
 import NavigationBars from './nav';
-import CartButton from './pages/cartButton';
+import CartButton from './pages/CartButton';
 import SearchBar from './pages/SearchBar';
 import SearchResults from './pages/SearchResults';
 import axios from 'axios';

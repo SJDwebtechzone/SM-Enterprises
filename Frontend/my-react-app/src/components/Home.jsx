@@ -1,6 +1,6 @@
 import React from 'react';
 import '../assets/css/css/HomeSlide.css'; // Optional for custom styles
-import GanapathyImage from '../assets/images/Ganapathy_122.jpg';
+import GanapathyImage from '../assets/images/ganapathy_122.jpg';
 import Ganapathy_sticks from '../assets/images/bg_133.png'
 import diya1 from '../assets/images/diya1.jpg';
 import sticks from '../assets/images/Sticks.png';

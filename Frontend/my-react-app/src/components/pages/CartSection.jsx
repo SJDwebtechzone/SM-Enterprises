@@ -93,7 +93,9 @@ const gstAmount = subtotal * gstRate;
 const shippingEstimate = subtotal > 1000 ? 0 : 50; // Free shipping over ₹1000
   const discount = 3.0;
   const delivery = 0.0;
-  const total = subtotal + gstAmount + shippingEstimate - discount;
+  const amount_sum = subtotal + gstAmount + shippingEstimate - discount;
+  const total = Math.round(amount_sum);
+
 
   return (
     <>

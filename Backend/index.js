@@ -105,8 +105,8 @@ app.use('/api', productStatsRoutes);
 app.use('/api/orders', AdminorderRoutes);
 app.use('/api/bestandstock', dashboardbestsellingstock);
 
-app.use('/create-order', createOrder);
-app.use('/verify-payment', verifyPayment);
+app.use('/api/create-order', createOrder);
+app.use('/api/verify-payment', verifyPayment);
 app.use('/admin',adminRoutes);
 
 app.use('/api/reviews', reviewRoutes); 
@@ -133,6 +133,6 @@ app.use((req, res) => {
 // app.use('/api/products/search', productRoutes); 
 
 // Start server
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server is running on port ${PORT}`);
 });
