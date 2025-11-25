@@ -1,6 +1,6 @@
 import '../../assets/css/css/cartTable.css'
 const CartTable = ({ wishlist = [], onRemoveItem, onAddToCart }) => {
-  console.log('->',wishlist)
+
   if (!Array.isArray(wishlist) || wishlist.length === 0) {
     return (
       <div className="text-center py-5">

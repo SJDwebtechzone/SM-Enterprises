@@ -113,7 +113,7 @@ const SignUp = () => {
   const [otpSent, setOtpSent] = useState(false);
   const [verified, setVerified] = useState(false);
 
-  console.log('auth object:', auth);
+
 
   // ✅ Fixed Recaptcha initialization
   const setupRecaptcha = () => {

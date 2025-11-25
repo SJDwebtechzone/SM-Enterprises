@@ -3,12 +3,13 @@ import ProductDetail from "./productdetail";
 import ProductQuantityControls from "./ProductQualityControl";
 import axios from "axios";
 import '../../assets/css/css/ProductItem.css'
+import ErrorBoundary from "./ErrorBoundary";
 
 const ProductCard = ({ products, onAddToCart, onAddToWishlist, wishlist = [] }) => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [quantities, setQuantities] = useState({});
    const [reviews, setReviews] = useState([]);
-   console.log('products',products)
+ 
  
   // useEffect(() => {
   //   axios.get('http://localhost:5000/api/reviews')
@@ -130,13 +131,16 @@ const decrementQuantity = (id) => {
       </div>
 
       {/* Show Product Detail Modal */}
-      {selectedProduct && (
-        <ProductDetail
-          product={selectedProduct}
-          onClose={() => setSelectedProduct(null)}
-          onAddToCart={onAddToCart}
-        />
-      )}
+   
+{selectedProduct && (
+  <ErrorBoundary>
+    <ProductDetail
+      product={selectedProduct}
+      onClose={() => setSelectedProduct(null)}
+      onAddToCart={onAddToCart}
+    />
+  </ErrorBoundary>
+)}
     </>
   );
 };

@@ -17,7 +17,7 @@ const client = twilio(accountSid, authToken);
 
 // 🧾 Format WhatsApp message
 function formatInvoiceMessage(invoice) {
-  console.log('whatsapp invoice details',invoice)
+ 
 
 
   // const itemLines = invoice.items
@@ -51,7 +51,7 @@ async function sendWhatsAppConfirmation(invoice) {
       body: formatInvoiceMessage(invoice),
       // mediaUrl: [`${process.env.BASE_URL}/invoices/${invoice.orderId}.pdf`] // optional
     });
-    console.log('WhatsApp invoice sent!');
+   
   } catch (error) {
     console.error('Twilio error:', error.message);
   }
@@ -61,7 +61,7 @@ async function sendWhatsAppConfirmation(invoice) {
 router.post('/', async (req, res) => {
   try {
     const { orderId, paymentId, signature, customer, amount, items } = req.body;
-    console.log('->',items)
+   
 
     const expected = crypto
       .createHmac('sha256', razorpay.key_secret)

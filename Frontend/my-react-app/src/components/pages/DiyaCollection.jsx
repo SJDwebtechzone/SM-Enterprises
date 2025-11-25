@@ -25,7 +25,7 @@ import axios from "axios";
 const DiyaCollection = () => {
     const navigate = useNavigate();
     const [collections, setCollections] = useState([]);
-    console.log('collections',collections)
+   
 
 const fetchCollections = async () => {
   try {

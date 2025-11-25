@@ -5,7 +5,7 @@ const authenticateUser = require('../middleware/authMiddleware');
 
 // 🧾 Get order history for logged-in user
 router.get('/history', authenticateUser, async (req, res) => {
-    console.log('history',req.user._id)
+   
   try {
     const orders = await OrderHistory.find({ userId: req.user._id });
     res.json(orders);

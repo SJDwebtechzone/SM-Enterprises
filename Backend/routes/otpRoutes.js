@@ -78,7 +78,7 @@ router.post('/send-otp', async (req, res) => {
   const { email } = req.body;
   const otp = generateOtp();
   otpStore.set(email, { otp, expires: Date.now() + 5 * 60 * 1000 });
-  console.log(`Generated OTP for ${email}: ${otp}`);
+
 
   try {
     await sendEmail(email, otp);
@@ -109,7 +109,7 @@ router.post('/verify-otp', async (req, res) => {
     if (!user) {
       const defaultName = email.split('@')[0];
       const defaultPassword = email + otp;
-      const role = email === 'manithilaibalaji@gmail.com' ? 'admin' : 'user';
+      const role = email === process.env.MAIL_ADMIN ? 'admin' : 'user';
 
       user = new User({ name: defaultName, email, password: defaultPassword, role });
       await user.save();

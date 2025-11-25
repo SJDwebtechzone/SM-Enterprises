@@ -20,6 +20,8 @@ const Header = ({cartClickCount,showMessage}) => {
 
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
+  const [showDropdown, setShowDropdown] = useState(false);
+
 
 
 const { user, setUser} = useContext(AuthContext);
@@ -100,7 +102,7 @@ const handleLogout = () => {
 
     {/* Mobile Toggle Button */}
     <button
-      className="navbar-toggler"
+      className="navbar-toggler navbar-white bg-dark"
       type="button"
       data-bs-toggle="collapse"
       data-bs-target="#navbarContent"
@@ -155,41 +157,44 @@ const handleLogout = () => {
          </Link> */}
         <CartButton cartClickCount={cartClickCount} showMessage={showMessage} />
 
-        <div className="dropdown">
+        <div className="dropdown position-relative">
   {user ? (
     <>
       <img
-        src={bg_121 || "https://via.placeholder.com/40"} // fallback if no image
+        src={bg_121 || "https://via.placeholder.com/40"}
         alt="User Avatar"
         className="rounded-circle"
         style={{ width: '40px', height: '40px', cursor: 'pointer' }}
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
+        onClick={() => setShowDropdown(!showDropdown)}
       />
-      <ul className="dropdown-menu dropdown-menu-end">
+
+      <ul
+        className={`dropdown-menu dropdown-menu-end ${showDropdown ? 'show' : ''}`}
+        style={{ position: 'absolute', right: 0, top: '100%', backgroundColor: 'black', zIndex: 1000 }}
+      >
         <li>
-          <span className="dropdown-item-text fw-bold">Hello, {user.userName}</span>
+         <span className="dropdown-item text-white fw-bold truncate">
+  Hello, {user.userName}
+</span>
+
         </li>
         <li><hr className="dropdown-divider" /></li>
         <li>
-          <button className="dropdown-item text-danger" onClick={handleLogout}>
-            Logout
-          </button>
+          <button className="dropdown-item text-white w-full text-left truncate" onClick={handleLogout}>
+  Logout
+</button>
+
         </li>
       </ul>
     </>
   ) : (
-    //<Link to="/login" className="text-white" title="Login">
-    //   <button className="btn btn-light text-dark">Login</button>
-    // </Link> 
-    // <Link to="/loginpage" className="text-white" title="Login">
-    //    <button className="btn btn-light text-dark">Login</button>
-    // </Link>
     <Link to="/login" className="text-white" title="Login">
-       <button className="btn btn-light text-dark">Login</button>
+      <button className="btn btn-light text-dark">Login</button>
     </Link>
   )}
 </div>
+
+
 
 
           

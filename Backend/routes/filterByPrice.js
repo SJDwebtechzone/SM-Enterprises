@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
   const { size } = req.query;
-  console.log('size',size)
+
   try {
     const filter = size ? { sizes: size } : {};
     const products = await ProductFilter.find(filter);

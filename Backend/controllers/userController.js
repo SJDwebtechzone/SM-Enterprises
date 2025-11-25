@@ -6,7 +6,7 @@ const productCollectionSchema = require('../models/ProductCollection');
 exports.addToCart = async (req, res) => {
   try {
     const { productId } = req.params;
-    console.log('Received productId:', productId);
+   
 
     const quantity = Math.max(1, Number(req.body.quantity) || 1);
     const user = req.user;
@@ -30,7 +30,7 @@ exports.addToCart = async (req, res) => {
       user.cart.push({ product: productId, quantity });
     }
 
-    console.log('Cart before save:', JSON.stringify(user.cart, null, 2));
+    
     await user.save();
 
     await user.populate('cart.product');
@@ -53,7 +53,7 @@ exports.getCart = async (req, res) => {
       select: 'name price image description'
     });
 
-    console.log('Populated cart:', JSON.stringify(user.cart, null, 2)); // 🔍 Debug line
+   
 
     const enrichedCart = user.cart
       .filter(item => item.product)
@@ -78,7 +78,7 @@ exports.removeFromCart = async (req, res) => {
   try {
     const userId = req.user._id;
     const productId = req.params.productId;
-    console.log('backend delete',userId,productId)
+   
 
     const updatedUser = await User.findByIdAndUpdate(
       userId,
@@ -98,6 +98,10 @@ exports.removeFromCart = async (req, res) => {
 
 exports.clearCart = async (req, res) => {
   try {
+     if (!req.user) {
+      return res.status(401).json({ message: 'Unauthorized: please log in first' });
+    }
+
     const userId = req.user._id;
 
     const updatedUser = await User.findByIdAndUpdate(

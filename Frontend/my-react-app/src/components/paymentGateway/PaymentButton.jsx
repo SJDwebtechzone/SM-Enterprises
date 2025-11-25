@@ -125,7 +125,7 @@ const PaymentButton = ({ billing, amount, gateway, onPaymentVerified }) => {
         body: JSON.stringify({ amount })
       });
       order = await res.json();
-      console.log('🧾 Order created:', order);
+   
     } catch (err) {
       console.error('Order creation failed:', err);
       alert('⚠️ Unable to initiate payment. Try again.');
@@ -157,7 +157,7 @@ const PaymentButton = ({ billing, amount, gateway, onPaymentVerified }) => {
       key: razorpayKey,
       amount: order.amount,
       currency: 'INR',
-      name: 'Spiritual Store',
+      name: 'SM Enterprises',
       description: 'Blessed Purchase',
       image: 'https://yourdomain.com/logo.png',
       order_id: order.id,

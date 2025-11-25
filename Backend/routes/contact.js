@@ -7,8 +7,8 @@ const nodemailer = require('nodemailer');
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'priyajass33@gmail.com', // replace with your email
-    pass:process.env.MAIL_CONTACT_PASS ,         // use app password if 2FA is enabled
+    user: process.env.MAIL_USER, // sender email from .env
+    pass: process.env.MAIL_CONTACT_PASS, // app password from .env
   },
 });
 
@@ -23,8 +23,8 @@ router.post('/', async (req, res) => {
     // ✅ Send email
     await transporter.sendMail({
       from: email,
-      to: 'priyajass33@gmail.com', // your receiving email
-      subject: `New Contact Form: ${subject}`,
+      to: process.env.MAIL_USER, // recipient email from .env
+      subject: `SM Enterprises Enquiry Form: ${subject}`,
       text: `Name: ${name}\nEmail: ${email}\nMessage:\n${message}`,
     });
 

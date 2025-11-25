@@ -35,7 +35,7 @@ const fetchCategories = async () => {
   try {
     const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/categories`);
     setCategories(res.data || []);
-    console.log('Fetched categories:', res.data); // ✅ debug
+    
   } catch (err) {
     console.error('Category fetch failed:', err);
   }
@@ -302,7 +302,9 @@ const handleSubmit = async (e) => {
       {message && <div className="alert alert-info mt-3">{message}</div>}
 
       <h4 className="mt-5">All Products</h4>
-      <Table striped bordered hover responsive className="product-table">
+      <div style={{ overflowX: 'auto' }}>
+
+      <Table striped bordered hover responsive="sm" className="product-table">
         <thead>
           <tr>
             <th>Name</th>
@@ -376,6 +378,7 @@ const handleSubmit = async (e) => {
           ))}
         </tbody>
       </Table>
+      </div>
     </Container>
   );
 };

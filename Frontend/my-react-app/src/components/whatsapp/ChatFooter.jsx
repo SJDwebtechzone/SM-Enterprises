@@ -5,7 +5,7 @@ import whatsappIcon from '../../assets/images/WhatsApp.svg';
 
 
 const ChatFooter = () => {
-  const phoneNumber = '919500396045'; // Replace with your actual number
+  const phoneNumber = '919788661093'; // Replace with your actual number
   const handleClick = () => {
   const effect = document.querySelector('.cracker-effect');
   if (!effect) return;

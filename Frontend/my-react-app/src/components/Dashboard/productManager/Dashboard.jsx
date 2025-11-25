@@ -74,7 +74,7 @@ const Dashboard = ({
       }
     ]
   };
-console.log('donut',revenueData)
+
   const doughnutOptions = {
     cutout: "70%",
     plugins: { legend: { display: false } }

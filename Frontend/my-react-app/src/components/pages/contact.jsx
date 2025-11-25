@@ -6,7 +6,7 @@ import ContactSection from "./contactSection";
 const Contact=()=>{
     return(<>
     <Header/>
-    <div
+    {/* <div
                   className="hero-wrap hero-bread d-flex align-items-center justify-content-center text-center"
                   style={{
                     backgroundImage: `url(${bgImage})`,
@@ -23,11 +23,11 @@ const Contact=()=>{
                   </span>
                   <span>About us</span> */}
                 {/* </p> */}
-                <h1 className="mb-0 bread text-light mt-1">Contact us</h1>
+                {/* <h1 className="mb-0 bread text-light mt-1">Contact us</h1>
               </div>
             </div>
-          </div>
-        </div>
+          </div> */}
+        {/* </div> */} 
     <ContactSection/>
     <Footer/>
     </>)

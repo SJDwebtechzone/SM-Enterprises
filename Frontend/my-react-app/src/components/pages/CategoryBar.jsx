@@ -23,7 +23,7 @@ const CategorySidebar = ({ onAddToCart, onAddToWishlist,wishlist}) => {
   const [filteredProducts, setFilteredProducts] = useState([]);
    const [products, setProducts] = useState([]);
    const [categoriesList, setCategoriesList] = useState([]);
-   console.log('products',products)
+  
 
   
   const [selectedSize, setSelectedSize] = useState('');

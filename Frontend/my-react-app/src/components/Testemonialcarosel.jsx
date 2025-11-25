@@ -115,7 +115,7 @@ import '../assets/css/css/TestimonialCarousel.css';
 const TestimonialGrid = () => {
   const [testimonials, setTestimonials] = useState([]);
   const [showAll, setShowAll] = useState(false);
-  console.log('testimonial',testimonials)
+
 
 
   useEffect(() => {

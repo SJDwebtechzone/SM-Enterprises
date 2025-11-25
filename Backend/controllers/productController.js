@@ -14,7 +14,7 @@ const getAllProducts = async (req, res) => {
 
 // Get products by category
 const getProductsByCategory = async (req, res) => {
-  console.log("Category requested:", req.params.category);
+  // console.log("Category requested:", req.params.category);
 
   try {
     const categorySlug = req.params.category.replace(/-/g, ' ').toLowerCase();
@@ -70,8 +70,7 @@ const getProductsByCategory = async (req, res) => {
 //get search by category
 const getProductbySearch = async (req, res) => {
   const { query } = req.query;
-  console.log("Search query:", query); // ✅ Debug log
-
+ 
   try {
     const results = await ProductCollection.find({
       name: { $regex: query, $options: 'i' }

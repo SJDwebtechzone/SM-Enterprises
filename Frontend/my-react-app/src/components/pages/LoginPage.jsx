@@ -19,7 +19,7 @@ const handleLogin = async (e) => {
   e.preventDefault();
   setErrorMsg('');
   setLoading(true);
-  console.log('email,password',email,password)
+ 
 
   try {
     const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/auth/login`, {
@@ -29,7 +29,7 @@ const handleLogin = async (e) => {
     });
 
     const data = await res.json();
-    console.log('Login response:', data);
+   
 
     if (res.ok) {
       setUser({

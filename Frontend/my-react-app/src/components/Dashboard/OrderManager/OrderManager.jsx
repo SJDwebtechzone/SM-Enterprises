@@ -4,7 +4,7 @@ import { Table, Button, Form } from 'react-bootstrap';
 
 const OrderManager = () => {
   const [orders, setOrders] = useState([]);
-  console.log('AdminOrder',orders)
+
 
   useEffect(() => {
     fetchOrders();

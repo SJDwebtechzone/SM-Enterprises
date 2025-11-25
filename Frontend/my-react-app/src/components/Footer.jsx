@@ -103,7 +103,7 @@ const Footer = () => {
     <div className="row">
       <div className="col-md-12 text-center">
         <p className="small text-white">
-          &copy; {new Date().getFullYear()} All rights reserved <i className="bi bi-heart-fill text-danger"></i> 
+          &copy; {new Date().getFullYear()} All rights reserved <i className="bi bi-heart-fill text-danger"></i> <Link className="text-white" to="https://devspectra.in">DevSpectra</Link>
         </p>
       
       </div>

@@ -4,7 +4,7 @@ import axios from 'axios';
 const OrderHistory = () => {
   const [orders, setOrders] = useState([]);
   const [error, setError] = useState('');
-  console.log('orderhistory',orders)
+ 
 
   useEffect(() => {
     const token = localStorage.getItem('token');

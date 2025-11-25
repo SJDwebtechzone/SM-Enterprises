@@ -3,7 +3,7 @@ const router = express.Router();
 const razorpay = require('../config/razorpay');
 
 router.post('/', async (req, res) => {
-  console.log('req-razorpay',req.body.amount)
+
   try {
     const options = {
       amount: req.body.amount*100,
@@ -11,7 +11,7 @@ router.post('/', async (req, res) => {
       receipt: `rcpt_${Date.now()}`
     };
     const order = await razorpay.orders.create(options);
-    console.log('Created order:', order);
+ 
     res.json(order);
   } catch (err) {
     console.error('❌ Razorpay order creation failed:', err);

@@ -61,7 +61,7 @@ const CartSection = ({cart,setCart,setCartClickCount}) => {
     quantity: typeof item.quantity === 'number' ? item.quantity : 1
   }));
 
-    console.log('Normalized cart after delete:', normalizedCart);
+  
 
     setCartItems(normalizedCart);
     setCart(normalizedCart);
@@ -70,8 +70,7 @@ const CartSection = ({cart,setCart,setCartClickCount}) => {
     console.error('Failed to delete cart item:', err.response?.data || err.message);
   }
 };
-    console.log(' updatedcart ',cartItems)
-console.log(isMobile); // true or false
+    
 
 
 useEffect(() => {

@@ -10,7 +10,7 @@ const AdminDashboard = () => {
     axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/metrics`)
       .then(res => setMetrics(res.data));
   }, []);
-  console.log('metrics', metrics)
+ 
   
   return (
     <>

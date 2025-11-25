@@ -62,7 +62,7 @@ const OtpLogin = ({ setCart, setCartClickCount }) => {
 
           if (cartRes.ok) {
             cartData = await cartRes.json();
-            console.log('Fetched cart:', cartData);
+           
           } else {
             console.warn('Cart fetch failed:', await cartRes.text());
           }

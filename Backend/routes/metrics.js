@@ -74,7 +74,7 @@ router.get('/metrics', async (req, res) => {
   }
 });
 
-module.exports = router;
+
 
 
 router.post('/track-visit', async (req, res) => {

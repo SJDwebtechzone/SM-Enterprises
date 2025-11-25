@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const AdminReviewPanel = () => {
   const [reviews, setReviews] = useState([]);
-  console.log('adminreviews',reviews)
+  
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

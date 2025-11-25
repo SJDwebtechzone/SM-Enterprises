@@ -1,7 +1,8 @@
 
 import '@flaticon/flaticon-uicons/css/all/all.css';
 import React, { useEffect, useRef, useState } from 'react';
-
+import '@flaticon/flaticon-uicons/css/all/all.css';
+import './assets/fonts/flaticon/font/flaticon.css';
 import './App.css'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './components/Home'
@@ -93,7 +94,10 @@ function App() {
 useEffect(() => {
   const fetchWishlist = async () => {
     const token = localStorage.getItem('token');
-    if (!token || token.split('.').length !== 3) return;
+    if (!token || token.split('.').length !== 3) {
+      setWishlist([]); // keep empty until login
+      return;          // exit early, no warning
+    }
 
     let currentUserId;
     try {
@@ -105,15 +109,15 @@ useEffect(() => {
     }
 
     try {
-      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/wishlist/${currentUserId}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const res = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/api/wishlist/${currentUserId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
 
-      const wishlistData = res.data?.wishlist;
+      const wishlistData = res.data?.wishlist || res.data;
 
       if (!wishlistData || !Array.isArray(wishlistData.products)) {
-        console.warn('No wishlist found or products missing');
-        setWishlist([]);
+        setWishlist([]); // empty state, no warning
         return;
       }
 

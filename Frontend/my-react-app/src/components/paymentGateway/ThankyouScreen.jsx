@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const ThankYouScreen = ({ orderDetails }) => {
-  console.log('thank you screen', orderDetails);
+
   const { name, amount, paymentId, items } = orderDetails || {};
 
   if (!orderDetails || !items) {

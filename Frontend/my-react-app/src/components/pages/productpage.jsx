@@ -22,7 +22,7 @@ const ProductPage = ({ onAddToCart, onAddToWishlist, wishlist = [] }) => {
    const [showControls, setShowControls] = useState(false);
 
   const decodedCategory = categoryMap[category.toLowerCase()] || category;
-  console.log('products',products)
+  
 
   useEffect(() => {
     axios

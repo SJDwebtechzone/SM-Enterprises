@@ -128,7 +128,8 @@ const BlessedCheckout = ({ cart, setCart, setCartClickCount }) => {
                 try {
                   const { pdfUrl, orderId } = await createOrder(paymentId);
 
-                  await fetch('/cart/clear', {
+                  await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/user/clear`, {
+
                     method: 'POST',
                     headers: {
                       'Content-Type': 'application/json',

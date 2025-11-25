@@ -5,20 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite + React + Bootstrap</title>
 
-    <!-- Bootstrap CSS via CDN -->
-     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
-    <title>Bootstrap Example</title>
-    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-	<link rel="stylesheet" href="assets/css/css/fonts/flaticon.css">
-  <link href="https://fonts.googleapis.com/css2?family=Gloock&display=swap" rel="stylesheet">
-  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <!-- Local/Project CSS -->
+    <link rel="stylesheet" href="/src/assets/css/css/fonts/flaticon.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Gloock&display=swap" rel="stylesheet" />
+
+    <!-- Razorpay checkout -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   </head>
   <body>
-    
-  <div id="root" style="margin: 0; padding: 0; box-sizing: contents; max-width: 100%;">
-
-</div>
+    <div id="root" style="margin: 0; padding: 0; box-sizing: border-box; max-width: 100%;"></div>
 
     <!-- React entry point -->
     <script type="module" src="/src/main.jsx"></script>
