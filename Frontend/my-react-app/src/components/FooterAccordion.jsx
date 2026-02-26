@@ -48,7 +48,7 @@ const FooterAccordion = () => {
               <li><Link to="/" className="text-decoration-none text-dark">Home</Link></li>
               <li><Link to="/about" className="text-decoration-none text-dark">About Us</Link></li>
               <li><Link to="/reach-us" className="text-decoration-none text-dark">Contact Us</Link></li>
-              <li><Link to="/shipping-policy" className="text-decoration-none text-dark">Shipping Policy</Link></li>
+              <li><Link to="/products" className="text-decoration-none text-dark">Products</Link></li>
             </ul>
           </Accordion.Body>
         </Accordion.Item>

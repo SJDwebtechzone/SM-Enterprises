@@ -9,7 +9,7 @@ const ProductManager = () => {
   const [formData, setFormData] = useState({
     name: '', price: '', originalPrice: '', discount: '', sale: '',
     category: '', subcategory: '', sku: '', gst: '',
-    offers: '', material: '', dimensions: '', about: '', image: null, productViews: [], sizes: '', stock: ''
+    offers: '', material: '', dimensions: '', about: '', image: null, productViews: [], video: null, sizes: '', stock: ''
   });
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
@@ -17,6 +17,7 @@ const ProductManager = () => {
   const [editingId, setEditingId] = useState(null);
   const [previewImage, setPreviewImage] = useState('');
   const [previewProductViews, setPreviewProductViews] = useState([]);
+  const [previewVideo, setPreviewVideo] = useState('');
 
   useEffect(() => {
     fetchProducts();
@@ -72,6 +73,13 @@ const ProductManager = () => {
     const newPreviews = [...previewProductViews];
     newPreviews[index] = URL.createObjectURL(file);
     setPreviewProductViews(newPreviews);
+  };
+
+  const handleVideoChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setFormData(prev => ({ ...prev, video: file }));
+    setPreviewVideo(URL.createObjectURL(file));
   };
 
   //   const handleSubmit = async (e) => {
@@ -133,7 +141,9 @@ const ProductManager = () => {
         data.append('image', value);
       } else if (key === 'productViews' && value.length > 0) {
         value.forEach(file => data.append('productViews', file));
-      } else if (!['sizes', 'stock', 'gst', 'material', 'dimensions', 'about', 'productViews'].includes(key)) {
+      } else if (key === 'video' && value) {
+        // handled separately below
+      } else if (!['sizes', 'stock', 'gst', 'material', 'dimensions', 'about', 'productViews', 'video'].includes(key)) {
         data.append(key, value);
       }
     });
@@ -148,6 +158,7 @@ const ProductManager = () => {
     data.append('sizes', JSON.stringify(formData.sizes.split(',').map(s => s.trim())));
     data.append('stock', formData.stock);
     data.append('gst', formData.gst || 0);
+    if (formData.video) data.append('video', formData.video);
 
     try {
       if (editingId) {
@@ -161,11 +172,12 @@ const ProductManager = () => {
       setFormData({
         name: '', price: '', originalPrice: '', discount: '', sale: '',
         category: '', subcategory: '', sku: '', gst: '',
-        offers: '', material: '', dimensions: '', about: '', image: null, productViews: [], sizes: '', stock: ''
+        offers: '', material: '', dimensions: '', about: '', image: null, productViews: [], video: null, sizes: '', stock: ''
       });
       setEditingId(null);
       setPreviewImage('');
       setPreviewProductViews([]);
+      setPreviewVideo('');
       fetchProducts();
     } catch (err) {
       console.error('Save failed:', err);
@@ -191,9 +203,16 @@ const ProductManager = () => {
       material: product.details?.Material || '',
       dimensions: product.details?.Dimensions || '',
       about: product.details?.About || '',
-      image: null
+      image: null,
+      video: null
     });
     setPreviewImage(product.image?.startsWith('http') ? product.image : `${import.meta.env.VITE_BACKEND_URL}${product.image}`);
+    // Show existing video preview if any
+    if (product.video) {
+      setPreviewVideo(product.video.startsWith('http') ? product.video : `${import.meta.env.VITE_BACKEND_URL}${product.video}`);
+    } else {
+      setPreviewVideo('');
+    }
   };
 
   const handleDelete = async (id) => {
@@ -310,6 +329,50 @@ const ProductManager = () => {
                     </div>
                   ))}
                 </div>
+              </Form.Group>
+
+              {/* ✅ Add Video Section */}
+              <Form.Group className="mb-2">
+                <Form.Label>Product Video</Form.Label>
+                <div
+                  style={{
+                    width: '100%', height: '100px', border: '2px dashed #ddd',
+                    borderRadius: '8px', background: '#f8f9fa', cursor: 'pointer',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    color: '#6c757d', fontSize: '14px', gap: '8px'
+                  }}
+                  onClick={() => document.getElementById('productVideoInput').click()}
+                >
+                  {previewVideo ? (
+                    <video
+                      src={previewVideo}
+                      controls
+                      style={{ width: '100%', height: '100%', borderRadius: '6px', objectFit: 'cover' }}
+                      onClick={e => e.stopPropagation()}
+                    />
+                  ) : (
+                    <>
+                      <span style={{ fontSize: '24px' }}>🎬</span>
+                      <span>+ Add Video</span>
+                    </>
+                  )}
+                </div>
+                <input
+                  type="file"
+                  id="productVideoInput"
+                  accept="video/*"
+                  style={{ display: 'none' }}
+                  onChange={handleVideoChange}
+                />
+                {previewVideo && (
+                  <button
+                    type="button"
+                    className="btn btn-sm btn-outline-danger mt-1"
+                    onClick={() => { setPreviewVideo(''); setFormData(prev => ({ ...prev, video: null })); }}
+                  >
+                    ✕ Remove Video
+                  </button>
+                )}
               </Form.Group>
 
               {previewImage && (

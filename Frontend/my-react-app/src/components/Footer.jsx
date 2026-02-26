@@ -70,8 +70,8 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/shipping-policy" className="text-decoration-none text-dark d-block">
-                  Shipping Policy
+                <Link to="/products" className="text-decoration-none text-dark d-block">
+                  Products
                 </Link>
               </li>
             </ul>

@@ -17,6 +17,7 @@ const productCollectionSchema = new mongoose.Schema({
   offers: [String],
   sku: String,
   gst: { type: Number, default: 0 }, // ✅ GST percentage (e.g. 5, 12, 18, 28)
+  video: { type: String, default: '' }, // ✅ product demo video URL
   status: { type: String, enum: ['active', 'inactive'], default: 'active' }, // ✅ status field
   stock: { type: Number, default: 0 }, // ✅ current stock
   alertThreshold: { type: Number, default: 5 }, // ✅ stock alert trigger

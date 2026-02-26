@@ -148,7 +148,11 @@ const upload = multer({ storage });
 
 
 // ✅ POST /api/products/upload — Add new product
-router.post('/upload', upload.fields([{ name: 'image', maxCount: 1 }, { name: 'productViews', maxCount: 4 }]), async (req, res) => {
+router.post('/upload', upload.fields([
+  { name: 'image', maxCount: 1 },
+  { name: 'productViews', maxCount: 4 },
+  { name: 'video', maxCount: 1 }
+]), async (req, res) => {
   try {
     const {
       name, price, originalPrice, discount, sale,
@@ -173,7 +177,8 @@ router.post('/upload', upload.fields([{ name: 'image', maxCount: 1 }, { name: 'p
       image: req.files?.image ? `/uploads/${req.files.image[0].filename}` : '',
       productViews,
       stock: Number(stock) || 0,
-      sizes: sizes ? JSON.parse(sizes) : []
+      sizes: sizes ? JSON.parse(sizes) : [],
+      video: req.files?.video ? `/uploads/${req.files.video[0].filename}` : ''
     });
 
     await product.save();
@@ -201,7 +206,11 @@ router.get('/', async (req, res) => {
 
 
 // ✅ PUT /api/products/:id — Update product
-router.put('/:id', upload.fields([{ name: 'image', maxCount: 1 }, { name: 'productViews', maxCount: 4 }]), async (req, res) => {
+router.put('/:id', upload.fields([
+  { name: 'image', maxCount: 1 },
+  { name: 'productViews', maxCount: 4 },
+  { name: 'video', maxCount: 1 }
+]), async (req, res) => {
   try {
     const {
       name, price, originalPrice, discount, sale,
@@ -247,6 +256,10 @@ router.put('/:id', upload.fields([{ name: 'image', maxCount: 1 }, { name: 'produ
 
     if (req.files?.productViews) {
       updateData.productViews = req.files.productViews.map(f => `/uploads/${f.filename}`);
+    }
+
+    if (req.files?.video) {
+      updateData.video = `/uploads/${req.files.video[0].filename}`;
     }
 
     const updated = await ProductCollection.findByIdAndUpdate(req.params.id, updateData, { new: true });

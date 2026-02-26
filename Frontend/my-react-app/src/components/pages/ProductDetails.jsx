@@ -9,12 +9,14 @@ import { Modal, Button } from 'react-bootstrap';
 const ProductDetail = ({ product, onClose, onAddToCart }) => {
   const [quantities, setQuantities] = useState({});
   const [activeImage, setActiveImage] = useState('');
+  const [activeView, setActiveView] = useState('image');
   const navigate = useNavigate();
 
   useEffect(() => {
     if (product && product._id) {
       setQuantities({ [product._id]: 1 });
       setActiveImage(product.image || '');
+      setActiveView('image');
     }
   }, [product]);
 
@@ -34,6 +36,13 @@ const ProductDetail = ({ product, onClose, onAddToCart }) => {
       : `${import.meta.env.VITE_BACKEND_URL}${img}`;
   };
 
+  const getVideoUrl = (vid) => {
+    if (!vid) return '';
+    return vid.startsWith('http')
+      ? vid
+      : `${import.meta.env.VITE_BACKEND_URL}${vid}`;
+  };
+
   return (
     <Modal show={!!product} onHide={onClose} size="xl" backdrop="static" keyboard dialogClassName="modal-90w">
       <Modal.Header closeButton style={styles.header}>
@@ -46,10 +55,20 @@ const ProductDetail = ({ product, onClose, onAddToCart }) => {
             {/* Left Column: Image */}
             <div className="col-lg-6 text-center">
               <div style={styles.mainImageContainer}>
-                <ZoomImage
-                  src={getImageUrl(activeImage)}
-                  alt={product.name}
-                />
+                {activeView === 'video' && product.video ? (
+                  <video
+                    key={getVideoUrl(product.video)}
+                    src={getVideoUrl(product.video)}
+                    controls
+                    autoPlay
+                    style={styles.videoPlayer}
+                  />
+                ) : (
+                  <ZoomImage
+                    src={getImageUrl(activeImage)}
+                    alt={product.name}
+                  />
+                )}
               </div>
 
               <div style={styles.pricingContainer}>
@@ -72,16 +91,39 @@ const ProductDetail = ({ product, onClose, onAddToCart }) => {
                 {allImages.map((img, index) => (
                   <div
                     key={index}
-                    onClick={() => setActiveImage(img)}
+                    onClick={() => { setActiveImage(img); setActiveView('image'); }}
                     style={{
                       ...styles.thumbnail,
-                      borderColor: activeImage === img ? '#d4af37' : '#eee',
-                      opacity: activeImage === img ? 1 : 0.7
+                      borderColor: activeView === 'image' && activeImage === img ? '#d4af37' : '#eee',
+                      opacity: activeView === 'image' && activeImage === img ? 1 : 0.7
                     }}
                   >
                     <img src={getImageUrl(img)} alt={`View ${index + 1}`} style={styles.thumbnailImg} />
                   </div>
                 ))}
+
+                {/* ✅ Video Thumbnail */}
+                {product.video && (
+                  <div
+                    onClick={() => setActiveView('video')}
+                    title="Watch product video"
+                    style={{
+                      ...styles.thumbnail,
+                      borderColor: activeView === 'video' ? '#d4af37' : '#eee',
+                      opacity: activeView === 'video' ? 1 : 0.7,
+                      background: '#1a1a2e',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexDirection: 'column',
+                      gap: '2px',
+                      flexShrink: 0
+                    }}
+                  >
+                    <span style={{ fontSize: '22px' }}>🎬</span>
+                    <span style={{ fontSize: '9px', color: '#fff', fontWeight: 'bold' }}>VIDEO</span>
+                  </div>
+                )}
               </div>
 
               <h6 className="fw-bold" style={styles.sectionTitle}>Description:</h6>
@@ -202,6 +244,14 @@ const styles = {
     borderRadius: '20px',
     padding: '8px 25px',
     fontWeight: 'bold',
+  },
+  videoPlayer: {
+    width: '100%',
+    height: '100%',
+    minHeight: '350px',
+    borderRadius: '10px',
+    objectFit: 'contain',
+    background: '#000',
   }
 };
 

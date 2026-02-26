@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Cart from './cart';
 import '../../assets/css/css/CartSection.css'
-import { isMobile } from 'react-device-detect';
+
 
 
 
