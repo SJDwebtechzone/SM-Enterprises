@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 const orderSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, // ✅ Link to logged-in user
   orderId: String,
-
-  orderId: String,
+  razorpayOrderId: String,
+  razorpaySignature: String,
   invoiceId: String,
   trackingId: String,
   customer: {
@@ -23,15 +23,15 @@ const orderSchema = new mongoose.Schema({
   total: Number,
   discount: { type: Number, default: 0 },
   couponCode: String,
-  status: { type: String, default: 'Pending' }, // Pending, Shipped, Delivered
+  status: { type: String, default: 'Pending' }, // Pending, Paid, Shipped, Delivered
   paymentMethod: String,
   date: { type: Date, default: Date.now },
   deliveryDate: Date,
   deliveryMethod: String,
   notes: String,
   adminComment: String,
-  paymentId:String,
-  pdfUrl:String,
+  paymentId: String,
+  pdfUrl: String,
   isDeleted: { type: Boolean, default: false }
 }, { timestamps: true });
 

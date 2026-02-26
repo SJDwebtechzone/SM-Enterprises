@@ -43,10 +43,32 @@ const PromoBanner = () => {
 
   useEffect(() => {
     fetch(`${import.meta.env.VITE_BACKEND_URL}/api/promos`)
-      .then(res => res.json())
-      .then(data => setPromos(data))
-      .catch(err => console.error('Error fetching promos:', err));
+      .then(res => {
+        // Check if response is ok and content-type is JSON
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        const contentType = res.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+          throw new Error('Response is not JSON');
+        }
+        return res.json();
+      })
+      .then(data => {
+        // Ensure data is an array
+        if (Array.isArray(data)) {
+          setPromos(data);
+        } else {
+          console.error('Invalid promos data format:', data);
+          setPromos([]);
+        }
+      })
+      .catch(err => {
+        console.error('Error fetching promos:', err);
+        setPromos([]); // Set empty array to prevent crashes
+      });
   }, []);
+  
 
   return (
     <div className="bg-white text-dark py-2 border-bottom overflow-hidden">
@@ -62,11 +84,15 @@ const PromoBanner = () => {
             color: 'black',
           }}
         >
-          {promos.map((promo, index) => (
-            <span key={index}>
-              {promo.message} &nbsp;&nbsp;&nbsp;
-            </span>
-          ))}
+          {promos && promos.length > 0 ? (
+            promos.map((promo, index) => (
+              <span key={index}>
+                {promo.message} &nbsp;&nbsp;&nbsp;
+              </span>
+            ))
+          ) : (
+            <span>🚚 Free Shipping on All Orders Over ₹999! &nbsp;&nbsp;&nbsp; 🎉 Buy 1 Get 1 Free on Select Items! &nbsp;&nbsp;&nbsp; 💥 Limited Time Offer: Flat 20% Off!</span>
+          )}
         </div>
       </div>
 

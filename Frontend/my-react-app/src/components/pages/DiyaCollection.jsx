@@ -31,18 +31,27 @@ const fetchCollections = async () => {
   try {
     const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/categories`);
     
+    // Check if response data is an array
+    if (!res.data || !Array.isArray(res.data)) {
+      console.error('Invalid data format received:', res.data);
+      setCollections([]);
+      return;
+    }
+    
     const mapped = res.data.map(cat => ({
       name: cat.name,
       image: cat.image
         ? `${import.meta.env.VITE_BACKEND_URL}${cat.image}`
         : defaultImage,
       alt: cat.name,
-      _id: cat._id // ✅ include _id if needed for keys or linking
+      _id: cat._id
     }));
 
-    setCollections(mapped); // ✅ use mapped, not raw res.data
+    setCollections(mapped);
   } catch (err) {
     console.error('Failed to fetch collections:', err);
+    // Set empty array to prevent crashes
+    setCollections([]);
   }
 };
 

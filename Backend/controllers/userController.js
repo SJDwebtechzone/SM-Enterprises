@@ -1,12 +1,12 @@
 const mongoose = require('mongoose');
- const User = require('../models/User');
+const User = require('../models/User');
 const productCollectionSchema = require('../models/ProductCollection');
 
 
 exports.addToCart = async (req, res) => {
   try {
     const { productId } = req.params;
-   
+
 
     const quantity = Math.max(1, Number(req.body.quantity) || 1);
     const user = req.user;
@@ -30,7 +30,7 @@ exports.addToCart = async (req, res) => {
       user.cart.push({ product: productId, quantity });
     }
 
-    
+
     await user.save();
 
     await user.populate('cart.product');
@@ -49,11 +49,11 @@ exports.getCart = async (req, res) => {
     // ✅ Use User model directly to test populate
     const user = await User.findById(req.user._id).populate({
       path: 'cart.product',
-       model: 'ProductCollection', 
-      select: 'name price image description'
+      model: 'ProductCollection',
+      select: 'name price gst image description'
     });
 
-   
+
 
     const enrichedCart = user.cart
       .filter(item => item.product)
@@ -62,6 +62,7 @@ exports.getCart = async (req, res) => {
         quantity: item.quantity,
         name: item.product.name,
         price: item.product.price,
+        gst: item.product.gst ?? 0,
         image: item.product.image,
         description: item.product.description
       }));
@@ -78,7 +79,7 @@ exports.removeFromCart = async (req, res) => {
   try {
     const userId = req.user._id;
     const productId = req.params.productId;
-   
+
 
     const updatedUser = await User.findByIdAndUpdate(
       userId,
@@ -87,7 +88,7 @@ exports.removeFromCart = async (req, res) => {
     ).populate({
       path: 'cart.product',
       model: 'ProductCollection',
-      select: 'name price image description'
+      select: 'name price gst image description'
     });
 
     res.json({ cart: updatedUser.cart });
@@ -98,7 +99,7 @@ exports.removeFromCart = async (req, res) => {
 
 exports.clearCart = async (req, res) => {
   try {
-     if (!req.user) {
+    if (!req.user) {
       return res.status(401).json({ message: 'Unauthorized: please log in first' });
     }
 

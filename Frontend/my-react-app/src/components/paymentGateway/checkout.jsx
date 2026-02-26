@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import PaymentButton from './PaymentButton';
-import ThankYouScreen from './ThankyouScreen'; 
+import ThankYouScreen from './ThankyouScreen';
 import InvoiceSummary from './InvoiceSummary';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -20,12 +20,12 @@ const BlessedCheckout = ({ cart, setCart, setCartClickCount }) => {
   const [orderId, setOrderId] = useState('');
   const location = useLocation();
   const navigate = useNavigate();
-  const {  subtotal,
-        gstAmount,
-        shippingEstimate,
-        discount,
-        total,
-        cartItems } = location.state || {};
+  const { subtotal,
+    gstAmount,
+    shippingEstimate,
+    discount,
+    total,
+    cartItems } = location.state || {};
 
   const handleChange = (e) => {
     setBilling({ ...billing, [e.target.name]: e.target.value });
@@ -35,15 +35,16 @@ const BlessedCheckout = ({ cart, setCart, setCartClickCount }) => {
     setGateway(e.target.value);
   };
 
-  const createOrder = async (paymentId) => {
+  const createOrder = async (paymentData) => {
     try {
       const orderId = `ORD-${Date.now()}`;
       const token = localStorage.getItem('token');
       const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/orders/create`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json',
-           Authorization: `Bearer ${token}`
-         },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
         body: JSON.stringify({
           orderId,
           customer: billing,
@@ -54,8 +55,10 @@ const BlessedCheckout = ({ cart, setCart, setCartClickCount }) => {
             price: item.price
           })),
           total,
-          paymentId,
-          status: 'Pending',
+          paymentId: paymentData.paymentId,
+          razorpayOrderId: paymentData.orderId,
+          razorpaySignature: paymentData.signature,
+          status: 'Paid',
           date: new Date().toISOString()
         })
       });
@@ -123,13 +126,20 @@ const BlessedCheckout = ({ cart, setCart, setCartClickCount }) => {
             billing={billing}
             amount={total}
             gateway={gateway}
-            onPaymentVerified={async (status, paymentId) => {
+            onPaymentVerified={async (status, paymentData) => {
               if (status === 'success') {
                 try {
-                  const { pdfUrl, orderId } = await createOrder(paymentId);
+                  console.log('📡 Payment successful, notifying backend...');
+                  const result = await createOrder(paymentData);
+
+                  if (!result.orderId) {
+                    alert("Order processed but could not be saved to your account. Please contact support with Payment ID: " + paymentData.paymentId);
+                    return;
+                  }
+
+                  const { pdfUrl, orderId } = result;
 
                   await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/user/clear`, {
-
                     method: 'POST',
                     headers: {
                       'Content-Type': 'application/json',
@@ -141,7 +151,7 @@ const BlessedCheckout = ({ cart, setCart, setCartClickCount }) => {
                   localStorage.removeItem('cart');
                   setCartClickCount([]);
                   setShowThankYou(true);
-                  setPaymentId(paymentId);
+                  setPaymentId(paymentData.paymentId);
                   setOrderId(orderId);
                   setInvoice({
                     invoiceId: `INV-${Date.now()}`,
@@ -153,12 +163,17 @@ const BlessedCheckout = ({ cart, setCart, setCartClickCount }) => {
                       quantity: item.quantity,
                       price: item.price
                     })),
+                    subtotal,
+                    gstAmount,
+                    shippingEstimate,
+                    discount,
                     total,
-                    paymentId,
+                    paymentId: paymentData.paymentId,
                     pdfUrl
                   });
                 } catch (err) {
                   console.error('❌ Checkout flow failed:', err);
+                  alert("A technical error occurred while saving your order details. Verification ID: " + paymentData.paymentId);
                 }
               }
 

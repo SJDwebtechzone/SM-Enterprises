@@ -62,7 +62,7 @@ const OtpLogin = ({ setCart, setCartClickCount }) => {
 
           if (cartRes.ok) {
             cartData = await cartRes.json();
-           
+
           } else {
             console.warn('Cart fetch failed:', await cartRes.text());
           }
@@ -77,6 +77,7 @@ const OtpLogin = ({ setCart, setCartClickCount }) => {
           name: item.name,
           image: item.image,
           price: item.price,
+          gst: item.gst ?? 0,
           quantity: item.quantity
         }));
 

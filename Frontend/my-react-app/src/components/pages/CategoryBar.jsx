@@ -30,11 +30,30 @@ const CategorySidebar = ({ onAddToCart, onAddToWishlist,wishlist}) => {
 
   const fetchProducts = (size = '') => {
     const url = size ? `${import.meta.env.VITE_BACKEND_URL}/api/products?size=${size}` : `${import.meta.env.VITE_BACKEND_URL}/api/products`;
-    // 
+    
     fetch(url)
-  .then(res => res.json())
- .then(data => setProducts(data || [])) // ✅ extract array
-  .catch(err => console.error('Error fetching products:', err));
+      .then(res => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        const contentType = res.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+          throw new Error('Response is not JSON');
+        }
+        return res.json();
+      })
+      .then(data => {
+        if (Array.isArray(data)) {
+          setProducts(data);
+        } else {
+          console.error('Invalid products data format:', data);
+          setProducts([]);
+        }
+      })
+      .catch(err => {
+        console.error('Error fetching products:', err);
+        setProducts([]);
+      });
   };
 
   useEffect(() => {
@@ -45,9 +64,18 @@ const CategorySidebar = ({ onAddToCart, onAddToWishlist,wishlist}) => {
 const fetchCategories = async () => {
   try {
     const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/categories`);
-    setCategoriesList(res.data || []);
+    
+    // Check if response data is an array
+    if (!res.data || !Array.isArray(res.data)) {
+      console.error('Invalid categories data format:', res.data);
+      setCategoriesList([]);
+      return;
+    }
+    
+    setCategoriesList(res.data);
   } catch (err) {
     console.error('Category fetch failed:', err);
+    setCategoriesList([]);
   }
 };
 

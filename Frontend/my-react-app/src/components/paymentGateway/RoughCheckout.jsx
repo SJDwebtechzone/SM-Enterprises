@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-const razorpayKey = import.meta.env?.VITE_RAZORPAY_KEY;
+const razorpayKey = import.meta.env?.VITE_RAZORPAY_KEY_ID;
 // const razorpayKey_secret = import.meta.env?.REACT_APP_RAZORPAY_SECRET
 const RoughCheckout = () => {
   const [amount, setAmount] = useState('');
@@ -11,34 +11,33 @@ const RoughCheckout = () => {
       alert('⚠️ Please enter a valid amount');
       return;
     }
-    else
-    {
-       var options={
-       
-         key:razorpayKey,
-        //  key_secret:razorpayKey_secret,
-         amount:amount*100,
-         currency:"INR",
-         name:"SM Enterprise Project",
-         description:"for testing purpose",
-         handler:function(response){
-            alert(response.razorpay_payment_id);
-         },
-         prefill:{
-            name:"sathish",
-            email:"connectwithdevspectra@gmail.com",
-            contact:"XXXXXXXXXX"
-         },
-         notes:{
-            address:"Razorpay corporate office"
-         },
-         theme: {
-        color: '#d4af37'
-      }
+    else {
+      var options = {
 
-       }
-       var pay = new window.Razorpay(options);
-    pay.open();
+        key: razorpayKey,
+        //  key_secret:razorpayKey_secret,
+        amount: amount * 100,
+        currency: "INR",
+        name: "SM Enterprise Project",
+        description: "for testing purpose",
+        handler: function (response) {
+          alert(response.razorpay_payment_id);
+        },
+        prefill: {
+          name: "sathish",
+          email: "connectwithdevspectra@gmail.com",
+          contact: "XXXXXXXXXX"
+        },
+        notes: {
+          address: "Razorpay corporate office"
+        },
+        theme: {
+          color: '#d4af37'
+        }
+
+      }
+      var pay = new window.Razorpay(options);
+      pay.open();
     }
 
     // setLoading(true);

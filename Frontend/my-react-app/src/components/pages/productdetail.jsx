@@ -8,47 +8,82 @@ import { Modal, Button } from 'react-bootstrap';
 
 const ProductDetail = ({ product, onClose, onAddToCart }) => {
   const [quantities, setQuantities] = useState({});
+  const [activeImage, setActiveImage] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
     if (product && product._id) {
       setQuantities({ [product._id]: 1 });
+      setActiveImage(product.image || '');
     }
   }, [product]);
 
   if (!product) return null;
 
+  // Prepare images array (combine main image with productViews and gallery images if any)
+  const allImages = [
+    product.image,
+    ...(product.productViews || []),
+    ...(product.images || [])
+  ].filter(img => img); // remove empty strings/nulls
+
+  const getImageUrl = (img) => {
+    if (!img) return '';
+    return img.startsWith('http')
+      ? img
+      : `${import.meta.env.VITE_BACKEND_URL}${img}`;
+  };
+
   return (
-    <Modal show={!!product} onHide={onClose} centered size="lg">
-      <Modal.Header closeButton />
-      <Modal.Body>
+    <Modal show={!!product} onHide={onClose} size="xl" backdrop="static" keyboard dialogClassName="modal-90w">
+      <Modal.Header closeButton style={styles.header}>
+        <Modal.Title style={styles.modalTitle}>{product.name}</Modal.Title>
+      </Modal.Header>
+
+      <Modal.Body style={styles.body}>
         <div className="row g-4">
           {/* Left Column: Image */}
-          <div className="col-md-5 text-center">
-            <div className="zoom-container">
+          <div className="col-md-6 text-center">
+            <div style={styles.mainImageContainer}>
               <ZoomImage
-                src={
-                  product.image
-                    ? product.image.startsWith('http')
-                      ? product.image
-                      : `${import.meta.env.VITE_BACKEND_URL}${product.image}`
-                    : ''
-                }
+                src={getImageUrl(activeImage)}
                 alt={product.name}
               />
             </div>
-            <h6 className="mt-3">{product.name}</h6>
-            <h5 className="text-success fw-bold mt-2">
-              ₹{product.price}.00
-              <span className="text-muted text-decoration-line-through ms-2 fs-6">
-                ₹{product.originalPrice}.00
-              </span>
-            </h5>
+
+            <div style={styles.pricingContainer}>
+              <h5 className="text-success fw-bold mt-3">
+                ₹{product.sale || product.price}.00
+                {product.sale && (
+                  <span className="text-muted text-decoration-line-through ms-2 fs-6">
+                    ₹{product.price}.00
+                  </span>
+                )}
+              </h5>
+            </div>
           </div>
 
           {/* Right Column: Info */}
-          <div className="col-md-7 product-info">
-            <h6 className="fw-bold">Description:</h6>
+          <div className="col-md-6 product-info">
+            {/* Gallery Thumbnails - "Small boxes for different direction" */}
+            <div style={styles.galleryLabel}>Product Views:</div>
+            <div className="d-flex gap-2 mb-4 overflow-auto pb-2" style={styles.thumbnailContainer}>
+              {allImages.map((img, index) => (
+                <div
+                  key={index}
+                  onClick={() => setActiveImage(img)}
+                  style={{
+                    ...styles.thumbnail,
+                    borderColor: activeImage === img ? '#d4af37' : '#eee',
+                    opacity: activeImage === img ? 1 : 0.7
+                  }}
+                >
+                  <img src={getImageUrl(img)} alt={`View ${index + 1}`} style={styles.thumbnailImg} />
+                </div>
+              ))}
+            </div>
+
+            <h6 className="fw-bold" style={styles.sectionTitle}>Description:</h6>
             <p className="small text-muted">{product.details?.About}</p>
 
             <ul className="list-unstyled offers-list">
@@ -75,6 +110,7 @@ const ProductDetail = ({ product, onClose, onAddToCart }) => {
                 <Button
                   variant="warning"
                   className="w-100 fw-bold"
+                  style={styles.addCartBtn}
                   onClick={() => {
                     onAddToCart({ ...product, quantity: quantities[product._id] });
                     navigate('/cart');
@@ -87,9 +123,91 @@ const ProductDetail = ({ product, onClose, onAddToCart }) => {
           </div>
         </div>
       </Modal.Body>
+
+      <Modal.Footer style={styles.footer}>
+        <Button variant="outline-warning" onClick={onClose} style={styles.closeBtn}>Close</Button>
+      </Modal.Footer>
     </Modal>
   );
 };
 
-export default ProductDetail;
+const styles = {
+  header: {
+    background: 'linear-gradient(to right, #fff8e1, #ffe0b2)',
+    borderBottom: '1px solid #d4af37',
+  },
+  modalTitle: {
+    fontFamily: 'Great Vibes, cursive',
+    fontSize: '2rem',
+    color: '#d4af37',
+  },
+  body: {
+    background: '#fffdf9',
+  },
+  mainImageContainer: {
+    padding: '10px',
+    background: '#fff',
+    borderRadius: '15px',
+    boxShadow: '0 4px 15px rgba(0,0,0,0.05)',
+    border: '1px solid #ffe0b2',
+    marginBottom: '10px',
+    minHeight: '400px',
+  },
+  pricingContainer: {
+    textAlign: 'center',
+    padding: '10px',
+    background: '#fff8e1',
+    borderRadius: '10px',
+    marginTop: '10px',
+  },
+  galleryLabel: {
+    fontSize: '0.85rem',
+    fontWeight: 'bold',
+    color: '#8d6e63',
+    marginBottom: '8px',
+    textTransform: 'uppercase',
+  },
+  thumbnailContainer: {
+    scrollbarWidth: 'thin',
+    scrollbarColor: '#d4af37 #eee',
+  },
+  thumbnail: {
+    width: '64px',
+    height: '64px',
+    borderRadius: '8px',
+    border: '2px solid',
+    padding: '2px',
+    cursor: 'pointer',
+    background: '#fff',
+    transition: 'all 0.2s ease',
+  },
+  thumbnailImg: {
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+    borderRadius: '5px',
+  },
+  sectionTitle: {
+    color: '#5d4037',
+    borderBottom: '1px solid #ffe0b2',
+    paddingBottom: '5px',
+    marginBottom: '10px',
+  },
+  addCartBtn: {
+    borderRadius: '25px',
+    background: 'linear-gradient(to right, #d4af37, #ffcc80)',
+    border: 'none',
+    color: '#fff',
+  },
+  footer: {
+    background: '#fffdf9',
+    borderTop: 'none',
+  },
+  closeBtn: {
+    borderRadius: '20px',
+    padding: '8px 25px',
+    fontWeight: 'bold',
+  }
+};
 
+export default ProductDetail;

@@ -13,7 +13,6 @@ import DealOfTheDay from './components/DealOfTheDay';
 import Shop from './components/pages/shop'
 import NewsletterSubscription from './components/pages/NewsLetter';
 import Wishlist from './components/pages/wishlist';
-import About from './components/pages/about';
 import Contact from './components/pages/contact';
 import Cart from './components/pages/cart';
 import Checkout from './components/pages/checkout';
@@ -26,7 +25,7 @@ import ProductListing from './components/pages/ProductListing';
 import ShippingPolicy from './components/pages/ShippingPolicy';
 import ReturnsRefunds from './components/pages/ReturnRefunds';
 import TermsConditions from './components/pages/TermsConditions';
-import AboutUs from './components/pages/about';
+import AboutUs from './components/pages/about.jsx';
 import PrivacyPolicy from './components/pages/PrivacyPolicy';
 import FAQ from './components/pages/FAQ';
 import ProductPage from './components/pages/productpage';
@@ -62,6 +61,8 @@ import AdminImageUpload from './components/Dashboard/AdminCourselimage/AdminImag
 import OrderHistory from './components/pages/OrderHistory';
 import AdminReviewPanel from './components/Dashboard/ReviewandRating/AdminReviewPanel';
 import CategoryManager from './components/Dashboard/CategoryManager/CategoryManager';
+import ScrollToTop from './components/ScrollToTop';
+import ProductsPage from './components/pages/ProductsPage';
 
 
 
@@ -86,333 +87,348 @@ function App() {
   }, []);
 
 
- useEffect(() => {
+  useEffect(() => {
     showMessageRef.current = showMessage;
   }, [showMessage]);
 
 
-useEffect(() => {
-  const fetchWishlist = async () => {
-    const token = localStorage.getItem('token');
-    if (!token || token.split('.').length !== 3) {
-      setWishlist([]); // keep empty until login
-      return;          // exit early, no warning
-    }
+  useEffect(() => {
+    const fetchWishlist = async () => {
+      const token = localStorage.getItem('token');
+      if (!token || token.split('.').length !== 3) {
+        setWishlist([]); // keep empty until login
+        return;          // exit early, no warning
+      }
 
-    let currentUserId;
-    try {
-      const decoded = jwtDecode(token);
-      currentUserId = decoded.userId;
-    } catch (err) {
-      console.error('Token decode failed:', err);
-      return;
-    }
-
-    try {
-      const res = await axios.get(
-        `${import.meta.env.VITE_BACKEND_URL}/api/wishlist/${currentUserId}`,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-
-      const wishlistData = res.data?.wishlist || res.data;
-
-      if (!wishlistData || !Array.isArray(wishlistData.products)) {
-        setWishlist([]); // empty state, no warning
+      let currentUserId;
+      try {
+        const decoded = jwtDecode(token);
+        currentUserId = decoded.userId;
+      } catch (err) {
+        console.error('Token decode failed:', err);
         return;
       }
 
-      const normalizedWishlist = wishlistData.products.map(product => ({
-        _id: product._id,
-        name: product.name,
-        image: product.image,
-        price: product.sale || product.price,
-        quantity: 1
-      }));
+      try {
+        const res = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/api/wishlist/${currentUserId}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
 
-      setWishlist(normalizedWishlist);
-    } catch (err) {
-      console.error('Wishlist fetch error:', err.message || err);
-      setWishlist([]);
-    }
-  };
+        const wishlistData = res.data?.wishlist || res.data;
 
-  fetchWishlist();
-}, []);
-useEffect(() => {
-  if (!sessionStorage.getItem("visited-home")) {
-    axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/track-visit`, { page: "home" });
-    sessionStorage.setItem("visited-home", "true");
-  }
-}, []);
-
-const getAuthHeaders = () => ({
-  'Content-Type': 'application/json',
-  Authorization: `Bearer ${localStorage.getItem('token')}`
-});
-
-
-
-
-// const handleAddToWishlist = async (product) => {
-//   const token = localStorage.getItem('token');
-//   const decoded = jwtDecode(token);
-//   const currentUserId = decoded.userId;
-
-//   setWishlist((prevWishlist) => {
-//     const exists = prevWishlist.some((item) => item._id === product._id);
-
-//     if (!exists) {
-//       axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/wishlist/add`, {
-//         userId: currentUserId,
-//         productId: product._id
-//       }, {
-//         headers: { Authorization: `Bearer ${token}` },
-//         withCredentials: true
-//       }).catch(err => {
-//         console.error('Failed to add to wishlist:', err.response?.data || err.message);
-//       });
-//     } else {
-//       axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/wishlist/${currentUserId}/${product._id}`, {
-//         headers: { Authorization: `Bearer ${token}` },
-//         withCredentials: true
-//       }).catch(err => {
-//         console.error('Failed to remove from wishlist:', err.response?.data || err.message);
-//       });
-//     }
-
-//     return exists
-//       ? prevWishlist.filter((item) => item._id !== product._id)
-//       : [...prevWishlist, product];
-//   });
-
-//   // ✅ Re-fetch wishlist to sync with backend
-//   try {
-//     const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/wishlist/${currentUserId}`, {
-//       headers: { Authorization: `Bearer ${token}` },
-//       withCredentials: true
-//     });
-
-//     const products = res.data.wishlist.products || [];
-//     const mapped = products.map(item => ({
-//       ...item,
-//       quantity: 1
-//     }));
-
-//     setWishlist(mapped);
-//   } catch (err) {
-//     console.error('Failed to fetch updated wishlist:', err.response?.data || err.message);
-//   }
-// };
-
-const handleAddToWishlist = async (product) => {
-  const token = localStorage.getItem('token');
-  const decoded = jwtDecode(token);
-  const currentUserId = decoded.userId;
-
-  const exists = wishlist.some((item) => item._id === product._id);
-
-  // Optimistic UI update
-  setWishlist((prev) =>
-    exists
-      ? prev.filter((item) => item._id !== product._id)
-      : [...prev, product]
-  );
-
-  try {
-    if (!exists) {
-      await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/api/wishlist/add`,
-        {
-          userId: currentUserId,
-          productId: product._id,
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-          withCredentials: true,
+        if (!wishlistData || !Array.isArray(wishlistData.products)) {
+          setWishlist([]); // empty state, no warning
+          return;
         }
-      );
-    } else {
-      await axios.delete(
-        `${import.meta.env.VITE_BACKEND_URL}/api/wishlist/${currentUserId}/${product._id}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-          withCredentials: true,
-        }
-      );
-    }
 
-    // Optional: re-fetch wishlist after backend confirms
-    const res = await axios.get(
-      `${import.meta.env.VITE_BACKEND_URL}/api/wishlist/${currentUserId}`,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-        withCredentials: true,
+        const normalizedWishlist = wishlistData.products.map(product => ({
+          _id: product._id,
+          name: product.name,
+          image: product.image,
+          price: product.sale || product.price,
+          quantity: 1
+        }));
+
+        setWishlist(normalizedWishlist);
+      } catch (err) {
+        console.error('Wishlist fetch error:', err.message || err);
+        setWishlist([]);
       }
+    };
+
+    fetchWishlist();
+  }, []);
+  useEffect(() => {
+    if (!sessionStorage.getItem("visited-home")) {
+      axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/track-visit`, { page: "home" });
+      sessionStorage.setItem("visited-home", "true");
+    }
+  }, []);
+
+  const getAuthHeaders = () => ({
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${localStorage.getItem('token')}`
+  });
+
+
+
+
+  // const handleAddToWishlist = async (product) => {
+  //   const token = localStorage.getItem('token');
+  //   const decoded = jwtDecode(token);
+  //   const currentUserId = decoded.userId;
+
+  //   setWishlist((prevWishlist) => {
+  //     const exists = prevWishlist.some((item) => item._id === product._id);
+
+  //     if (!exists) {
+  //       axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/wishlist/add`, {
+  //         userId: currentUserId,
+  //         productId: product._id
+  //       }, {
+  //         headers: { Authorization: `Bearer ${token}` },
+  //         withCredentials: true
+  //       }).catch(err => {
+  //         console.error('Failed to add to wishlist:', err.response?.data || err.message);
+  //       });
+  //     } else {
+  //       axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/wishlist/${currentUserId}/${product._id}`, {
+  //         headers: { Authorization: `Bearer ${token}` },
+  //         withCredentials: true
+  //       }).catch(err => {
+  //         console.error('Failed to remove from wishlist:', err.response?.data || err.message);
+  //       });
+  //     }
+
+  //     return exists
+  //       ? prevWishlist.filter((item) => item._id !== product._id)
+  //       : [...prevWishlist, product];
+  //   });
+
+  //   // ✅ Re-fetch wishlist to sync with backend
+  //   try {
+  //     const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/wishlist/${currentUserId}`, {
+  //       headers: { Authorization: `Bearer ${token}` },
+  //       withCredentials: true
+  //     });
+
+  //     const products = res.data.wishlist.products || [];
+  //     const mapped = products.map(item => ({
+  //       ...item,
+  //       quantity: 1
+  //     }));
+
+  //     setWishlist(mapped);
+  //   } catch (err) {
+  //     console.error('Failed to fetch updated wishlist:', err.response?.data || err.message);
+  //   }
+  // };
+
+  const handleAddToWishlist = async (product) => {
+    const token = localStorage.getItem('token');
+    const decoded = jwtDecode(token);
+    const currentUserId = decoded.userId;
+
+    const exists = wishlist.some((item) => item._id === product._id);
+
+    // Optimistic UI update
+    setWishlist((prev) =>
+      exists
+        ? prev.filter((item) => item._id !== product._id)
+        : [...prev, product]
     );
 
-    const products = res.data.wishlist.products || [];
-    const mapped = products.map((item) => ({
-      ...item,
-      quantity: 1,
-    }));
-
-    setWishlist(mapped);
-  } catch (err) {
-    console.error("Wishlist sync failed:", err.response?.data || err.message);
-  }
-};
-const handleAddToCart = async (product) => {
-  
-  if (!product?._id) {
-    
-    return;
-  }
-  try {
-    // 🛒 Update local cart
-   // 🛒 Optimistic local update
-const updatedCart = cart.some(item => item._id === product._id)
-  ? cart.map(item =>
-      item._id === product._id
-        ? { ...item, quantity: item.quantity + (product.quantity || 1) }
-        : item
-    )
-  : [...cart, { ...product, quantity: product.quantity || 1 }];
-
-setCart(updatedCart);
-setCartClickCount(updatedCart.length);
-
-// 🔄 Backend sync
- const token = localStorage.getItem('token');
-
-const response = await axios.post(
-  `${import.meta.env.VITE_BACKEND_URL}/api/user/cart/${product._id}`,
-  { quantity: product.quantity || 1 },
-  
-    {
-      headers: {
-        Authorization: `Bearer ${token}`
+    try {
+      if (!exists) {
+        await axios.post(
+          `${import.meta.env.VITE_BACKEND_URL}/api/wishlist/add`,
+          {
+            userId: currentUserId,
+            productId: product._id,
+          },
+          {
+            headers: { Authorization: `Bearer ${token}` },
+            withCredentials: true,
+          }
+        );
+      } else {
+        await axios.delete(
+          `${import.meta.env.VITE_BACKEND_URL}/api/wishlist/${currentUserId}/${product._id}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+            withCredentials: true,
+          }
+        );
       }
-    
-  }
-);
 
-// ✅ Replace local cart with backend response if needed
-// setCart(response.data.cart);
-// setCartClickCount(response.data.cart.length);
-    // ✅ Show feedback
-    setShowMessage(true);
-    setTimeout(() => {
-      if (showMessageRef.current) setShowMessage(false);
-    }, 3000);
-  } catch (err) {
-    console.error('Cart error:', err.response?.data || err.message);
-  }
-};
+      // Optional: re-fetch wishlist after backend confirms
+      const res = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/api/wishlist/${currentUserId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+          withCredentials: true,
+        }
+      );
+
+      const products = res.data.wishlist.products || [];
+      const mapped = products.map((item) => ({
+        ...item,
+        quantity: 1,
+      }));
+
+      setWishlist(mapped);
+    } catch (err) {
+      console.error("Wishlist sync failed:", err.response?.data || err.message);
+    }
+  };
+  const handleAddToCart = async (product) => {
+
+    if (!product?._id) {
+
+      return;
+    }
+    try {
+      // 🛒 Update local cart
+      // 🛒 Optimistic local update
+      const updatedCart = cart.some(item => item._id === product._id)
+        ? cart.map(item =>
+          item._id === product._id
+            ? { ...item, quantity: item.quantity + (product.quantity || 1) }
+            : item
+        )
+        : [...cart, { ...product, quantity: product.quantity || 1 }];
+
+      setCart(updatedCart);
+      setCartClickCount(updatedCart.length);
+
+      // 🔄 Backend sync
+      const token = localStorage.getItem('token');
+
+      const response = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/api/user/cart/${product._id}`,
+        { quantity: product.quantity || 1 },
+
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+
+        }
+      );
+
+      // ✅ Replace local cart with backend response if needed
+      // setCart(response.data.cart);
+      // setCartClickCount(response.data.cart.length);
+      // ✅ Show feedback
+      setShowMessage(true);
+      setTimeout(() => {
+        if (showMessageRef.current) setShowMessage(false);
+      }, 3000);
+    } catch (err) {
+      console.error('Cart error:', err.response?.data || err.message);
+    }
+  };
 
 
   return (
     <>
-  
- 
-    <Router>
-      
 
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <>
-           
-              <Header cartClickCount={cartClickCount} showMessage={showMessage}/>
-              <PromoBanner/>
-               <DiyaCollection/>
-              <CategorySidebar onAddToCart={handleAddToCart} onAddToWishlist={handleAddToWishlist} wishlist={wishlist}/>
-              <Footer/>
-             
-            </>
-          }
-        />
-        
-       <Route 
-          path="/products/:category" 
-          element={
-          <>
-            <Header cartClickCount={cartClickCount} showMessage={showMessage}/>
-            <PromoBanner/>
-            <ProductPage
-              onAddToCart={handleAddToCart}
-              onAddToWishlist={handleAddToWishlist}
-              wishlist={wishlist}
-            />
-          <Footer/>
-          </>
-        } 
-       />
 
-        <Route path="/shop" element={
-          <>
-            <Header/>
-            <Shop />
-            <Footer/>
-          </>
-        } />
-        
-          <Route path="/wishlist" element={
-            <ProtectedRoute>
-            <>
-              <Header cartClickCount={cartClickCount} showMessage={showMessage}/>
-              <Wishlist wishlist={wishlist} setWishlist={setWishlist} onAddToCart={handleAddToCart}/>
-              {/* <NewsletterSubscription/> */}
-              <Footer/>
-            </>
-             </ProtectedRoute>
-          } />
-         
-        <Route path="/journey" element={
-          <>
-             <Header/>
-             <AboutUs/>
-             
-             <Footer/>
-          </>
-        }/>
-          <Route path="/reach-us" element={
-          <>
-            <Contact/> 
-          </>
-        }/>
-           <Route path="/search" element={
-            <>
-            <Header cartClickCount={cartClickCount} showMessage={showMessage}/>
-            <ProductSearch
-                onAddToCart={handleAddToCart}
-                onAddToWishlist={handleAddToWishlist}
-                wishlist={wishlist}/>
-            <Footer/>
-            </>
+      <Router>
+        <ScrollToTop />
+
+
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+
+                <Header cartClickCount={cartClickCount} showMessage={showMessage} />
+                <PromoBanner />
+                <DiyaCollection />
+                <CategorySidebar onAddToCart={handleAddToCart} onAddToWishlist={handleAddToWishlist} wishlist={wishlist} />
+                <Footer />
+
+              </>
+            }
+          />
+
+          <Route
+            path="/products"
+            element={
+              <>
+                <Header cartClickCount={cartClickCount} showMessage={showMessage} />
+                <ProductsPage
+                  onAddToCart={handleAddToCart}
+                  onAddToWishlist={handleAddToWishlist}
+                  wishlist={wishlist}
+                />
+                <Footer />
+              </>
             } />
 
-            <Route path="/cart" element={
-              <ProtectedRoute>
-                <Cart cart={cart} setCart={setCart} setCartClickCount={setCartClickCount}/>
-              </ProtectedRoute>
-              } 
-              />
-          
-       
+          <Route
+            path="/products/:category"
+            element={
+              <>
+                <Header cartClickCount={cartClickCount} showMessage={showMessage} />
+                <PromoBanner />
+                <ProductPage
+                  onAddToCart={handleAddToCart}
+                  onAddToWishlist={handleAddToWishlist}
+                  wishlist={wishlist}
+                />
+                <Footer />
+              </>
+            }
+          />
+
+          <Route path="/shop" element={
+            <>
+              <Header />
+              <Shop />
+              <Footer />
+            </>
+          } />
+
+          <Route path="/wishlist" element={
+            <ProtectedRoute>
+              <>
+                <Header cartClickCount={cartClickCount} showMessage={showMessage} />
+                <Wishlist wishlist={wishlist} setWishlist={setWishlist} onAddToCart={handleAddToCart} />
+                {/* <NewsletterSubscription/> */}
+                <Footer />
+              </>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/about" element={
+            <>
+              <Header />
+              <AboutUs />
+
+              <Footer />
+            </>
+          } />
+          <Route path="/reach-us" element={
+            <>
+              <Contact />
+            </>
+          } />
+          <Route path="/search" element={
+            <>
+              <Header cartClickCount={cartClickCount} showMessage={showMessage} />
+              <ProductSearch
+                onAddToCart={handleAddToCart}
+                onAddToWishlist={handleAddToWishlist}
+                wishlist={wishlist} />
+              <Footer />
+            </>
+          } />
+
+          <Route path="/cart" element={
+            <ProtectedRoute>
+              <Cart cart={cart} setCart={setCart} setCartClickCount={setCartClickCount} />
+            </ProtectedRoute>
+          }
+          />
+
+
           {/* <Route path="/checkout" element={
            <ProtectedRoute>
             <Checkout cart={cart} setCart={setCart} setCartClickCount={setCartClickCount}/> 
           </ProtectedRoute>
         }/> */}
-         <Route path="/checkout" element={
-          //  <ProtectedRoute>
-             <CheckoutPage cart={cart} setCart={setCart} setCartClickCount={setCartClickCount}/> 
+          <Route path="/checkout" element={
+            //  <ProtectedRoute>
+            <CheckoutPage cart={cart} setCart={setCart} setCartClickCount={setCartClickCount} />
             // <RoughCheckout/>
-          // </ProtectedRoute>
-        }/>
-         <Route path="/card-payment" element={<CardPaymentPage />} />
-         <Route path="/upi-payment" element={<UpiPaymentPage />} />
+            // </ProtectedRoute>
+          } />
+          <Route path="/card-payment" element={<CardPaymentPage />} />
+          <Route path="/upi-payment" element={<UpiPaymentPage />} />
 
 
           {/* <Route path="/loginpage" element={
@@ -425,64 +441,64 @@ const response = await axios.post(
            
           </>
         }/> */}
-        {/* <Route path="/loginpage" element={
+          {/* <Route path="/loginpage" element={
           <>
           {/* <ProtectedRoute> */}
-            {/* <LoginPage 
+          {/* <LoginPage 
             setCart={setCart}
                 setCartClickCount={setCartClickCount}
                 
             />  */}
-            {/* </ProtectedRoute> */}
+          {/* </ProtectedRoute> */}
           {/* </> */}
-        {/* }/>  */}
-         <Route path="/signup" element={
-          <>
-            <SignupForm/> 
-          </>
-        }/>
-        <Route path="/login" element={
-          <>
-            <OtpLogin setCart={setCart}
-                setCartClickCount={setCartClickCount}/> 
-          </>
-        }/>
-        {/* <Route path="/" element={isLoggedIn ? < BlessedCheckout/> : <Navigate to="/login" />} /> */}
-        <Route path="/shipping-policy" element={
-          <>
-          <Header cartClickCount={cartClickCount} showMessage={showMessage}/>
-          <ShippingPolicy />
-          <Footer/>
-          </>
+          {/* }/>  */}
+          <Route path="/signup" element={
+            <>
+              <SignupForm />
+            </>
           } />
-        <Route path="/returns-refunds" element={
-          <>
-          <Header cartClickCount={cartClickCount} showMessage={showMessage}/>
-          <ReturnsRefunds />
-          <Footer/>
-          </>
+          <Route path="/login" element={
+            <>
+              <OtpLogin setCart={setCart}
+                setCartClickCount={setCartClickCount} />
+            </>
           } />
-        <Route path="/terms-conditions" element={
-          <>
-          <Header cartClickCount={cartClickCount} showMessage={showMessage}/>
-          <TermsConditions />
-          <Footer/>
-          </>
+          {/* <Route path="/" element={isLoggedIn ? < BlessedCheckout/> : <Navigate to="/login" />} /> */}
+          <Route path="/shipping-policy" element={
+            <>
+              <Header cartClickCount={cartClickCount} showMessage={showMessage} />
+              <ShippingPolicy />
+              <Footer />
+            </>
           } />
-        <Route path="/privacy-policy" element={
-          <>
-          <Header cartClickCount={cartClickCount} showMessage={showMessage}/>
-          <PrivacyPolicy/>
-          <Footer/>
-          </>
+          <Route path="/returns-refunds" element={
+            <>
+              <Header cartClickCount={cartClickCount} showMessage={showMessage} />
+              <ReturnsRefunds />
+              <Footer />
+            </>
+          } />
+          <Route path="/terms-conditions" element={
+            <>
+              <Header cartClickCount={cartClickCount} showMessage={showMessage} />
+              <TermsConditions />
+              <Footer />
+            </>
+          } />
+          <Route path="/privacy-policy" element={
+            <>
+              <Header cartClickCount={cartClickCount} showMessage={showMessage} />
+              <PrivacyPolicy />
+              <Footer />
+            </>
           } />
 
-        <Route path="/faq" element={
-          <>
-          <Header cartClickCount={cartClickCount} showMessage={showMessage}/>
-          <FAQ/>
-          <Footer/>
-          </>
+          <Route path="/faq" element={
+            <>
+              <Header cartClickCount={cartClickCount} showMessage={showMessage} />
+              <FAQ />
+              <Footer />
+            </>
           } />
           {/* <Route path="/admin" element={
             <AdminDashboard />
@@ -493,42 +509,42 @@ const response = await axios.post(
             <DashboardSidebar/>
             <ProductManager />
             </> */}
-            {/* } /> */}
-            <Route
-              path="/admin"
-              element={
-                <AdminRoute>
-                  <DashboardLayout />
-                </AdminRoute>
-              }
-            >
-
-            
-              <Route path="dashboard" element={<AdminDashboard />} />
-              <Route path="products" element={<ProductManager />} />
-              <Route path="promos" element={<PromoAdmin />} />
-              <Route path="order" element={<OrderManager/>}/>
-               <Route path="bestseller" element={<BestSellers />} />
-              <Route path="stocks" element={<StockAlerts/>}/>
-              <Route path="images/upload" element={<AdminImageUpload />} />
-              <Route path="reviews" element={<AdminReviewPanel/>} />
-              <Route path="category" element={<CategoryManager/>}/>
+          {/* } /> */}
+          <Route
+            path="/admin"
+            element={
+              <AdminRoute>
+                <DashboardLayout />
+              </AdminRoute>
+            }
+          >
 
 
-            </Route>
-         
+            <Route path="dashboard" element={<AdminDashboard />} />
+            <Route path="products" element={<ProductManager />} />
+            <Route path="promos" element={<PromoAdmin />} />
+            <Route path="order" element={<OrderManager />} />
+            <Route path="bestseller" element={<BestSellers />} />
+            <Route path="stocks" element={<StockAlerts />} />
+            <Route path="images/upload" element={<AdminImageUpload />} />
+            <Route path="reviews" element={<AdminReviewPanel />} />
+            <Route path="category" element={<CategoryManager />} />
 
-            <Route path="/review/:orderId" element={<ReviewPage/>} />
-            <Route path="/orderhistory" element={<OrderHistory />} />
+
+          </Route>
 
 
-           
+          <Route path="/review/:orderId" element={<ReviewPage />} />
+          <Route path="/orderhistory" element={<OrderHistory />} />
 
-      </Routes>
-       
-<ChatFooter/>
-   
-    </Router>
+
+
+
+        </Routes>
+
+        <ChatFooter />
+
+      </Router>
 
 
     </>

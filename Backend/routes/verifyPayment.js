@@ -24,7 +24,7 @@ function formatInvoiceMessage(invoice) {
   //   .map(item => `- ${item.name} – ₹${item.price}`)
   //   .join('\n');
 
-  return `🧾 *Invoice Summary*
+  return `🧾 *SM-Enterprises Invoice*
 Invoice No: ${invoice.orderId}
 Date: ${new Date().toLocaleDateString('en-IN')}
 Customer Name: ${invoice.customer.name}

@@ -2,7 +2,7 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from 'react-router-dom';
 
-const CheckoutSection = ({subtotal,discount,delivery,total,cartItems,cart,setCart,setCartClickCount}) => {
+const CheckoutSection = ({ subtotal, gstAmount, shippingEstimate, discount, delivery, total, cartItems, cart, setCart, setCartClickCount }) => {
   const handleCheckout = () => {
     // Your checkout logic here
     setCart([]);
@@ -88,17 +88,21 @@ const CheckoutSection = ({subtotal,discount,delivery,total,cartItems,cart,setCar
               <div className="col-md-12 mb-4">
                 <div className="bg-white p-4 shadow-sm">
                   <h3 className="mb-4">Cart Total</h3>
-                  <div className="d-flex justify-content-between">
+                  <div className="d-flex justify-content-between mb-2">
                     <span>Subtotal</span>
                     <span>₹{subtotal?.toFixed(2)}</span>
                   </div>
-                  <div className="d-flex justify-content-between">
-                    <span>Delivery</span>
-                    <span>₹{delivery?.toFixed(2)}</span>
+                  <div className="d-flex justify-content-between mb-2">
+                    <span>GST</span>
+                    <span>₹{(gstAmount ?? 0).toFixed(2)}</span>
                   </div>
-                  <div className="d-flex justify-content-between">
+                  <div className="d-flex justify-content-between mb-2">
+                    <span>Shipping</span>
+                    <span>₹{(shippingEstimate ?? delivery ?? 0).toFixed(2)}</span>
+                  </div>
+                  <div className="d-flex justify-content-between mb-2 text-success">
                     <span>Discount</span>
-                    <span>₹{discount?.toFixed(2)}</span>
+                    <span>-₹{(discount ?? 0).toFixed(2)}</span>
                   </div>
                   <hr />
                   <div className="d-flex justify-content-between fw-bold">
@@ -114,7 +118,7 @@ const CheckoutSection = ({subtotal,discount,delivery,total,cartItems,cart,setCar
                   <h3 className="mb-4">Payment Method</h3>
                   <div className="form-check mb-2">
                     <input type="radio" name="paymentMethod" className="form-check-input" />
-                    <label className="form-check-label ms-2" style={{alignItems:'normal'}}>Direct Bank Transfer</label>
+                    <label className="form-check-label ms-2" style={{ alignItems: 'normal' }}>Direct Bank Transfer</label>
                   </div>
                   <div className="form-check mb-2">
                     <input type="radio" name="paymentMethod" className="form-check-input" />

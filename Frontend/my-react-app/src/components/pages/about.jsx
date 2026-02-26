@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Row, Col, Card } from 'react-bootstrap';
-import companyImage from '../../assets/images/myjourney.jpg';
+import companyImage from '../../assets/images/about-img.png';
 import missionImage from '../../assets/images/mission.jpg';
 import visionImage from '../../assets/images/vision.jpg';
 import { ShieldCheck, Heart, BagFill, CreditCard, Award, EmojiSmile } from "react-bootstrap-icons";
@@ -29,7 +29,7 @@ const AboutUs = () => {
     {
       icon: <BagFill size={40} className="text-success" />,
       title: "Affordable & Accessible",
-      desc: "We keep prices fair so spirituality is within everyone’s reach.",
+      desc: "We keep prices fair so spirituality is within everyone's reach.",
     },
     {
       icon: <CreditCard size={40} className="text-info" />,
@@ -42,9 +42,6 @@ const AboutUs = () => {
       desc: "We value your faith and provide quick, caring customer support.",
     },
   ];
-  
-
-
 
   return (
     <>
@@ -52,9 +49,11 @@ const AboutUs = () => {
       <Container className="my-5 ">
         <Row className="align-items-center">
           <Col md={6}>
-            <h2 className="text-danger mb-4">About SM Enterprises</h2>
+            <h2 className="mb-4">About SM Enterprises</h2>
             <p style={{ fontSize: '1.1rem', lineHeight: '1.8' }}>
-              SM Enterprises is an e-commerce store dedicated to bringing high-quality brass products into your life. Our carefully curated selection includes everything from traditional brass diyas that illuminate your home to ornate bells and Hyundai accessories that add a touch of timeless elegance.
+              SM Enterprises is an e-commerce store dedicated to bringing high-quality brass products into your life.
+              Our carefully curated selection includes everything from traditional brass diyas that illuminate your
+              home to ornate bells and Hyundai accessories that add a touch of timeless elegance.
             </p>
             <p style={{ fontSize: '1.1rem', lineHeight: '1.8' }}>
               Each piece is selected for its craftsmanship, durability, and cultural significance. We believe in blending tradition with modern convenience, offering products that are both beautiful and practical.
@@ -68,10 +67,6 @@ const AboutUs = () => {
             />
           </Col>
         </Row>
-
-      
-
-      
       </Container>
 
       {/* Why Choose Us Section */}
@@ -93,15 +88,9 @@ const AboutUs = () => {
           </Row>
         </Container>
       </section>
-      {/* <NewsletterSubscription/> */}
-      <TestimonialGrid/>
+      <TestimonialGrid />
     </>
-   
-
-
-
-
-
   );
 }
+
 export default AboutUs;

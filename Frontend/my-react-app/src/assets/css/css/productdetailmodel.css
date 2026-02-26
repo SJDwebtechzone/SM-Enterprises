@@ -1,12 +1,29 @@
-
-
 /* .............. */
 
-/* Product Detail Modal Styling */
+/* Product Detail Modal Styling — Full Window */
+
+.modal-90w {
+  max-width: 98vw !important;
+  width: 98vw !important;
+  margin: 8px auto !important;
+}
+
+.modal-90w .modal-content {
+  min-height: calc(100vh - 16px) !important;
+  border-radius: 12px !important;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-90w .modal-body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  max-height: none !important;
+}
 
 .product-modal {
   border-radius: 15px;
-  padding: 15px; 
+  padding: 15px;
 }
 
 .product-image {
@@ -39,6 +56,7 @@
   font-size: 14px;
   padding: 8px 12px;
 }
+
 .zoom-container {
   position: relative;
   overflow: hidden;
@@ -56,6 +74,3 @@
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
   display: none;
 }
-
-
-

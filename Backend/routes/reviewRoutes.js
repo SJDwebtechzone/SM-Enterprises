@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const router = express.Router();
 const Review = require('../models/Review');
 const authenticateUser = require('../middleware/authMiddleware');
-const isAdmin=require('../middleware/isAdmin')
+const isAdmin = require('../middleware/isAdmin')
 const AdminOrder = require('../models/AdminOrder'); // ✅ Import your Order model
 const updateProductRatingFromReviews = require('../utils/updateProductRatingFromReviews');
 
@@ -15,45 +15,45 @@ router.post('/', authenticateUser, async (req, res) => {
   const userId = req.user._id;
 
 
-//   // ✅ Check if user has purchased this product
-//     const orders = await AdminOrder.find({ 'customer.email': req.user.email });
-//   console.log('User Orders:', JSON.stringify(orders, null, 2));
+  //   // ✅ Check if user has purchased this product
+  //     const orders = await AdminOrder.find({ 'customer.email': req.user.email });
+  //   console.log('User Orders:', JSON.stringify(orders, null, 2));
 
-//   orders.forEach(order => {
-//   console.log('Order:', order.orderId);
-//   order.items.forEach(item => {
-//     console.log(' - item.productId:', item.productId);
-//   });
-// });
-
-
+  //   orders.forEach(order => {
+  //   console.log('Order:', order.orderId);
+  //   order.items.forEach(item => {
+  //     console.log(' - item.productId:', item.productId);
+  //   });
+  // });
 
 
-// const hasPurchased = await AdminOrder.findOne({
-//   'customer.email': req.user.email,
-//   status: { $in: ['Paid', 'Delivered','Shipped','Pending'] },
-//   'items.productId': new mongoose.Types.ObjectId(productId)
-// });
-const castedId = mongoose.Types.ObjectId.isValid(productId)
-  ? new mongoose.Types.ObjectId(productId)
-  : productId;
 
-const hasPurchased = await AdminOrder.findOne({
-  'customer.email': req.user.email,
-  status: { $in: ['Paid', 'Delivered', 'Shipped', 'Pending'] },
-  items: {
-    $elemMatch: {
-      productId: castedId
+
+  // const hasPurchased = await AdminOrder.findOne({
+  //   'customer.email': req.user.email,
+  //   status: { $in: ['Paid', 'Delivered','Shipped','Pending'] },
+  //   'items.productId': new mongoose.Types.ObjectId(productId)
+  // });
+  const castedId = mongoose.Types.ObjectId.isValid(productId)
+    ? new mongoose.Types.ObjectId(productId)
+    : productId;
+
+  const hasPurchased = await AdminOrder.findOne({
+    'customer.email': req.user.email,
+    status: { $in: ['Paid', 'Delivered', 'Shipped', 'Pending'] },
+    items: {
+      $elemMatch: {
+        productId: castedId
+      }
     }
-  }
-});
+  });
 
- console.log('Checking for purchase:', {
-  email: req.user.email,
-  productId,
-  castedId,
-  hasPurchased: !!hasPurchased
-});
+  console.log('Checking for purchase:', {
+    email: req.user.email,
+    productId,
+    castedId,
+    hasPurchased: !!hasPurchased
+  });
 
 
 
@@ -184,7 +184,7 @@ router.delete('/:id', authenticateUser, isAdmin, async (req, res) => {
 });
 
 // PATCH /api/reviews/:id/testimonial
-router.patch('/:id/testimonial', authenticateUser,isAdmin, async (req, res) => {
+router.patch('/:id/testimonial', authenticateUser, isAdmin, async (req, res) => {
   const review = await Review.findByIdAndUpdate(req.params.id, { isTestimonial: true }, { new: true });
   res.json(review);
 });

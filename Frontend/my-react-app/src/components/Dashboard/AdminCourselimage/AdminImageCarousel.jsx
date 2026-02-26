@@ -7,18 +7,20 @@ const AdminImageCarousel = () => {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    // const token = localStorage.getItem('token');
-    // if (!token) {
-    //   console.error('❌ No token found');
-    //   setError('You must be logged in as admin to view images');
-    //   return;
-    // }
-
     axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/admin/images`)
-      .then(res => setImages(res.data))
+      .then(res => {
+        // Check if response data is an array
+        if (!res.data || !Array.isArray(res.data)) {
+          console.error('Invalid images data format:', res.data);
+          setImages([]);
+          return;
+        }
+        setImages(res.data);
+      })
       .catch(err => {
         console.error('❌ Axios error:', err.response?.data?.message || err.message);
         setError(err.response?.data?.message || 'Failed to load images');
+        setImages([]); // Prevent crashes
       });
   }, []);
 
@@ -48,7 +50,7 @@ const AdminImageCarousel = () => {
   </div>
 
       <div className="carousel-inner">
-        {images.map((img, index) => (
+        {images && images.length > 0 ? images.map((img, index) => (
           <div key={img._id} className={`carousel-item ${index === 0 ? 'active' : ''}`} style={{minHeight:'0px'}}>
             <img
   src={`${import.meta.env.VITE_BACKEND_URL}${img.url}`}
@@ -58,23 +60,21 @@ const AdminImageCarousel = () => {
   height: '70vh',
   width: '100%',
   objectFit: 'cover',
-  imageRendering: 'auto', // or 'crisp-edges' for pixel art
+  imageRendering: 'auto',
   marginBottom: '0px',
   border: 'none',
   outline: 'none'
 }}
 
 />
-
-
-
-             
-            
-            {/* <div className="carousel-caption d-none d-md-block">
-              <h5>{img.title || 'Untitled Image'}</h5>
-            </div> */}
           </div>
-        ))}
+        )) : (
+          <div className="carousel-item active">
+            <div className="d-flex justify-content-center align-items-center" style={{height: '70vh', backgroundColor: '#f8f9fa'}}>
+              <p className="text-muted">No images available</p>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* <button className="carousel-control-prev" type="button" data-bs-target="#adminCarousel" data-bs-slide="prev">

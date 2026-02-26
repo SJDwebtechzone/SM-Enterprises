@@ -10,8 +10,10 @@ const productSchema = new mongoose.Schema({
   discount: String,
   sale: Number,
   image: String,
+  productViews: [String],
   offers: [String],
   sku: String,
+  gst: { type: Number, required: true, default: 0 },
   stock: { type: Number, default: 0 },
   details: {
     Material: String,
@@ -19,12 +21,12 @@ const productSchema = new mongoose.Schema({
     About: String,
   },
   rating: { type: Number, default: 0 },
-reviews: [{
-  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  comment: String,
-  stars: Number,
-  createdAt: { type: Date, default: Date.now }
-}]
+  reviews: [{
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    comment: String,
+    stars: Number,
+    createdAt: { type: Date, default: Date.now }
+  }]
 });
 
 module.exports = mongoose.model('Product', productSchema);

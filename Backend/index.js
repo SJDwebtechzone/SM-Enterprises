@@ -20,9 +20,9 @@ const productRoutesManager = require('./routes/ProductManager');
 const contactRoute = require('./routes/contact');
 // import promoRoutes from './routes/promos.js';
 // import adminPromoRoutes from './routes/adminPromos.js';
-const promoRoutes= require('./routes/promos')
-const adminPromoRoutes= require('./routes/adminPromos')
-const filterbyprice=require('./routes/filterByPrice')
+const promoRoutes = require('./routes/promos')
+const adminPromoRoutes = require('./routes/adminPromos')
+const filterbyprice = require('./routes/filterByPrice')
 const metricsRoutes = require('./routes/metrics');
 const orderRoutes = require('./routes/orders');
 
@@ -34,8 +34,8 @@ const dashboardbestsellingstock = require('./routes/dashboardbestselling&stock')
 const createOrder = require('./routes/createOrder');
 const verifyPayment = require('./routes/verifyPayment');
 const adminRoutes = require('./routes/admin');
-const reviewRoutes = require('./routes/reviewRoutes'); 
-const adminImageRoutes=require('./routes/adminImages');
+const reviewRoutes = require('./routes/reviewRoutes');
+const adminImageRoutes = require('./routes/adminImages');
 const orderHistoryRoutes = require('./routes/orderHistory');
 
 
@@ -89,7 +89,7 @@ app.use('/api/user', productsRoutes);
 
 
 
-app.use('/api/products', productRoutes);   
+app.use('/api/products', productRoutes);
 app.use('/api/wishlist', wishlistRoutes);
 
 app.use('/api/products', productRatingsRoutes);
@@ -107,9 +107,9 @@ app.use('/api/bestandstock', dashboardbestsellingstock);
 
 app.use('/api/create-order', createOrder);
 app.use('/api/verify-payment', verifyPayment);
-app.use('/admin',adminRoutes);
+app.use('/admin', adminRoutes);
 
-app.use('/api/reviews', reviewRoutes); 
+app.use('/api/reviews', reviewRoutes);
 app.use('/api/admin/images', adminImageRoutes);
 
 app.use('/api/orderhistory', orderHistoryRoutes);

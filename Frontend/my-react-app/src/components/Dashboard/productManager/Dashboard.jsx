@@ -39,7 +39,15 @@ const Dashboard = ({
   infra
 }) => {
   // Line chart config (Sales Per Day)
-   
+
+  const brandColors = {
+    brown: '#713200',
+    gold: '#d4af37',
+    sandal: '#f5e1a4',
+    white: '#ffffff',
+    bg: '#fdf8f0'
+  };
+
   const lineData = {
     labels: salesData.labels,
     datasets: [
@@ -47,16 +55,19 @@ const Dashboard = ({
         label: "Sales",
         data: salesData.values,
         fill: false,
-        borderColor: "#ffffff",
+        borderColor: brandColors.brown,
         tension: 0.4,
-        pointBackgroundColor: "#ffffff"
+        pointBackgroundColor: brandColors.brown,
+        borderWidth: 3
       }
     ]
   };
 
   const lineOptions = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: { legend: { display: false } },
+    hover: { mode: null }, // Disable hover resizing to keep it stable
     scales: {
       x: { display: false },
       y: { display: false }
@@ -69,46 +80,41 @@ const Dashboard = ({
     datasets: [
       {
         data: revenueData.values,
-        backgroundColor: ["#ff4d4d", "#007bff"],
-        borderWidth: 2
+        backgroundColor: [brandColors.brown, brandColors.gold],
+        borderWidth: 4,
+        borderColor: brandColors.white, // Border makes segments look like distinct 'marks' or 'lines'
+        hoverOffset: 0
       }
     ]
   };
 
   const doughnutOptions = {
-    cutout: "70%",
-    plugins: { legend: { display: false } }
+    cutout: "80%", // Thinner cutout creates a 'line' effect in the circle
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    animation: { animateRotate: true },
   };
 
   return (
-    <div className="container my-4" style={{ backgroundColor: "#f5f6fa", minHeight: "100vh" }}>
+    <div className="container-fluid py-4" style={{ backgroundColor: brandColors.bg, minHeight: "100vh" }}>
       {/* Top Cards */}
       <div className="row g-3 mb-4">
         <div className="col-md-3">
-          {/* <div className="card text-center shadow">
-            <div className="card-body">
-              <h4 className="text-warning">${earnings}</h4>
-              <p className="mb-1">All Earnings</p>
-              <span className="badge bg-warning text-dark">
-                10% changes on profit
-              </span>
-            </div>
-          </div> */}
           <StatCard
-               value={revenues}
-                label="Revenue"
-                color="warning" // Bootstrap orange
-                icon="bi-currency-dollar"
-                footerText="Revenue"
-                />
-
+            value={revenues}
+            label="Revenue"
+            color="brown"
+            icon="bi-currency-dollar"
+            footerText="Revenue"
+          />
         </div>
 
         <div className="col-md-3">
           <StatCard
             value={orders}
             label="Orders"
-            color="danger"
+            color="gold"
             icon="bi-calendar-event"
             footerText="order performance"
           />
@@ -118,7 +124,7 @@ const Dashboard = ({
           <StatCard
             value={pageViews}
             label="Page Visited"
-            color="success"
+            color="brown"
             icon="bi-file-earmark-text"
             footerText="daily views"
           />
@@ -128,7 +134,7 @@ const Dashboard = ({
           <StatCard
             value={conversionRate}
             label="Conversion Rate"
-            color="primary"
+            color="gold"
             icon="bi-hand-thumbs-up"
             footerText="Conversion Rate"
           />
@@ -139,21 +145,23 @@ const Dashboard = ({
       <div className="row g-3 mb-4">
         {/* Sales Per Day */}
         <div className="col-md-6">
-          <div className="card shadow bg-primary text-white">
-            <div className="card-body">
-              <div className="d-flex justify-content-between">
-                <h6>Sales Per Day</h6>
-                <span>{salesData.growth}%</span>
+          <div className="card shadow border-0 h-100" style={{ backgroundColor: brandColors.white, borderRadius: '12px' }}>
+            <div className="card-body p-4">
+              <div className="d-flex justify-content-between mb-2">
+                <h6 className="mb-0 fw-bold" style={{ color: brandColors.brown }}>Sales Per Day</h6>
+                <span className="badge rounded-pill" style={{ backgroundColor: brandColors.sandal, color: brandColors.brown }}>{salesData.growth}%</span>
               </div>
-              <Line data={lineData} options={lineOptions} height={100} />
+              <div style={{ height: "120px" }}>
+                <Line data={lineData} options={lineOptions} />
+              </div>
               <div className="d-flex justify-content-between mt-3">
                 <div>
-                  <h6>${salesData.totalRevenue}</h6>
-                  <small>Total Revenue</small>
+                  <h6 className="fw-bold" style={{ color: brandColors.brown }}>{salesData.totalRevenue}</h6>
+                  <small className="text-secondary fw-bold text-uppercase" style={{ fontSize: '0.7rem' }}>Total Revenue</small>
                 </div>
-                <div>
-                  <h6>{salesData.todaySales}</h6>
-                  <small>Today Sales</small>
+                <div className="text-end">
+                  <h6 className="fw-bold" style={{ color: brandColors.gold }}>{salesData.todaySales}</h6>
+                  <small className="text-secondary fw-bold text-uppercase" style={{ fontSize: '0.7rem' }}>Today Sales</small>
                 </div>
               </div>
             </div>
@@ -162,27 +170,25 @@ const Dashboard = ({
 
         {/* Total Revenue */}
         <div className="col-md-6">
-          <div className="card shadow">
-            <div className="card-body text-center">
-              <h6 className="mb-3">Total Revenue</h6>
-              <div style={{ width: "160px", margin: "0 auto" }}>
+          <div className="card shadow border-0 h-100" style={{ borderRadius: '12px', backgroundColor: brandColors.white }}>
+            <div className="card-body p-4 text-center">
+              <h6 className="mb-4 fw-bold" style={{ color: brandColors.brown }}>Total Revenue Breakdown</h6>
+              <div style={{ height: "180px", position: "relative", marginBottom: "25px" }}>
                 <Doughnut data={doughnutData} options={doughnutOptions} />
               </div>
-              <div className="d-flex justify-content-around mt-3">
+              <div className="d-flex justify-content-around mt-2">
                 {revenueData.labels.map((label, idx) => (
-                  <div key={idx}>
-                    <span
-                      style={{ color: doughnutData.datasets[0].backgroundColor[idx] }}
-                    >
-                      ●
-                    </span>{" "}
-                    {label}
+                  <div key={idx} className="text-center">
+                    <div className="d-flex align-items-center gap-1 mb-1">
+                      <span
+                        className="rounded-circle"
+                        style={{ width: '10px', height: '10px', backgroundColor: doughnutData.datasets[0].backgroundColor[idx] }}
+                      ></span>
+                      <span className="small fw-bold text-secondary text-uppercase">{label}</span>
+                    </div>
                     <p
-                      className={`mb-0 ${
-                        revenueData.changes[idx] > 0
-                          ? "text-success"
-                          : "text-danger"
-                      }`}
+                      className="mb-0 fw-bold"
+                      style={{ color: brandColors.brown }}
                     >
                       {revenueData.changes[idx]}%
                     </p>
@@ -192,13 +198,9 @@ const Dashboard = ({
             </div>
           </div>
         </div>
-
-        {/* Traffic Sources */}
-       
       </div>
 
-      {/* Bottom Row */}
-      
+      {/* Traffic Sources */}
     </div>
   );
 };

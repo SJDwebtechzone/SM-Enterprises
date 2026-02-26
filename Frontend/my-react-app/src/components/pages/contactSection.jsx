@@ -120,7 +120,22 @@ const ContactSection = () => {
         <button
           type="submit"
           className="btn px-4 py-2 rounded-pill"
-          style={{ backgroundColor: '#0c1354ff', color: '#fff' }}
+          style={{ 
+            backgroundColor: '#8b6914', 
+            color: '#fff',
+            border: 'none',
+            transition: 'all 0.3s ease'
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.backgroundColor = '#fff';
+            e.target.style.color = '#8b6914';
+            e.target.style.border = '1px solid #8b6914';
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.backgroundColor = '#8b6914';
+            e.target.style.color = '#fff';
+            e.target.style.border = 'none';
+          }}
         >
           Send Message
         </button>

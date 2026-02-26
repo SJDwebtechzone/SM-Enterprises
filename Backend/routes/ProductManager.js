@@ -148,13 +148,15 @@ const upload = multer({ storage });
 
 
 // ✅ POST /api/products/upload — Add new product
-router.post('/upload', upload.single('image'), async (req, res) => {
+router.post('/upload', upload.fields([{ name: 'image', maxCount: 1 }, { name: 'productViews', maxCount: 4 }]), async (req, res) => {
   try {
     const {
       name, price, originalPrice, discount, sale,
-      category, subcategory, sku, offers, details,
+      category, subcategory, sku, gst, offers, details,
       stock, sizes
     } = req.body;
+
+    const productViews = req.files?.productViews ? req.files.productViews.map(f => `/uploads/${f.filename}`) : [];
 
     const product = new ProductCollection({
       name,
@@ -165,9 +167,11 @@ router.post('/upload', upload.single('image'), async (req, res) => {
       category,
       subcategory,
       sku,
+      gst: Number(gst) || 0,
       offers: offers ? JSON.parse(offers) : [],
       details: details ? JSON.parse(details) : {},
-      image: req.file ? `/uploads/${req.file.filename}` : '',
+      image: req.files?.image ? `/uploads/${req.files.image[0].filename}` : '',
+      productViews,
       stock: Number(stock) || 0,
       sizes: sizes ? JSON.parse(sizes) : []
     });
@@ -197,11 +201,11 @@ router.get('/', async (req, res) => {
 
 
 // ✅ PUT /api/products/:id — Update product
-router.put('/:id', upload.single('image'), async (req, res) => {
+router.put('/:id', upload.fields([{ name: 'image', maxCount: 1 }, { name: 'productViews', maxCount: 4 }]), async (req, res) => {
   try {
     const {
       name, price, originalPrice, discount, sale,
-      category, subcategory, sku, offers, details,
+      category, subcategory, sku, gst, offers, details,
       stock, sizes
     } = req.body;
 
@@ -229,6 +233,7 @@ router.put('/:id', upload.single('image'), async (req, res) => {
       category,
       subcategory,
       sku,
+      gst: Number(gst) || 0,
       offers: parsedOffers,
       details: parsedDetails,
       sizes: parsedSizes,
@@ -236,8 +241,12 @@ router.put('/:id', upload.single('image'), async (req, res) => {
     };
 
     // ✅ Only update image if a new file is uploaded
-    if (req.file) {
-      updateData.image = `/uploads/${req.file.filename}`;
+    if (req.files?.image) {
+      updateData.image = `/uploads/${req.files.image[0].filename}`;
+    }
+
+    if (req.files?.productViews) {
+      updateData.productViews = req.files.productViews.map(f => `/uploads/${f.filename}`);
     }
 
     const updated = await ProductCollection.findByIdAndUpdate(req.params.id, updateData, { new: true });
