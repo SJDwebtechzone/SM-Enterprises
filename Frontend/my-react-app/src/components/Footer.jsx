@@ -65,13 +65,13 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/reach-us" className="text-decoration-none text-dark d-block mb-2">
-                  Contact Us
+                <Link to="/products" className="text-decoration-none text-dark d-block mb-2">
+                  Products
                 </Link>
               </li>
               <li>
-                <Link to="/products" className="text-decoration-none text-dark d-block">
-                  Products
+                <Link to="/reach-us" className="text-decoration-none text-dark d-block">
+                  Contact Us
                 </Link>
               </li>
             </ul>
