@@ -33,8 +33,37 @@ const AdminImageCarousel = () => {
   }
 
   return (
-    <div id="adminCarousel" className="carousel slide mt-0" data-bs-ride="carousel" data-bs-interval="3000"
- style={{ overflow: 'hidden' }} >
+    <>
+    <style>
+      {`
+        #adminCarousel {
+          margin: 0;
+          padding: 0;
+        }
+        
+        #adminCarousel .carousel-item {
+          height: auto;
+        }
+        
+        #adminCarousel .carousel-banner-img {
+          width: 100%;
+          height: auto;
+          display: block;
+        }
+        
+        @media (min-width: 768px) {
+          #adminCarousel .carousel-item {
+            height: 500px;
+          }
+          
+          #adminCarousel .carousel-banner-img {
+            height: 100%;
+            object-fit: cover;
+          }
+        }
+      `}
+    </style>
+    <div id="adminCarousel" className="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
         <div className="carousel-indicators">
     {images.map((_, index) => (
       <button
@@ -51,21 +80,11 @@ const AdminImageCarousel = () => {
 
       <div className="carousel-inner">
         {images && images.length > 0 ? images.map((img, index) => (
-          <div key={img._id} className={`carousel-item ${index === 0 ? 'active' : ''}`} style={{minHeight:'0px'}}>
+          <div key={img._id} className={`carousel-item ${index === 0 ? 'active' : ''}`}>
             <img
   src={`${import.meta.env.VITE_BACKEND_URL}${img.url}`}
   alt={img.title || `Slide ${index + 1}`}
-  className="d-block w-100"
- style={{
-  height: '70vh',
-  width: '100%',
-  objectFit: 'cover',
-  imageRendering: 'auto',
-  marginBottom: '0px',
-  border: 'none',
-  outline: 'none'
-}}
-
+  className="d-block w-100 carousel-banner-img"
 />
           </div>
         )) : (
@@ -87,6 +106,7 @@ const AdminImageCarousel = () => {
         <span className="visually-hidden">Next</span>
       </button> */}
     </div>
+    </>
   );
 };
 

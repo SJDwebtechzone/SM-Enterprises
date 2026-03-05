@@ -9,7 +9,8 @@ const userSchema = new mongoose.Schema({
     {
       product: { type: mongoose.Schema.Types.ObjectId, ref: 'ProductCollection', required: true },
       quantity: { type: Number, default: 1 },
-      price: { type: Number, default: 0 }
+      price: { type: Number, default: 0 },
+      size: { type: String }
     }
   ]
 }, { timestamps: true });

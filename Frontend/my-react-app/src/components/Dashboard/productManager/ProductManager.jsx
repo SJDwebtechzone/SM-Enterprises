@@ -45,7 +45,31 @@ const ProductManager = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => {
+      const updated = { ...prev, [name]: value };
+
+      // Auto-calculate logic
+      if (name === 'price' || name === 'discount') {
+        const priceNum = parseFloat(updated.price);
+        const discountStr = updated.discount ? String(updated.discount).replace('%', '') : '';
+        const discountNum = parseFloat(discountStr);
+
+        if (!isNaN(priceNum) && !isNaN(discountNum)) {
+          updated.sale = (priceNum - (priceNum * discountNum) / 100).toFixed(0);
+        } else if (!isNaN(priceNum) && isNaN(discountNum)) {
+          updated.sale = priceNum;
+        }
+      } else if (name === 'sale') {
+        const priceNum = parseFloat(updated.price);
+        const saleNum = parseFloat(updated.sale);
+
+        if (!isNaN(priceNum) && !isNaN(saleNum) && priceNum > 0) {
+          updated.discount = ((priceNum - saleNum) / priceNum * 100).toFixed(0) + '%';
+        }
+      }
+
+      return updated;
+    });
   };
 
   const handleImageChange = (e) => {
@@ -242,10 +266,7 @@ const ProductManager = () => {
                 <Form.Label>Price</Form.Label>
                 <Form.Control type="number" name="price" value={formData.price} onChange={handleChange} required />
               </Form.Group>
-              <Form.Group className="mb-2">
-                <Form.Label>Original Price</Form.Label>
-                <Form.Control type="number" name="originalPrice" value={formData.originalPrice} onChange={handleChange} />
-              </Form.Group>
+
               <Form.Group className="mb-2">
                 <Form.Label>Discount</Form.Label>
                 <Form.Control name="discount" value={formData.discount} onChange={handleChange} />

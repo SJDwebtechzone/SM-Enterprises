@@ -58,6 +58,7 @@ const CartSection = ({ cart, setCart, setCartClickCount }) => {
           name: item.product.name,
           price: typeof item.product.price === 'number' ? item.product.price : 0,
           gst: typeof item.product.gst === 'number' ? item.product.gst : 0,
+          size: item.size || '',
           image: item.product.image || product3,
           quantity: typeof item.quantity === 'number' ? item.quantity : 1
         }));
@@ -79,6 +80,7 @@ const CartSection = ({ cart, setCart, setCartClickCount }) => {
       ...item,
       price: typeof item.price === 'number' ? item.price : 0,
       gst: typeof item.gst === 'number' ? item.gst : 0,
+      size: item.size || '',
       quantity: typeof item.quantity === 'number' ? item.quantity : 1
     }));
     setCartItems(safeCart);
@@ -148,6 +150,7 @@ const CartSection = ({ cart, setCart, setCartClickCount }) => {
                     <img src={item.image} alt={item.name} className="me-3" style={{ width: '60px', height: '60px' }} />
                     <h5 className="mb-0">{item.name}</h5>
                   </div>
+                  {item.size && <p className="mb-1 text-muted small">Size: {item.size}</p>}
                   <p className="mb-1">Price: ₹{item.price.toFixed(2)}</p>
                   <p className="mb-1">Quantity: {item.quantity}</p>
                   <p className="mb-1 fw-bold">Total: ₹{(item.price * item.quantity).toFixed(2)}</p>
@@ -194,6 +197,7 @@ const CartSection = ({ cart, setCart, setCartClickCount }) => {
                           <td>
                             <h6 className="mb-0">{item?.name}</h6>
                             <small className="text-muted">{item.description}</small>
+                            {item.size && <div className="text-muted small">Size: {item.size}</div>}
                           </td>
                           <td>र{item.price.toFixed(2)}</td>
                           <td>

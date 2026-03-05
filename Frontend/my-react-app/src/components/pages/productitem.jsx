@@ -69,7 +69,7 @@ const ProductCard = ({ products, onAddToCart, onAddToWishlist, wishlist = [] }) 
               <div className="card-body product-body text-center">
                 <h5 className="card-title product-title" style={{ color: '#30272bff' }}>{product.name}</h5>
                 <div className="pricing">
-                  {product.sale ? (
+                  {product.sale && Number(product.sale) !== Number(product.price) ? (
                     <p className="mb-2">
                       <span className="text-muted text-decoration-line-through me-2">₹{product.price}</span>
                       <span className="text-success fw-bold">₹{product.sale}</span>

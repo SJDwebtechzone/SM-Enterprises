@@ -270,14 +270,17 @@ function App() {
     }
     try {
       // 🛒 Update local cart
+      const fallbackSize = product.sizes?.length > 0 ? product.sizes[0] : (product.details?.Size || '');
+      const selectedSize = product.selectedSize || fallbackSize;
+
       // 🛒 Optimistic local update
-      const updatedCart = cart.some(item => item._id === product._id)
+      const updatedCart = cart.some(item => item._id === product._id && (!item.size || item.size === selectedSize))
         ? cart.map(item =>
-          item._id === product._id
+          item._id === product._id && (!item.size || item.size === selectedSize)
             ? { ...item, quantity: item.quantity + (product.quantity || 1) }
             : item
         )
-        : [...cart, { ...product, quantity: product.quantity || 1 }];
+        : [...cart, { ...product, quantity: product.quantity || 1, size: selectedSize }];
 
       setCart(updatedCart);
       setCartClickCount(updatedCart.length);
@@ -287,7 +290,7 @@ function App() {
 
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/user/cart/${product._id}`,
-        { quantity: product.quantity || 1 },
+        { quantity: product.quantity || 1, size: selectedSize },
 
         {
           headers: {

@@ -151,9 +151,9 @@ const Footer = () => {
         <FooterAccordion />
 
         {/* Bottom Copyright */}
-        <div className="row pt-2" style={{ borderTop: "1px solid #d4a84b" }}>
+        <div className="row pt-3 pb-3 mt-2" style={{ borderTop: "1px solid #d4a84b" }}>
           <div className="col-md-12 text-center">
-            <p className="small text-muted mb-2">
+            <p className="small text-muted mb-0">
               &copy; {new Date().getFullYear()} All rights reserved{" "}
               <i className="bi bi-heart-fill text-danger"></i>{" "}
               <a className="text-decoration-none" href="https://devspectra.in" target="_blank" rel="noopener noreferrer">

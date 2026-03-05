@@ -64,14 +64,14 @@ const ProductSearch = ({ onAddToCart, onAddToWishlist, wishlist = [] }) => {
 
   return (
     <div className="container-fluid py-5" style={{
-            
-            // background: " rgba(223, 199, 15, 0.4)",
-             background:"white"
-            
+
+      // background: " rgba(223, 199, 15, 0.4)",
+      background: "white"
 
 
-            
-          }}>
+
+
+    }}>
       <h2 className="mb-4">
         {query ? `Search Results for "${query}"` : decodedCategory}
       </h2>
@@ -97,17 +97,16 @@ const ProductSearch = ({ onAddToCart, onAddToWishlist, wishlist = [] }) => {
                   <h5 className="card-title product-title" style={{ color: '#30272bff' }}>
                     {product.name}
                   </h5>
-                  <div className="pricing">
-                    {product.sale ? (
-                      <p className="mb-2">
-                        <span className="text-muted text-decoration-line-through me-2">
-                          ₹{product.price}
-                        </span>
-                        <span className="text-success fw-bold">₹{product.sale}</span>
-                      </p>
-                    ) : (
-                      <p className="mb-2 fw-bold">₹{product.price}</p>
-                    )}
+                  <div className="pricing">                    {product.sale && Number(product.sale) !== Number(product.price) ? (
+                    <p className="mb-2">
+                      <span className="text-muted text-decoration-line-through me-2">
+                        ₹{product.price}
+                      </span>
+                      <span className="text-success fw-bold">₹{product.sale}</span>
+                    </p>
+                  ) : (
+                    <p className="mb-2 fw-bold">₹{product.price}</p>
+                  )}
                   </div>
 
                   {/* Quantity Controls */}
@@ -136,11 +135,10 @@ const ProductSearch = ({ onAddToCart, onAddToWishlist, wishlist = [] }) => {
                         <i className="bi bi-cart"></i>
                       </button>
                       <button
-                        className={`btn btn-sm ${
-                          wishlist.some((item) => item._id === product._id)
+                        className={`btn btn-sm ${wishlist.some((item) => item._id === product._id)
                             ? "btn-outline-danger"
                             : "btn-outline-danger"
-                        }`}
+                          }`}
                         onClick={() => onAddToWishlist({ ...product, quantity: quantities[product._id] })}
                       >
                         <i

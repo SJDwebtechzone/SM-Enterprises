@@ -85,12 +85,12 @@ const ProductCard = ({ product, quantities, setQuantities, onAddToCart, onAddToW
             <div className="pp-card-body">
                 <div className="pp-card-name">{product.name}</div>
 
-                <div className="pp-card-price">
-                    {product.sale ? (
-                        <>
+                <div className="pp-card-price-row mt-2">
+                    {product.sale && Number(product.sale) !== Number(product.price) ? (
+                        <div className="pp-card-pricing">
                             <span className="pp-card-sale">₹{product.sale}</span>
                             <span className="pp-card-mrp">₹{product.price}</span>
-                        </>
+                        </div>
                     ) : (
                         <span className="pp-card-sale">₹{product.price}</span>
                     )}

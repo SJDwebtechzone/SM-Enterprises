@@ -9,6 +9,7 @@ exports.addToCart = async (req, res) => {
 
 
     const quantity = Math.max(1, Number(req.body.quantity) || 1);
+    const size = req.body.size || '';
     const user = req.user;
 
     if (!mongoose.Types.ObjectId.isValid(productId)) {
@@ -21,13 +22,17 @@ exports.addToCart = async (req, res) => {
     }
 
     const existingIndex = user.cart.findIndex(item =>
-      item.product.equals(productId)
+      item.product.equals(productId) && (!item.size || item.size === size)
     );
 
     if (existingIndex !== -1) {
       user.cart[existingIndex].quantity += quantity;
+      // update size if it wasn't there
+      if (!user.cart[existingIndex].size && size) {
+        user.cart[existingIndex].size = size;
+      }
     } else {
-      user.cart.push({ product: productId, quantity });
+      user.cart.push({ product: productId, quantity, size });
     }
 
 
@@ -60,6 +65,7 @@ exports.getCart = async (req, res) => {
       .map(item => ({
         _id: item.product._id,
         quantity: item.quantity,
+        size: item.size,
         name: item.product.name,
         price: item.product.price,
         gst: item.product.gst ?? 0,

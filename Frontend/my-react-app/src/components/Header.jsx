@@ -13,6 +13,7 @@ import CartButton from "./pages/CartButton";
 const Header = ({ cartClickCount, showMessage }) => {
   const [query, setQuery] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
+  const [showMobileSearch, setShowMobileSearch] = useState(false);
 
   const { user, setUser } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -287,7 +288,7 @@ const Header = ({ cartClickCount, showMessage }) => {
           {/* Search Icon */}
           <button
             className="btn p-0 border-0 bg-transparent"
-            onClick={() => navigate("/search")}
+            onClick={() => setShowMobileSearch(!showMobileSearch)}
           >
             <i className="bi bi-search fs-5 text-dark"></i>
           </button>
@@ -343,6 +344,37 @@ const Header = ({ cartClickCount, showMessage }) => {
           </li>
         </ul>
       </div>
+
+      {/* Mobile Search Bar Dropdown */}
+      {showMobileSearch && (
+        <div className="d-lg-none p-2 w-100" style={{ backgroundColor: "#fef9ef", borderBottom: '1.5px solid #d4a84b' }}>
+          <form
+            onSubmit={(e) => {
+              handleSearch(e);
+              setShowMobileSearch(false);
+            }}
+            className="d-flex align-items-center w-100"
+            style={{
+              borderRadius: '25px',
+              border: '1.5px solid #c9a44a',
+              padding: '4px 14px',
+              background: '#fff'
+            }}
+          >
+            <input
+              type="text"
+              className="form-control border-0 bg-transparent shadow-none"
+              placeholder="Search products..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              autoFocus
+            />
+            <button type="submit" className="btn p-0 border-0 bg-transparent">
+              <i className="bi bi-search fs-5" style={{ color: '#8b6914' }}></i>
+            </button>
+          </form>
+        </div>
+      )}
     </>
   );
 };

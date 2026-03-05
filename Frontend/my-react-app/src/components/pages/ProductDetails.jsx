@@ -10,6 +10,7 @@ const ProductDetail = ({ product, onClose, onAddToCart }) => {
   const [quantities, setQuantities] = useState({});
   const [activeImage, setActiveImage] = useState('');
   const [activeView, setActiveView] = useState('image');
+  const [selectedSize, setSelectedSize] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,6 +18,8 @@ const ProductDetail = ({ product, onClose, onAddToCart }) => {
       setQuantities({ [product._id]: 1 });
       setActiveImage(product.image || '');
       setActiveView('image');
+      if (product.sizes?.length > 0) setSelectedSize(product.sizes[0]);
+      else setSelectedSize(product.details?.Size || '');
     }
   }, [product]);
 
@@ -74,10 +77,10 @@ const ProductDetail = ({ product, onClose, onAddToCart }) => {
               <div style={styles.pricingContainer}>
                 <h5 className="text-success fw-bold mt-3">
                   ₹{product.sale || product.price}.00
-                  {product.sale && (
-                    <span className="text-muted text-decoration-line-through ms-2 fs-6">
+                  {product.sale && Number(product.sale) !== Number(product.price) && (
+                    <div className="text-muted text-decoration-line-through fs-5 mt-1 ms-2">
                       ₹{product.price}.00
-                    </span>
+                    </div>
                   )}
                 </h5>
               </div>
@@ -136,9 +139,27 @@ const ProductDetail = ({ product, onClose, onAddToCart }) => {
               </ul>
 
               <div className="details mb-3">
-                <p><strong>Material:</strong> {product.details?.Material}</p>
-                <p><strong>Dimensions:</strong> {product.details?.Dimensions}</p>
-                <p><strong>SKU:</strong> {product.sku}</p>
+                <p className="mb-1"><strong>Material:</strong> {product.details?.Material}</p>
+                <p className="mb-1"><strong>Dimensions:</strong> {product.details?.Dimensions}</p>
+                <p className="mb-1"><strong>SKU:</strong> {product.sku}</p>
+                {product.details?.Size && <p className="mb-1"><strong>Size:</strong> {product.details.Size}</p>}
+                {product.sizes?.length > 0 && (
+                  <div className="mt-2">
+                    <strong className="mb-1 d-block">Select Size:</strong>
+                    <div className="d-flex gap-2">
+                      {product.sizes.map(size => (
+                        <Button
+                          key={size}
+                          variant={selectedSize === size ? "warning" : "outline-secondary"}
+                          size="sm"
+                          onClick={() => setSelectedSize(size)}
+                        >
+                          {size}
+                        </Button>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Quantity & Actions */}
@@ -154,7 +175,7 @@ const ProductDetail = ({ product, onClose, onAddToCart }) => {
                     variant="warning"
                     className="w-100 fw-bold"
                     onClick={() => {
-                      onAddToCart({ ...product, quantity: quantities[product._id] });
+                      onAddToCart({ ...product, quantity: quantities[product._id], selectedSize });
                       navigate('/cart');
                     }}
                   >

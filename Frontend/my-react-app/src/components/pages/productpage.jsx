@@ -4,7 +4,7 @@ import axios from "axios";
 import ProductDetail from "./ProductDetails";
 import RatingReview from "./RatingReviews";
 import ProductQuantityControls from "./ProductQualityControl";
- import '../../assets/css/css/ProductItem.css' 
+import '../../assets/css/css/ProductItem.css'
 
 const categoryMap = {
   "brass-bell": "Brass Bell",
@@ -19,10 +19,10 @@ const ProductPage = ({ onAddToCart, onAddToWishlist, wishlist = [] }) => {
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [quantities, setQuantities] = useState({});
-   const [showControls, setShowControls] = useState(false);
+  const [showControls, setShowControls] = useState(false);
 
   const decodedCategory = categoryMap[category.toLowerCase()] || category;
-  
+
 
   useEffect(() => {
     axios
@@ -51,7 +51,7 @@ const ProductPage = ({ onAddToCart, onAddToWishlist, wishlist = [] }) => {
       [id]: Math.max(1, prev[id] - 1),
     }));
   };
-  
+
   const renderStars = (rating) => {
     return [...Array(5)].map((_, i) => (
       <i key={i} className={`bi ${i < rating ? 'bi-star-fill text-warning' : 'bi-star text-muted'}`}></i>
@@ -61,15 +61,15 @@ const ProductPage = ({ onAddToCart, onAddToWishlist, wishlist = [] }) => {
 
 
   return (
-    <div className="container-fluid py-5"style={{
-            
-            // background: " rgba(223, 199, 15, 0.4)",
-             background:"white"
-            
+    <div className="container-fluid py-5" style={{
+
+      // background: " rgba(223, 199, 15, 0.4)",
+      background: "white"
 
 
-            
-          }}>
+
+
+    }}>
       <h2 className="mb-4">{decodedCategory}</h2>
       {products.length > 0 ? (
         <div className="row">
@@ -90,11 +90,11 @@ const ProductPage = ({ onAddToCart, onAddToWishlist, wishlist = [] }) => {
                   )}
                 </div>
                 <div className="card-body product-body text-center">
-                  <h5 className="card-title product-title" style={{  color: '#30272bff' }}>
+                  <h5 className="card-title product-title" style={{ color: '#30272bff' }}>
                     {product.name}
                   </h5>
                   <div className="pricing">
-                    {product.sale ? (
+                    {product.sale && Number(product.sale) !== Number(product.price) ? (
                       <p className="mb-2">
                         <span className="text-muted text-decoration-line-through me-2">
                           ₹{product.price}
@@ -106,7 +106,7 @@ const ProductPage = ({ onAddToCart, onAddToWishlist, wishlist = [] }) => {
                     )}
                   </div>
                   {/* ✅ Stock and Sold Info */}
-  {/* <div className="stock-info mb-2">
+                  {/* <div className="stock-info mb-2">
     <small className={product.stock <= 5 ? "low-stock" : ""}>
       Stock: {product.stock}
     </small><br />
@@ -116,9 +116,9 @@ const ProductPage = ({ onAddToCart, onAddToWishlist, wishlist = [] }) => {
   </div> */}
 
                   <div className="d-flex flex-column align-items-center gap-2 mb-2">
-                     <div>{renderStars(product.averageRating)}</div>
+                    <div>{renderStars(product.averageRating)}</div>
                     {/* Quantity Controls */}
-                    <ProductQuantityControls 
+                    <ProductQuantityControls
                       productId={product._id}
                       quantities={quantities}
                       setQuantities={setQuantities}
@@ -142,11 +142,10 @@ const ProductPage = ({ onAddToCart, onAddToWishlist, wishlist = [] }) => {
                         <i className="bi bi-cart"></i>
                       </button>
                       <button
-                        className={`btn btn-sm ${
-                          wishlist.some((item) => item._id === product._id)
-                            ?"btn-outline-danger" 
+                        className={`btn btn-sm ${wishlist.some((item) => item._id === product._id)
+                            ? "btn-outline-danger"
                             : "btn-outline-danger"
-                        }`}
+                          }`}
                         onClick={() => onAddToWishlist({ ...product, quantity: quantities[product._id] })}
                       >
                         <i
@@ -157,12 +156,12 @@ const ProductPage = ({ onAddToCart, onAddToWishlist, wishlist = [] }) => {
                           }
                         ></i>
                       </button>
-                  
-                              
 
-                    
+
+
+
                     </div>
-                   
+
                   </div>
                 </div>
               </div>
@@ -178,7 +177,7 @@ const ProductPage = ({ onAddToCart, onAddToWishlist, wishlist = [] }) => {
         <ProductDetail
           product={selectedProduct}
           onClose={() => setSelectedProduct(null)}
-           onAddToCart={onAddToCart}
+          onAddToCart={onAddToCart}
         />
       )}
     </div>

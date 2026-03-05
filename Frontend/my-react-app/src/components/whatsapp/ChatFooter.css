@@ -18,6 +18,7 @@
   align-items: center;
   justify-content: center;
   animation: pulse-ring 2s infinite;
+  border-radius: 50%;
 }
 
 .whatsapp-icon {
@@ -26,9 +27,25 @@
   border-radius: 50%;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   transition: transform 0.3s ease;
+  animation: float-icon 3s ease-in-out infinite;
+}
+
+@keyframes float-icon {
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-5px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
 }
 
 .whatsapp-ring:hover .whatsapp-icon {
+  animation: none;
   transform: scale(1.1);
 }
 
@@ -61,6 +78,7 @@
     transform: scale(1);
     opacity: 1;
   }
+
   100% {
     transform: scale(5);
     opacity: 0;
@@ -69,13 +87,15 @@
 
 @keyframes pulse-ring {
   0% {
-    box-shadow: 0 0 0 0 rgba(55, 67, 176, 0.6);
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.6);
   }
+
   70% {
-    box-shadow: 0 0 0 15px rgba(55, 67, 176, 0);
+    box-shadow: 0 0 0 15px rgba(37, 211, 102, 0);
   }
+
   100% {
-    box-shadow: 0 0 0 0 rgba(55, 67, 176, 0);
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
   }
 }
 
