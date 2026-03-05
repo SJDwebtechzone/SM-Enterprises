@@ -104,7 +104,7 @@ const upload = multer({
 });
 
 // 🖼️ View all images — accessible to logged-in users (admin or user)
-router.get('/', async (req, res) => {
+router.get('/', authenticateUser, async (req, res) => {
   try {
     const images = await Image.find().sort({ createdAt: -1 });
     res.json(images);
