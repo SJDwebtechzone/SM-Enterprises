@@ -135,107 +135,102 @@ useEffect(() => {
   };
 
   return (
-    <div className="container-fluid" style={{
-            
-            // background: " rgba(223, 199, 15, 0.4)",
-             background:"white"
-            
-
-
-            
-          }}>
-      <div className="row">
-        {/* Sidebar */}
-        <div className="col-12 col-md-3 py-4">
-          <h5 className="fw-bold mb-3" style={{ fontFamily: 'Poppins, sans-serif' }}>
-            Categories
-          </h5>
-          {/* <ul className="list-group mb-4">
-            {categoriesList.map((category, index) => (
-              <li
-                key={index}
-                className={`list-group-item list-group-item-action ${selectedCategory === category ? 'active' : ''}`}
-                onClick={() => handleCategoryClick(category)}
-                style={{ cursor: 'pointer' }}
-              >
-                {category}
-              </li>
-            ))}
-          </ul> */}
-          
-<ul className="list-group mb-4">
-  {categoriesList.map((cat, index) => {
-    const categoryName = typeof cat === 'string' ? cat : cat.name;
-    return (
-      <li
-        key={index}
-        className={`list-group-item list-group-item-action ${selectedCategory === categoryName ? 'active' : ''}`}
-        onClick={() => handleCategoryClick(categoryName)}
-        style={{ cursor: 'pointer' }}
-      >
-        {categoryName}
-      </li>
-    );
-  })}
-</ul>
-          <h5 className="fw-bold mb-3" style={{ fontFamily: 'Poppins, sans-serif' }}>
-            Filter by Price
-          </h5>
-          <div className="d-flex justify-content-between text-muted mb-1 px-1">
-            <span>₹0</span>
-            <span>₹5000</span>
-          </div>
-          <div style={{ position: 'relative', marginBottom: '2rem' }}>
-            <input
-              type="range"
-              className="form-range"
-              min="0"
-              max="5000"
-              step="100"
-              value={price}
-              onChange={handlePriceChange}
-              style={{ zIndex: 1 }}
-            />
-            <div
-              style={{
-                position: 'absolute',
-                top: '100%',
-                left: `${(price / 5000) * 100}%`,
-                transform: 'translateX(-50%)',
-                marginTop: '4px',
-                fontSize: '14px',
-                color: '#6c757d',
-                fontWeight: '500',
-              }}
-            >
-              ₹{price}
-            </div>
-          </div>
-          <div>
-          <h5 className="fw-bold mb-3" style={{ fontFamily: 'Poppins, sans-serif' }}>
-            Filter by Sizes
-          </h5>
-      <select className="form-select mb-3" value={selectedSize} onChange={handleSizeChange}>
-        <option value="">All Sizes</option>
-        <option value="S">Small (S)</option>
-        <option value="M">Medium (M)</option>
-        <option value="L">Large (L)</option>
-        
-      </select>
-      </div>
+    <div className="container py-4" style={{ background: "white" }}>
+      {/* Dropdown Filters Row */}
+      <div className="row g-2 mb-4 align-items-center">
+        {/* Categories Dropdown */}
+        <div className="col-4">
+          <label className="form-label fw-bold text-muted small mb-1">Category</label>
+          <select 
+            className="form-select py-2" 
+            value={selectedCategory || ''} 
+            onChange={(e) => handleCategoryClick(e.target.value)}
+            style={{ borderRadius: '8px', border: '1px solid #ddd' }}
+          >
+            <option value="">All Categories</option>
+            {categoriesList.map((cat, index) => {
+              const categoryName = typeof cat === 'string' ? cat : cat.name;
+              return (
+                <option key={index} value={categoryName}>
+                  {categoryName}
+                </option>
+              );
+            })}
+          </select>
         </div>
 
-        {/* Product Grid */}
-        <div className="col-12 col-md-9 py-4">
+        {/* Price Dropdown */}
+        <div className="col-4">
+          <label className="form-label fw-bold text-muted small mb-1">Filter by Price</label>
+          <div className="dropdown">
+            <button 
+              className="btn btn-outline-secondary dropdown-toggle w-100 text-start py-2 d-flex justify-content-between align-items-center" 
+              type="button" 
+              id="priceDropdown" 
+              data-bs-toggle="dropdown" 
+              aria-expanded="false"
+              style={{ borderRadius: '8px', border: '1px solid #ddd', backgroundColor: '#fff', color: '#495057' }}
+            >
+              <span>{price > 0 ? `Max: ₹${price}` : 'Select Price Range'}</span>
+            </button>
+            <div className="dropdown-menu p-3" aria-labelledby="priceDropdown" style={{ width: '280px', borderRadius: '8px' }}>
+              <div className="d-flex justify-content-between text-muted mb-1 px-1" style={{ fontSize: '0.85rem' }}>
+                <span>₹0</span>
+                <span>₹5000</span>
+              </div>
+              <input
+                type="range"
+                className="form-range"
+                min="0"
+                max="5000"
+                step="100"
+                value={price}
+                onChange={handlePriceChange}
+              />
+              <div className="text-center mt-2 fw-semibold text-secondary" style={{ fontSize: '0.9rem' }}>
+                Selected: ₹{price || '0'}
+              </div>
+              {price > 0 && (
+                <button 
+                  className="btn btn-sm btn-link text-danger d-block mx-auto mt-2 text-decoration-none" 
+                  onClick={() => setPrice(0)}
+                >
+                  Clear Price Filter
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Sizes Dropdown */}
+        <div className="col-4">
+          <label className="form-label fw-bold text-muted small mb-1">Filter by Sizes</label>
+          <select 
+            className="form-select py-2" 
+            value={selectedSize} 
+            onChange={handleSizeChange}
+            style={{ borderRadius: '8px', border: '1px solid #ddd' }}
+          >
+            <option value="">All Sizes</option>
+            <option value="S">Small (S)</option>
+            <option value="M">Medium (M)</option>
+            <option value="L">Large (L)</option>
+          </select>
+        </div>
+      </div>
+
+      {/* Product Grid - Full Width */}
+      <div className="row">
+        <div className="col-12 py-2">
           {filteredProducts.length > 0 ? (
             <ProductCard
               products={filteredProducts}
               onAddToCart={onAddToCart}
-              onAddToWishlist={onAddToWishlist} // ✅ Pass wishlist handler here
+              onAddToWishlist={onAddToWishlist}
               wishlist={wishlist}
             />
           ) : (
-            <p className="text-muted">No products found for selected filters.</p>
+            <p className="text-muted text-center py-5">No products found matching the selected filters.</p>
           )}
         </div>
       </div>

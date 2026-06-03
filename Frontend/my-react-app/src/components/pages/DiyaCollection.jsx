@@ -146,7 +146,7 @@ useEffect(() => {
               <AdminImageCarousel/>
       </div>
       {/* Collections Carousel Section */}
-      <div className="container py-5 position-relative">
+      <div className="container collections-section py-5 position-relative">
       
         <h2 className="fw-bold mb-4">Collections</h2>
         <div
@@ -208,22 +208,10 @@ useEffect(() => {
           </div>
           {/* Carousel Controls */}
           <button
-            className="carousel-control-prev"
+            className="carousel-control-prev diya-carousel-btn diya-carousel-prev"
             type="button"
             data-bs-target="#diyaCarousel"
             data-bs-slide="prev"
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "-60px",
-              transform: "translateY(-50%)",
-              width: "50px",
-              height: "50px",
-              backgroundColor: "rgba(157, 107, 107, 0.6)",
-              borderRadius: "50%",
-              zIndex: 10,
-              border: "none"
-            }}
             onMouseEnter={(e) => {
               e.currentTarget.style.backgroundColor = "rgba(182, 61, 61, 0.9)";
               e.currentTarget.style.boxShadow = "0 0 10px rgba(0,0,0,0.2)";
@@ -237,22 +225,10 @@ useEffect(() => {
             <span className="visually-hidden">Previous</span>
           </button>
           <button
-            className="carousel-control-next"
+            className="carousel-control-next diya-carousel-btn diya-carousel-next"
             type="button"
             data-bs-target="#diyaCarousel"
             data-bs-slide="next"
-            style={{
-              position: "absolute",
-              top: "50%",
-              right: "-60px",
-              transform: "translateY(-50%)",
-              width: "50px",
-              height: "50px",
-              backgroundColor: "rgba(143, 102, 102, 0.6)",
-              borderRadius: "50%",
-              zIndex: 10,
-              border: "none"
-            }}
             onMouseEnter={(e) => {
               e.currentTarget.style.backgroundColor = "rgba(159, 85, 85, 0.9)";
               e.currentTarget.style.boxShadow = "0 0 10px rgba(129, 118, 118, 0.2)";

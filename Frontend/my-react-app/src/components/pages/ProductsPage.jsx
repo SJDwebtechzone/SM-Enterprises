@@ -250,13 +250,6 @@ const ProductsPage = ({ onAddToCart, onAddToWishlist, wishlist = [] }) => {
 
     return (
         <div>
-            {/* ── Hero ── */}
-            <div className="pp-hero">
-                <h1 className="pp-hero-title">Our Products</h1>
-                <p className="pp-hero-subtitle">Crafted with devotion &amp; tradition</p>
-                <div className="pp-hero-divider" />
-            </div>
-
             {/* ── Sticky Category Nav ── */}
             <div className="pp-cat-nav">
                 <span className="pp-cat-nav-label">Categories:</span>

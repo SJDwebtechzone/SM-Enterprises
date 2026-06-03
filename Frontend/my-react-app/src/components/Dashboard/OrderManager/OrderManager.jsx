@@ -15,9 +15,10 @@ const OrderManager = () => {
   const fetchOrders = async () => {
     try {
       const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/orders`);
-      setOrders(res.data);
+      setOrders(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
       console.error('❌ Failed to fetch orders:', err.message);
+      setOrders([]);
     }
   };
 
@@ -62,7 +63,7 @@ const OrderManager = () => {
             </tr>
           </thead>
           <tbody>
-            {orders.length === 0 ? (
+            {!Array.isArray(orders) || orders.length === 0 ? (
               <tr>
                 <td colSpan="7" className="text-center py-4">No orders found.</td>
               </tr>

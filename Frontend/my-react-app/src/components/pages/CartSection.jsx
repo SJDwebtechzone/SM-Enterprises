@@ -147,7 +147,7 @@ const CartSection = ({ cart, setCart, setCartClickCount }) => {
               <div className="card mb-3 shadow-sm" key={item._id}>
                 <div className="card-body">
                   <div className="d-flex align-items-center mb-2">
-                    <img src={item.image} alt={item.name} className="me-3" style={{ width: '60px', height: '60px' }} />
+                    <img src={item.image?.startsWith('http') ? item.image : `${import.meta.env.VITE_BACKEND_URL}${item.image}`} alt={item.name} className="me-3" style={{ width: '60px', height: '60px', objectFit: 'cover' }} />
                     <h5 className="mb-0">{item.name}</h5>
                   </div>
                   {item.size && <p className="mb-1 text-muted small">Size: {item.size}</p>}

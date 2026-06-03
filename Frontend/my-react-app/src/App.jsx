@@ -83,6 +83,22 @@ function App() {
 
     if (token && email) {
       setUser({ email, token, userName, userID, role });
+      
+      // Fetch cart on load
+      const fetchCart = async () => {
+        try {
+          const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/user/cart`, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+          if (res.data && Array.isArray(res.data.cart)) {
+            setCart(res.data.cart);
+            setCartClickCount(res.data.cart.length);
+          }
+        } catch (err) {
+          console.error('Failed to fetch cart on load:', err);
+        }
+      };
+      fetchCart();
     }
   }, []);
 

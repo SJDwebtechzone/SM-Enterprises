@@ -27,19 +27,20 @@ const ProductManager = () => {
   const fetchCategories = async () => {
     try {
       const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/categories`);
-      setCategories(res.data || []);
-
+      setCategories(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
       console.error('Category fetch failed:', err);
+      setCategories([]);
     }
   };
 
   const fetchProducts = async () => {
     try {
       const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/products`);
-      setProducts(res.data || []);
+      setProducts(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
       console.error('Fetch failed:', err);
+      setProducts([]);
     }
   };
 
@@ -319,7 +320,7 @@ const ProductManager = () => {
                 <Form.Label>Category</Form.Label>
                 <Form.Select name="category" value={formData.category} onChange={handleChange} required>
                   <option value="">-- Select Category --</option>
-                  {categories.map(cat => (
+                  {Array.isArray(categories) && categories.map(cat => (
                     <option key={cat._id} value={cat._id}>{cat.name}</option>
                   ))}
                 </Form.Select>
@@ -459,7 +460,7 @@ const ProductManager = () => {
             </tr>
           </thead>
           <tbody>
-            {products.map(prod => (
+            {Array.isArray(products) && products.map(prod => (
               <tr key={prod._id}>
                 <td>{prod.name}</td>
                 <td>{prod.category?.name || 'Uncategorized'}</td>

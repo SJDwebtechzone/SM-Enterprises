@@ -1,5 +1,6 @@
 import React from 'react';
 import { Nav } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import {
   BiHome, BiArrowBack, BiBox, BiBullseye, BiCart, BiStar, BiPackage,
   BiUpload,
@@ -7,9 +8,10 @@ import {
   BiCategoryAlt
 } from 'react-icons/bi';
 
-const SidebarItem = ({ icon, label, isCollapsed, href }) => (
+const SidebarItem = ({ icon, label, isCollapsed, to }) => (
   <Nav.Link
-    href={href}
+    as={Link}
+    to={to}
     className={`d-flex align-items-center py-2 px-3 sidebar-item ${isCollapsed ? 'justify-content-center' : 'gap-2'}`}
     title={isCollapsed ? label : ''}
     style={{ textDecoration: 'none', color: '#5d4037' }}
@@ -95,16 +97,16 @@ const DashboardSidebar = ({ isCollapsed, isMobile }) => {
 
         {/* Navigation Items */}
         <Nav className="flex-column" style={{ padding: '0 10px' }}>
-          <SidebarItem icon={<BiHome />} label="Dashboard" isCollapsed={isCollapsed} href="/admin/dashboard" />
-          <SidebarItem icon={<BiArrowBack />} label="Home" isCollapsed={isCollapsed} href="/" />
-          <SidebarItem icon={<BiBox />} label="Product Manager" isCollapsed={isCollapsed} href="/admin/products" />
-          <SidebarItem icon={<BiBullseye />} label="Promo Banner" isCollapsed={isCollapsed} href="/admin/promos" />
-          <SidebarItem icon={<BiCart />} label="Order Manager" isCollapsed={isCollapsed} href="/admin/order" />
-          <SidebarItem icon={<BiStar />} label="Best Seller" isCollapsed={isCollapsed} href="/admin/bestseller" />
-          <SidebarItem icon={<BiPackage />} label="Stock Availability" isCollapsed={isCollapsed} href="/admin/stocks" />
-          <SidebarItem icon={<BiUpload />} label="Upload Image" isCollapsed={isCollapsed} href="/admin/images/upload" />
-          <SidebarItem icon={<BiCommentDetail />} label="Review Panel" isCollapsed={isCollapsed} href="/admin/reviews" />
-          <SidebarItem icon={<BiCategoryAlt />} label="Category Manager" isCollapsed={isCollapsed} href="/admin/category" />
+          <SidebarItem icon={<BiHome />} label="Dashboard" isCollapsed={isCollapsed} to="/admin/dashboard" />
+          <SidebarItem icon={<BiArrowBack />} label="Home" isCollapsed={isCollapsed} to="/" />
+          <SidebarItem icon={<BiBox />} label="Product Manager" isCollapsed={isCollapsed} to="/admin/products" />
+          <SidebarItem icon={<BiBullseye />} label="Promo Banner" isCollapsed={isCollapsed} to="/admin/promos" />
+          <SidebarItem icon={<BiCart />} label="Order Manager" isCollapsed={isCollapsed} to="/admin/order" />
+          <SidebarItem icon={<BiStar />} label="Best Seller" isCollapsed={isCollapsed} to="/admin/bestseller" />
+          <SidebarItem icon={<BiPackage />} label="Stock Availability" isCollapsed={isCollapsed} to="/admin/stocks" />
+          <SidebarItem icon={<BiUpload />} label="Upload Image" isCollapsed={isCollapsed} to="/admin/images/upload" />
+          <SidebarItem icon={<BiCommentDetail />} label="Review Panel" isCollapsed={isCollapsed} to="/admin/reviews" />
+          <SidebarItem icon={<BiCategoryAlt />} label="Category Manager" isCollapsed={isCollapsed} to="/admin/category" />
         </Nav>
 
         {/* Custom Styles */}

@@ -200,9 +200,10 @@ const styles = {
     borderBottom: '1px solid #d4af37',
   },
   modalTitle: {
-    fontFamily: 'Great Vibes, cursive',
-    fontSize: '2rem',
-    color: '#d4af37',
+    fontFamily: "'Poppins', sans-serif",
+    fontSize: '1.5rem',
+    fontWeight: '600',
+    color: '#8b0000',
   },
   body: {
     background: '#fffdf9',

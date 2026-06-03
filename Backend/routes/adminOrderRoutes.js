@@ -67,11 +67,13 @@ router.put('/:id/status', async (req, res) => {
   await Order.findByIdAndUpdate(req.params.id, { status });
   res.send('Status updated');
 });
-// ✅ Get order by orderId for review page
+// ✅ Get order by orderId/invoiceId for review page
 router.get('/:orderId', async (req, res) => {
   try {
     const { orderId } = req.params;
-    const order = await Order.findOne({ orderId });
+    const order = await Order.findOne({
+      $or: [ { orderId }, { invoiceId: orderId } ]
+    });
 
     if (!order) {
       return res.status(404).json({ error: 'Order not found' });
@@ -88,7 +90,9 @@ router.get('/:orderId', async (req, res) => {
 router.get('/download/:orderId', async (req, res) => {
   try {
     const { orderId } = req.params;
-    const order = await Order.findOne({ orderId });
+    const order = await Order.findOne({
+      $or: [ { orderId }, { invoiceId: orderId } ]
+    });
 
     if (!order) {
       return res.status(404).send('Order not found');

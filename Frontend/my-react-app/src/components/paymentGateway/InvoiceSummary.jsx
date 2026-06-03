@@ -1,7 +1,7 @@
 import React from 'react';
 
 const InvoiceSummary = ({ invoice }) => {
-  const { invoiceId, date, customer, items, subtotal, gstAmount, shippingEstimate, discount, total, paymentId } = invoice;
+  const { invoiceId, orderId, date, customer, items, subtotal, gstAmount, shippingEstimate, discount, total, paymentId } = invoice;
 
   return (
     <div style={styles.card}>
@@ -65,7 +65,7 @@ const InvoiceSummary = ({ invoice }) => {
       </div>
 
       <a
-        href={invoice.pdfUrl || `${import.meta.env.VITE_BACKEND_URL}/api/orders/download/${invoiceId}`}
+        href={invoice.pdfUrl || `${import.meta.env.VITE_BACKEND_URL}/api/orders/download/${orderId || invoiceId}`}
         target="_blank"
         rel="noopener noreferrer"
         style={styles.downloadBtn}

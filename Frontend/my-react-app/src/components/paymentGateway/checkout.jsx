@@ -27,6 +27,8 @@ const BlessedCheckout = ({ cart, setCart, setCartClickCount }) => {
     total,
     cartItems } = location.state || {};
 
+  const activeCart = (cartItems && cartItems.length > 0) ? cartItems : (cart || []);
+
   const handleChange = (e) => {
     setBilling({ ...billing, [e.target.name]: e.target.value });
   };
@@ -35,7 +37,7 @@ const BlessedCheckout = ({ cart, setCart, setCartClickCount }) => {
     setGateway(e.target.value);
   };
 
-  const createOrder = async (paymentData) => {
+  const createOrder = async (paymentData, invoiceId) => {
     try {
       const orderId = `ORD-${Date.now()}`;
       const token = localStorage.getItem('token');
@@ -47,8 +49,9 @@ const BlessedCheckout = ({ cart, setCart, setCartClickCount }) => {
         },
         body: JSON.stringify({
           orderId,
+          invoiceId,
           customer: billing,
-          items: cart.map(item => ({
+          items: activeCart.map(item => ({
             productId: item._id,
             name: item.name,
             quantity: item.quantity,
@@ -72,56 +75,73 @@ const BlessedCheckout = ({ cart, setCart, setCartClickCount }) => {
   };
 
   return (
-    <div style={styles.page}>
-      <div style={styles.card}>
-        <h1 style={styles.title}>🪔 Divine Checkout</h1>
+    <div style={showThankYou ? styles.pageThankYou : styles.page}>
+      {showThankYou ? (
+        <div style={styles.thankYouContainer}>
+          <div className="row g-4 justify-content-center align-items-stretch">
+            {/* Left Column: Thank You Details */}
+            <div className="col-12 col-md-6 d-flex">
+              <div style={styles.thankYouCard}>
+                <ThankYouScreen
+                  orderDetails={{
+                    name: billing.name,
+                    amount: total,
+                    paymentId,
+                    items: activeCart.map(item => ({
+                      name: item.name,
+                      quantity: item.quantity,
+                      price: item.price
+                    }))
+                  }}
+                />
+                <button
+                  style={{
+                    marginTop: '25px',
+                    padding: '12px 28px',
+                    background: 'linear-gradient(to right, #ffd54f, #ffcc80)',
+                    color: '#5d4037',
+                    border: 'none',
+                    borderRadius: '25px',
+                    fontWeight: 'bold',
+                    boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s'
+                  }}
+                  onClick={() => navigate(`/review/${orderId}`)}
+                >
+                  ✍️ Write a Review
+                </button>
+              </div>
+            </div>
 
-        <div style={styles.section}>
-          <h3 style={styles.sectionTitle}>Billing Address</h3>
-          <input style={styles.input} name="name" placeholder="Full Name" value={billing.name} onChange={handleChange} />
-          <input style={styles.input} name="email" placeholder="Email" value={billing.email} onChange={handleChange} />
-          <input style={styles.input} name="phone" placeholder="Phone Number" value={billing.phone} onChange={handleChange} />
-          <textarea style={styles.textarea} name="address" placeholder="Address" value={billing.address} onChange={handleChange} />
+            {/* Right Column: Invoice Summary */}
+            <div className="col-12 col-md-6 d-flex">
+              <div style={{ width: '100%' }}>
+                {invoice && <InvoiceSummary invoice={invoice} />}
+              </div>
+            </div>
+          </div>
         </div>
+      ) : (
+        <div style={styles.card}>
+          <h1 style={styles.title}>🪔 Divine Checkout</h1>
 
-        <div style={styles.section}>
-          <h3 style={styles.sectionTitle}>Select Payment Gateway</h3>
-          <label style={styles.checkboxLabel}>
-            <input type="radio" name="gateway" value="razorpay" checked={gateway === 'razorpay'} onChange={handleGatewayChange} />
-            Razorpay (UPI/Card/Netbanking)
-          </label>
-        </div>
+          <div style={styles.section}>
+            <h3 style={styles.sectionTitle}>Billing Address <span style={{ color: 'red', fontSize: '0.8rem' }}>(All fields required *)</span></h3>
+            <input required style={styles.input} name="name" placeholder="Full Name *" value={billing.name} onChange={handleChange} />
+            <input required type="email" style={styles.input} name="email" placeholder="Email Address *" value={billing.email} onChange={handleChange} />
+            <input required type="tel" style={styles.input} name="phone" placeholder="Phone Number *" value={billing.phone} onChange={handleChange} />
+            <textarea required style={styles.textarea} name="address" placeholder="Complete Delivery Address *" value={billing.address} onChange={handleChange} />
+          </div>
 
-        {showThankYou ? (
-          <>
-            <ThankYouScreen
-              orderDetails={{
-                name: billing.name,
-                amount: total,
-                paymentId,
-                items: cart.map(item => ({
-                  name: item.name,
-                  quantity: item.quantity,
-                  price: item.price
-                }))
-              }}
-            />
-            {invoice && <InvoiceSummary invoice={invoice} />}
-            <button
-              style={{
-                marginTop: '20px',
-                padding: '10px 20px',
-                background: '#ffd54f',
-                border: 'none',
-                borderRadius: '6px',
-                cursor: 'pointer'
-              }}
-              onClick={() => navigate(`/review/${orderId}`)}
-            >
-              ✍️ Leave a Review
-            </button>
-          </>
-        ) : (
+          <div style={styles.section}>
+            <h3 style={styles.sectionTitle}>Select Payment Gateway</h3>
+            <label style={styles.checkboxLabel}>
+              <input type="radio" name="gateway" value="razorpay" checked={gateway === 'razorpay'} onChange={handleGatewayChange} />
+              Razorpay (UPI/Card/Netbanking)
+            </label>
+          </div>
+
           <PaymentButton
             billing={billing}
             amount={total}
@@ -130,7 +150,8 @@ const BlessedCheckout = ({ cart, setCart, setCartClickCount }) => {
               if (status === 'success') {
                 try {
                   console.log('📡 Payment successful, notifying backend...');
-                  const result = await createOrder(paymentData);
+                  const currentInvoiceId = `INV-${Date.now()}`;
+                  const result = await createOrder(paymentData, currentInvoiceId);
 
                   if (!result.orderId) {
                     alert("Order processed but could not be saved to your account. Please contact support with Payment ID: " + paymentData.paymentId);
@@ -149,16 +170,17 @@ const BlessedCheckout = ({ cart, setCart, setCartClickCount }) => {
 
                   setCart([]);
                   localStorage.removeItem('cart');
-                  setCartClickCount([]);
+                  setCartClickCount(0);
                   setShowThankYou(true);
                   setPaymentId(paymentData.paymentId);
                   setOrderId(orderId);
                   setInvoice({
-                    invoiceId: `INV-${Date.now()}`,
+                    invoiceId: currentInvoiceId,
+                    orderId,
                     date: new Date().toLocaleDateString(),
                     paymentMethod: 'Razorpay',
                     customer: billing,
-                    items: cart.map(item => ({
+                    items: activeCart.map(item => ({
                       name: item.name,
                       quantity: item.quantity,
                       price: item.price
@@ -180,10 +202,10 @@ const BlessedCheckout = ({ cart, setCart, setCartClickCount }) => {
               setPaymentStatus(status);
             }}
           />
-        )}
 
-        <p style={styles.footer}>Powered by Razorpay • Secure & Instant</p>
-      </div>
+          <p style={styles.footer}>Powered by Razorpay • Secure & Instant</p>
+        </div>
+      )}
     </div>
   );
 };
@@ -197,6 +219,35 @@ const styles = {
     fontFamily: 'Roboto, sans-serif',
     color: '#5d4037',
     display: 'flex',
+    justifyContent: 'center'
+  },
+  pageThankYou: {
+    background: 'linear-gradient(to bottom right, #fff8e1, #ffe0b2)',
+    minHeight: '100vh',
+    padding: '40px 20px',
+    fontFamily: 'Roboto, sans-serif',
+    color: '#5d4037',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  thankYouContainer: {
+    width: '100%',
+    maxWidth: '1100px',
+    margin: '0 auto',
+    padding: '0 15px'
+  },
+  thankYouCard: {
+    background: '#fff3e0',
+    padding: '40px 30px',
+    borderRadius: '15px',
+    boxShadow: '0 10px 30px rgba(212, 175, 55, 0.15)',
+    border: '1px solid #ffe0b2',
+    textAlign: 'center',
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
     justifyContent: 'center'
   },
   card: {

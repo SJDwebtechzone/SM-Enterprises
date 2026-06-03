@@ -25,6 +25,8 @@
 .collection-frame {
   width: 200px;
   height: 200px;
+  aspect-ratio: 1 / 1;
+  flex-shrink: 0;
   border-radius: 50%;
   background-color: #fffaf0;
   border: 2px solid #d4af37;
@@ -39,6 +41,8 @@
 .collection-image {
   width: 170px;
   height: 170px;
+  aspect-ratio: 1 / 1;
+  flex-shrink: 0;
   border-radius: 50%;
   overflow: hidden;
   border: 1px solid #ccc;
@@ -129,29 +133,116 @@
 /* Responsive grid tweaks */
 @media (max-width: 991px) {
   .carousel-item .col-6 {
-    flex: 0 0 33.33%;
-    max-width: 33.33%;
+    flex: 0 0 25%;
+    max-width: 25%;
+  }
+  .collection-frame {
+    width: 140px !important;
+    height: 140px !important;
+  }
+  .collection-image {
+    width: 120px !important;
+    height: 120px !important;
   }
 }
 
 @media (max-width: 768px) {
   .carousel-item .col-6 {
-    flex: 0 0 50%;
-    max-width: 50%;
+    flex: 0 0 25%;
+    max-width: 25%;
+  }
+  .collection-frame {
+    width: 100px !important;
+    height: 100px !important;
+  }
+  .collection-image {
+    width: 85px !important;
+    height: 85px !important;
+  }
+  .collection-name {
+    font-size: 0.8rem;
+  }
+  #diyaCarousel {
+    padding-left: 28px;
+    padding-right: 28px;
   }
 }
 
 @media (max-width: 480px) {
   .carousel-item .col-6 {
-    flex: 0 0 100%;
-    max-width: 100%;
+    flex: 0 0 25%;
+    max-width: 25%;
+  }
+
+  .collection-frame {
+    width: 68px !important;
+    height: 68px !important;
+    border-width: 1px;
   }
 
   .collection-image {
-    height: 160px;
+    width: 58px !important;
+    height: 58px !important;
   }
 
   .collection-name {
-    font-size: 0.9rem;
+    font-size: 0.65rem;
+    margin-top: 0.35rem;
+    line-height: 1.15;
+  }
+}
+
+/* Custom Carousel Controls */
+.diya-carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  z-index: 10;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.diya-carousel-prev {
+  left: -60px;
+  background-color: rgba(157, 107, 107, 0.6) !important;
+}
+
+.diya-carousel-next {
+  right: -60px;
+  background-color: rgba(143, 102, 102, 0.6) !important;
+}
+
+@media (max-width: 991px) {
+  .diya-carousel-prev {
+    left: -20px;
+  }
+  .diya-carousel-next {
+    right: -20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .diya-carousel-btn {
+    width: 36px;
+    height: 36px;
+  }
+  .diya-carousel-prev {
+    left: 0px;
+  }
+  .diya-carousel-next {
+    right: 0px;
+  }
+  .collections-section {
+    padding-top: 1.5rem !important;
+    padding-bottom: 0.5rem !important;
+  }
+  .collections-section h2 {
+    margin-bottom: 1rem !important;
   }
 }

@@ -26,10 +26,7 @@
   padding-bottom: 0.5rem;
 } */
 body {
-  /* background-color: #f6f0f0; */
-  background-image: url('../../assets/images/breadcrumb-pattern.png');
-  background-repeat: repeat;
-  background-size: 300px;
+  background-color: #fffdf9;
 }
 
 /* 🛍️ Product Card */
@@ -42,9 +39,8 @@ body {
   transition: transform 0.3s ease;
   background: linear-gradient(to bottom, #fffaf0, #fdf6e3);
 
-  min-height: 400px;
-  border: 12px solid #e8940dff;
-
+  min-height: 340px;
+  border: 2px solid #d4af37;
 }
 
 
@@ -216,4 +212,55 @@ body {
 .best-seller {
   color: #ff9800;
   font-weight: bold;
+}
+
+/* 📱 Responsive Styling for 2-column mobile view */
+@media (max-width: 768px) {
+  .product-card {
+    border: 2px solid #d4af37 !important;
+    min-height: 240px !important;
+    max-width: 100% !important;
+    box-shadow: 0 2px 6px rgba(139, 0, 0, 0.1) !important;
+  }
+  .product-image, .product-image-full {
+    height: 120px !important;
+  }
+  .product-title {
+    font-size: 0.8rem !important;
+    line-height: 1.25 !important;
+    margin-bottom: 0.25rem !important;
+    min-height: 38px !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+  }
+  .pricing p {
+    font-size: 0.8rem !important;
+    margin-bottom: 0.25rem !important;
+  }
+  .product-body {
+    padding: 0.5rem !important;
+  }
+  /* Quantity controls sizing */
+  .quantity-controls {
+    gap: 0.25rem !important;
+  }
+  .quantity-controls button {
+    padding: 0.1rem 0.3rem !important;
+    font-size: 0.65rem !important;
+  }
+  .quantity-controls input {
+    width: 25px !important;
+    height: 20px !important;
+    font-size: 0.7rem !important;
+  }
+  .btn-sm {
+    padding: 0.15rem 0.35rem !important;
+    font-size: 0.65rem !important;
+    border-radius: 6px !important;
+  }
+  .pricing {
+    min-height: 24px !important;
+  }
 }

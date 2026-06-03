@@ -21,10 +21,11 @@ const ProductPage = ({ onAddToCart, onAddToWishlist, wishlist = [] }) => {
   const [quantities, setQuantities] = useState({});
   const [showControls, setShowControls] = useState(false);
 
-  const decodedCategory = categoryMap[category.toLowerCase()] || category;
+  const decodedCategory = category ? (categoryMap[category.toLowerCase()] || category).replace(/-/g, ' ') : '';
 
 
   useEffect(() => {
+    if (!category) return;
     axios
       .get(`${import.meta.env.VITE_BACKEND_URL}/api/products/${category}`)
       .then((res) => {
@@ -62,19 +63,13 @@ const ProductPage = ({ onAddToCart, onAddToWishlist, wishlist = [] }) => {
 
   return (
     <div className="container-fluid py-5" style={{
-
-      // background: " rgba(223, 199, 15, 0.4)",
       background: "white"
-
-
-
-
     }}>
-      <h2 className="mb-4">{decodedCategory}</h2>
+      <h2 className="mb-4 text-uppercase fw-bold text-center" style={{ color: '#8b0000', fontFamily: "'Poppins', sans-serif" }}>{decodedCategory}</h2>
       {products.length > 0 ? (
         <div className="row">
           {products.map((product, index) => (
-            <div key={index} className="col-md-6 col-lg-3 mb-4">
+            <div key={index} className="col-6 col-md-6 col-lg-3 mb-4">
               <div className="card product-card h-100 shadow-sm border-1">
                 <div className="position-relative">
                   <img

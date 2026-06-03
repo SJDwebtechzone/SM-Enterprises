@@ -8,6 +8,33 @@ const PaymentButton = ({ billing, amount, gateway, onPaymentVerified }) => {
   const loadRazorpay = async () => {
     if (gateway !== "razorpay") return;
 
+    // Validate billing details
+    if (!billing.name?.trim()) {
+      alert("Please enter your Full Name.");
+      return;
+    }
+    if (!billing.email?.trim()) {
+      alert("Please enter your Email Address.");
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(billing.email.trim())) {
+      alert("Please enter a valid Email Address.");
+      return;
+    }
+    if (!billing.phone?.trim()) {
+      alert("Please enter your Phone Number.");
+      return;
+    }
+    if (billing.phone.trim().length < 10) {
+      alert("Please enter a valid Phone Number (minimum 10 digits).");
+      return;
+    }
+    if (!billing.address?.trim()) {
+      alert("Please enter your delivery Address.");
+      return;
+    }
+
     setLoading(true);
 
     try {

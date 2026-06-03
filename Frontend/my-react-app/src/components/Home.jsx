@@ -99,17 +99,14 @@ const Home = () => {
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center center',
                 width: '100%',
-
-                // backgroundPosition: 'top center', // or 'center top', 'center bottom'
               }}
-
             >
               <div className="overlay"></div>
               <div className="container-fluid h-100">
                 <div className="row justify-content-center align-items-center h-100">
                   <div className="col-md-12 d-flex flex-column justify-content-end align-items-center text-center mb-4 px-3 px-md-5">
                     <h1 className="hero-title mb-2">
-                      Experience the fragrance of devotion and the glow of purity in every ritual
+                      The spiritual journey doesn't change what your eyes see; it alters how your heart understands.
                     </h1>
                     <h2 className="hero-subtitle subheading mb-4">
                       Traditions preserved, devotion delivered

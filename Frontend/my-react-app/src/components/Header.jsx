@@ -14,6 +14,7 @@ const Header = ({ cartClickCount, showMessage }) => {
   const [query, setQuery] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
   const [showMobileSearch, setShowMobileSearch] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const { user, setUser } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -33,6 +34,26 @@ const Header = ({ cartClickCount, showMessage }) => {
 
   return (
     <>
+      <style>
+        {`
+          @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&display=swap');
+
+          #mobileNavbarNav {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease;
+            opacity: 0;
+            display: block !important;
+          }
+          #mobileNavbarNav.show {
+            max-height: 250px;
+            opacity: 1;
+          }
+          .nav-item .nav-link:hover .nav-underline {
+            width: 100% !important;
+          }
+        `}
+      </style>
       {/* ===== DESKTOP HEADER ===== */}
       <header className="d-none d-lg-block" style={{
         backgroundColor: "#f7e2b8",
@@ -185,9 +206,10 @@ const Header = ({ cartClickCount, showMessage }) => {
             to="/"
             className="navbar-brand fw-bold d-inline-flex align-items-center"
             style={{
-              fontFamily: "Poppins, sans-serif",
-              color: "#b22222",
-              fontSize: "28px",
+              fontFamily: "'Cinzel', serif",
+              color: "#8b0000",
+              fontSize: "36px",
+              letterSpacing: "2.5px",
               textDecoration: "none",
             }}
           >
@@ -195,7 +217,7 @@ const Header = ({ cartClickCount, showMessage }) => {
               src={devspectra}
               alt="Logo"
               className="rounded-circle"
-              style={{ width: "50px", height: "50px", marginRight: "10px" }}
+              style={{ width: "50px", height: "50px", marginRight: "16px" }}
             />
             SM Enterprises
           </Link>
@@ -214,7 +236,9 @@ const Header = ({ cartClickCount, showMessage }) => {
             }}
           />
 
-          <div className="small text-muted">All-INCLUSIVE HINDU SPIRITUAL PLATFORM</div>
+          <div style={{ fontSize: "14px", letterSpacing: "1px", fontWeight: "600", color: "#8d6e63", marginTop: "4px" }}>
+            ALL-INCLUSIVE HINDU SPIRITUAL PLATFORM
+          </div>
         </div>
 
         {/* ===== NAV MENU ===== */}
@@ -279,8 +303,7 @@ const Header = ({ cartClickCount, showMessage }) => {
           {/* Hamburger */}
           <button
             className="btn p-0 border-0 bg-transparent"
-            data-bs-toggle="collapse"
-            data-bs-target="#mobileNavbarNav"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             <i className="bi bi-list fs-2 text-dark"></i>
           </button>
@@ -301,11 +324,19 @@ const Header = ({ cartClickCount, showMessage }) => {
               src={devspectra}
               alt="Logo"
               className="rounded-circle"
-              style={{ height: "32px", marginRight: "8px" }}
+              style={{ height: "36px", marginRight: "12px" }}
             />
-            <span style={{ color: "#b22222", fontWeight: "bold", fontSize: "16px" }}>SM Enterprises</span>
+            <span style={{ 
+              color: "#8b0000", 
+              fontFamily: "'Cinzel', serif", 
+              fontWeight: "700", 
+              fontSize: "21px",
+              letterSpacing: "1.2px"
+            }}>SM Enterprises</span>
           </div>
-          <div className="small text-muted" style={{ fontSize: "10px" }}>All-INCLUSIVE HINDU SPIRITUAL PLATFORM</div>
+          <div style={{ fontSize: "11px", letterSpacing: "0.5px", fontWeight: "600", color: "#8d6e63", marginTop: "2px" }}>
+            ALL-INCLUSIVE HINDU SPIRITUAL PLATFORM
+          </div>
         </Link>
 
         {/* Right: User + Cart */}
@@ -328,19 +359,19 @@ const Header = ({ cartClickCount, showMessage }) => {
       </div>
 
       {/* Mobile Navigation Menu */}
-      <div className="collapse d-lg-none" id="mobileNavbarNav">
+      <div className={`collapse d-lg-none ${isMenuOpen ? 'show' : ''}`} id="mobileNavbarNav">
         <ul className="navbar-nav p-3" style={{ backgroundColor: "#f7e2b8" }}>
           <li className="nav-item">
-            <Link className="nav-link text-dark" to="/">Home</Link>
+            <Link className="nav-link text-dark" to="/" onClick={() => setIsMenuOpen(false)}>Home</Link>
           </li>
           <li className="nav-item">
-            <Link className="nav-link text-dark" to="/about">About Us</Link>
+            <Link className="nav-link text-dark" to="/about" onClick={() => setIsMenuOpen(false)}>About Us</Link>
           </li>
           <li className="nav-item">
-            <Link className="nav-link text-dark" to="/products">Products</Link>
+            <Link className="nav-link text-dark" to="/products" onClick={() => setIsMenuOpen(false)}>Products</Link>
           </li>
           <li className="nav-item">
-            <Link className="nav-link text-dark" to="/reach-us">Contact Us</Link>
+            <Link className="nav-link text-dark" to="/reach-us" onClick={() => setIsMenuOpen(false)}>Contact Us</Link>
           </li>
         </ul>
       </div>

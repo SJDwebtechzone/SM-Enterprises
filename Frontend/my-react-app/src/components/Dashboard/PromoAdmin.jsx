@@ -6,8 +6,15 @@ const PromoAdmin = () => {
 
   const fetchPromos = () => {
     fetch(`${import.meta.env.VITE_BACKEND_URL}/api/promos`)
-      .then(res => res.json())
-      .then(data => setPromos(data));
+      .then(res => {
+        if (!res.ok) throw new Error("HTTP error " + res.status);
+        return res.json();
+      })
+      .then(data => setPromos(Array.isArray(data) ? data : []))
+      .catch(err => {
+        console.error('Failed to fetch promos:', err);
+        setPromos([]);
+      });
   };
 
   useEffect(() => {
@@ -54,7 +61,7 @@ const PromoAdmin = () => {
       </div>
 
       <ul className="list-group">
-        {promos.map((promo) => (
+        {Array.isArray(promos) && promos.map((promo) => (
           <li key={promo._id} className="list-group-item d-flex justify-content-between align-items-center">
             <span>{promo.message}</span>
             <div>

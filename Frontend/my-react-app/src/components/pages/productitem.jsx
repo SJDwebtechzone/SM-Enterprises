@@ -50,7 +50,7 @@ const ProductCard = ({ products, onAddToCart, onAddToWishlist, wishlist = [] }) 
     <>
       <div className="row">
         {products.map((product, index) => (
-          <div key={index} className="col-md-6 col-lg-3 mb-4">
+          <div key={index} className="col-6 col-md-6 col-lg-3 mb-4">
             <div className="card product-card h-100 shadow-sm border-1"
             // style={{backgroundColor:'#d6c721ff'}}
             >

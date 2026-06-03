@@ -8,15 +8,18 @@ const BestSellers = () => {
   useEffect(() => {
     axios
       .get(`${import.meta.env.VITE_BACKEND_URL}/api/bestandstock/bestsellers`)
-      .then(res => setTopProducts(res.data))
-      .catch(err => console.error('Failed to fetch bestsellers:', err));
+      .then(res => setTopProducts(Array.isArray(res.data) ? res.data : []))
+      .catch(err => {
+        console.error('Failed to fetch bestsellers:', err);
+        setTopProducts([]);
+      });
   }, []);
 
   return (
     <Card className="mb-4 shadow-sm">
       <Card.Header>🔥 Best-Selling Products</Card.Header>
       <ListGroup variant="flush">
-        {topProducts.map(p => (
+        {Array.isArray(topProducts) && topProducts.map(p => (
           <ListGroup.Item key={p.productId} className="d-flex align-items-center">
             <Image
               src={`${import.meta.env.VITE_BACKEND_URL}${p.image}`}
