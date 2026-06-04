@@ -186,19 +186,19 @@ const SignUp = () => {
         justifyContent: 'center'
       }}
     >
-      <div className="card p-4 shadow-lg" style={{ maxWidth: '400px', width: '100%' }}>
-        <h3 className="mb-4 text-center text-gradient">📿 Devotional Sign Up</h3>
+      <div className="card p-4 shadow-lg border border-warning" style={{ maxWidth: '400px', width: '100%', backgroundColor: 'rgba(255, 255, 255, 0.75)', backdropFilter: 'blur(8px)' }}>
+        <h3 className="mb-4 text-center text-gradient" style={{ color: "#713200", fontFamily: "'Cantata One', serif" }}>📿 Devotional Sign Up</h3>
 
         {!verified ? (
           <>
             <input
               type="text"
-              className="form-control mb-3"
+              className="form-control border-warning mb-3"
               placeholder="Enter phone number (+91XXXXXXXXXX)"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
             />
-            <button className="btn btn-success w-100 mb-3" onClick={sendOTP}>
+            <button className="btn btn-warning w-100 text-dark fw-bold mb-3" onClick={sendOTP}>
               Send OTP
             </button>
 
@@ -206,12 +206,12 @@ const SignUp = () => {
               <>
                 <input
                   type="text"
-                  className="form-control mb-3"
+                  className="form-control border-warning mb-3"
                   placeholder="Enter OTP"
                   value={otp}
                   onChange={(e) => setOtp(e.target.value)}
                 />
-                <button className="btn btn-primary w-100" onClick={verifyOTP}>
+                <button className="btn btn-warning w-100 text-dark fw-bold" onClick={verifyOTP}>
                   Verify OTP
                 </button>
               </>

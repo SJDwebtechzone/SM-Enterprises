@@ -133,18 +133,18 @@ const CartSection = ({ cart, setCart, setCartClickCount }) => {
       <div className="container">
         <div className="row g-0">
           <div className="col-md-9 mx-auto">
-            <h1 className="mb-0 bread text-dark">My Cart</h1>
+             <h1 className="mb-0 bread" style={{ color: "#713200", fontFamily: "'Cantata One', serif", fontWeight: "bold" }}>My Cart</h1>
           </div>
         </div>
       </div>
       {/* </div> */}
 
-      <section className="py-5 bg-light">
+      <section className="py-5 bg-transparent">
         <div className="container">
           {/* Cart Table */}
           {isMobile ? (
             cartItems.map(item => (
-              <div className="card mb-3 shadow-sm" key={item._id}>
+              <div className="card mb-3 shadow-sm" key={item._id} style={{ backgroundColor: 'rgba(255, 255, 255, 0.75)' }}>
                 <div className="card-body">
                   <div className="d-flex align-items-center mb-2">
                     <img src={item.image?.startsWith('http') ? item.image : `${import.meta.env.VITE_BACKEND_URL}${item.image}`} alt={item.name} className="me-3" style={{ width: '60px', height: '60px', objectFit: 'cover' }} />
@@ -163,8 +163,8 @@ const CartSection = ({ cart, setCart, setCartClickCount }) => {
           ) :
             (<div className="row">
               <div className="col-md-12">
-                <div className="table-responsive">
-                  <table className="table table-bordered table-hover cart-table text-center">
+                <div className="table-responsive shadow-sm rounded border border-warning" style={{ backgroundColor: 'rgba(255, 255, 255, 0.75)', backdropFilter: 'blur(8px)' }}>
+                  <table className="table table-bordered table-hover cart-table text-center mb-0">
                     <thead className="bg-warning text-dark">
                       <tr>
                         <th>Action</th>
@@ -224,7 +224,7 @@ const CartSection = ({ cart, setCart, setCartClickCount }) => {
           <div className="row justify-content-end mt-5">
             {/* Coupon Code */}
             <div className="col-lg-4 mb-4">
-              <div className="bg-white p-4 shadow-sm rounded border border-warning">
+              <div className="p-4 shadow-sm rounded border border-warning" style={{ backgroundColor: 'rgba(255, 255, 255, 0.75)', backdropFilter: 'blur(8px)' }}>
                 <div className="d-flex align-items-center mb-3">
                   <i className="bi bi-gift-fill text-warning fs-3 me-2"></i>
                   <h4 className="mb-0">Apply Coupon</h4>
@@ -250,29 +250,29 @@ const CartSection = ({ cart, setCart, setCartClickCount }) => {
 
             {/* Estimate Shipping */}
             <div className="col-lg-4 mb-4">
-              <div className="bg-white p-4 shadow-sm rounded border-start border-4 border-primary">
+              <div className="p-4 shadow-sm rounded border border-warning" style={{ backgroundColor: 'rgba(255, 255, 255, 0.75)', backdropFilter: 'blur(8px)' }}>
                 <div className="d-flex align-items-center mb-3">
-                  <i className="bi bi-truck fs-3 text-primary me-2"></i>
+                  <i className="bi bi-truck fs-3 text-warning me-2"></i>
                   <h4 className="mb-0">Estimate Shipping & Tax</h4>
                 </div>
                 <p className="text-muted">Enter your destination to calculate delivery charges and taxes.</p>
 
                 <div className="mb-2">
                   <label className="form-label fw-semibold">Country</label>
-                  <input type="text" className="form-control border-primary" placeholder="e.g. India" />
+                  <input type="text" className="form-control border-warning" placeholder="e.g. India" />
                 </div>
 
                 <div className="mb-2">
                   <label className="form-label fw-semibold">State / Province</label>
-                  <input type="text" className="form-control border-primary" placeholder="e.g. Tamil Nadu" />
+                  <input type="text" className="form-control border-warning" placeholder="e.g. Tamil Nadu" />
                 </div>
 
                 <div className="mb-3">
                   <label className="form-label fw-semibold">Zip / Postal Code</label>
-                  <input type="text" className="form-control border-primary" placeholder="e.g. 600095" />
+                  <input type="text" className="form-control border-warning" placeholder="e.g. 600095" />
                 </div>
 
-                <button className="btn btn-primary w-100 fw-bold">
+                <button className="btn btn-warning w-100 text-dark fw-bold">
                   <i className="bi bi-calculator me-2"></i> Estimate Now
                 </button>
               </div>
@@ -280,7 +280,7 @@ const CartSection = ({ cart, setCart, setCartClickCount }) => {
 
             {/* Cart Totals */}
             <div className="col-lg-4 mb-4">
-              <div className="bg-white p-4 shadow-sm total-card">
+              <div className="p-4 shadow-sm rounded border border-warning total-card" style={{ backgroundColor: 'rgba(255, 255, 255, 0.75)', backdropFilter: 'blur(8px)' }}>
                 <h4 className="mb-3">Cart Totals</h4>
 
                 <div className="d-flex justify-content-between mb-2">
@@ -303,7 +303,7 @@ const CartSection = ({ cart, setCart, setCartClickCount }) => {
                   <span>-र{discount.toFixed(2)}</span>
                 </div>
 
-                <hr />
+                <hr style={{ borderColor: '#d4af37' }} />
 
                 <div className="d-flex justify-content-between fw-bold fs-5">
                   <span>Total</span>
@@ -320,7 +320,7 @@ const CartSection = ({ cart, setCart, setCartClickCount }) => {
                     total,
                     cartItems
                   }}
-                  className="btn btn-dark w-100 mt-3"
+                  className="btn btn-warning w-100 text-dark fw-bold mt-3"
                 >
                   <i className="bi bi-arrow-right-circle me-2"></i> Proceed to Checkout
                 </Link>

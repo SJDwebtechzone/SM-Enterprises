@@ -38,18 +38,18 @@ const ContactSection = () => {
   return (
     
 
-<section className="py-5" style={{ backgroundColor: '#f9f4f2ff' }}>
+<section className="py-5" style={{ background: 'transparent' }}>
   <div className="container">
     {/* Contact Info */}
     <div className="row text-center mb-5 ">
       {[{
         icon: <FaMapMarkerAlt />,
         label: 'Address',
-        value: '198 West 21th Street, Suite 721 New York NY 10016'
+        value: 'No.392, Thoppu Street, Vadamanapakkkam, Thoppu Street, Tiruvannamalai, Tamil Nadu - 604402'
       }, {
         icon: <FaPhoneAlt />,
         label: 'Phone',
-        value: <a href="tel:+1235235598">+91 9788661093</a>
+        value: <a href="tel:+919788661093">+91 9788661093</a>
       }, {
         icon: <FaEnvelope />,
         label: 'Email',
@@ -61,8 +61,8 @@ const ContactSection = () => {
       // 
       }].map((item, idx) => (
         <div className="col-md-4 mb-4" key={idx}>
-          <div className="bg-white p-4 shadow-sm rounded h-100 d-flex flex-column align-items-center justify-content-center">
-            <div className="contact-icon" style={{ fontSize: '1.5rem', color: '#007bff' }}>{item.icon}</div>
+          <div className="p-4 shadow-sm rounded h-100 d-flex flex-column align-items-center justify-content-center" style={{ backgroundColor: 'rgba(255, 255, 255, 0.75)', border: '1.5px solid #d4af37' }}>
+            <div className="contact-icon" style={{ fontSize: '1.5rem', color: '#8b6914' }}>{item.icon}</div>
             <p className="mt-3 mb-1"><strong>{item.label}:</strong></p>
             <p className="mb-0">{item.value}</p>
           </div>
@@ -74,7 +74,7 @@ const ContactSection = () => {
     <div className="row">
       {/* Contact Form */}
       <div className="col-md-6 order-md-last mb-4">
-        <form className="bg-white p-4 shadow-sm rounded" onSubmit={handleSubmit}>
+        <form className="p-4 shadow-sm rounded" style={{ backgroundColor: 'rgba(255, 255, 255, 0.75)', border: '1.5px solid #d4af37' }} onSubmit={handleSubmit}>
       <h4 className="mb-4 text-center">Send Us a Message</h4>
       <div className="mb-3">
         <input
@@ -147,7 +147,7 @@ const ContactSection = () => {
 
       {/* Map */}
       <div className="col-md-6 mb-4">
-        <div className="bg-white p-4 shadow-sm rounded overflow-hidden" style={{ height: '100%' }}>
+        <div className="p-4 shadow-sm rounded overflow-hidden" style={{ height: '100%', backgroundColor: 'rgba(255, 255, 255, 0.75)', border: '1.5px solid #d4af37' }}>
           <FreeMap />
         </div>
       </div>

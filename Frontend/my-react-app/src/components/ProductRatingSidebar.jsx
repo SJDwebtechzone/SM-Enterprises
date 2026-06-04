@@ -48,18 +48,20 @@ const ProductRatingSidebar = ({ productId }) => {
 
 const styles = {
   card: {
-    background: '#fff3e0',
+    background: 'rgba(255, 255, 255, 0.75)',
+    backdropFilter: 'blur(8px)',
     padding: '25px',
     borderRadius: '15px',
-    boxShadow: '0 4px 15px rgba(212, 175, 55, 0.1)',
+    boxShadow: '0 8px 32px rgba(212, 175, 55, 0.15)',
     textAlign: 'center',
     marginBottom: '20px',
-    border: '1px solid #ffe0b2'
+    border: '1.5px solid #d4af37'
   },
   header: {
+    fontFamily: "'Cantata One', serif",
     fontSize: '1.2rem',
     fontWeight: 'bold',
-    color: '#8d6e63',
+    color: '#713200',
     marginBottom: '15px'
   },
   average: {
@@ -68,24 +70,24 @@ const styles = {
     color: '#d4af37'
   },
   count: {
-    color: '#a1887f',
+    color: '#713200',
     marginBottom: '20px'
   },
   starLabel: {
     width: '40px',
-    color: '#5d4037',
+    color: '#713200',
     fontWeight: '500'
   },
   progressContainer: {
     height: '10px',
-    backgroundColor: '#fff8e1',
+    backgroundColor: 'rgba(212, 175, 55, 0.15)',
     borderRadius: '5px',
     display: 'flex'
   },
   percentage: {
     width: '45px',
     fontSize: '0.9rem',
-    color: '#8d6e63',
+    color: '#713200',
     textAlign: 'right'
   }
 };

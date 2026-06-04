@@ -62,15 +62,10 @@ const Wishlist = ({ wishlist, setWishlist, onAddToCart }) => {
 
   return (
     <>
-      <div className="container">
+      <div className="container pt-4">
         <div className="row justify-content-center align-items-center text-center">
           <div className="col-md-9">
-            <nav aria-label="breadcrumb">
-              <ol className="breadcrumb justify-content-center bg-transparent p-0 mb-2">
-                <li className="breadcrumb-item active text-white" aria-current="page">Wishlist</li>
-              </ol>
-            </nav>
-            <h1 className="display-4 fw-bold">My Wishlist</h1>
+            <h1 className="display-4 fw-bold" style={{ color: "#713200", fontFamily: "'Cantata One', serif" }}>My Wishlist</h1>
           </div>
         </div>
       </div>

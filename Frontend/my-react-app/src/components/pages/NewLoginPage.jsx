@@ -110,39 +110,39 @@ const OtpLogin = ({ setCart, setCartClickCount }) => {
 
   return (
     <AuthLayout imageSrc={Hindu_Devotional_Bac}>
-      <h2 className="mb-4 text-center">Login with Email OTP</h2>
-      <div className="card p-4 mx-auto" style={{ maxWidth: '400px' }}>
+      <h2 className="mb-4 text-center" style={{ color: "#713200", fontFamily: "'Cantata One', serif" }}>Login with Email OTP</h2>
+      <div className="card p-4 mx-auto border border-warning shadow-lg" style={{ maxWidth: '400px', backgroundColor: 'rgba(255, 255, 255, 0.75)', backdropFilter: 'blur(8px)' }}>
         {!otpSent ? (
           <>
             <div className="mb-3">
-              <label className="form-label">Email Address</label>
+              <label className="form-label fw-semibold">Email Address</label>
               <input
                 type="email"
-                className="form-control"
+                className="form-control border-warning"
                 placeholder="Enter email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
-            <button className="btn btn-primary w-100" onClick={handleSendOtp} disabled={loading}>
+            <button className="btn btn-warning w-100 text-dark fw-bold" onClick={handleSendOtp} disabled={loading}>
               {loading ? 'Sending...' : 'Send OTP'}
             </button>
           </>
         ) : (
           <>
             <div className="mb-3">
-              <label className="form-label">Enter OTP</label>
+              <label className="form-label fw-semibold">Enter OTP</label>
               <input
                 type="text"
-                className="form-control"
+                className="form-control border-warning"
                 placeholder="Enter OTP"
                 value={otp}
                 onChange={(e) => setOtp(e.target.value.trim())}
                 required
               />
             </div>
-            <button className="btn btn-success w-100" onClick={handleVerifyOtp} disabled={loading}>
+            <button className="btn btn-warning w-100 text-dark fw-bold" onClick={handleVerifyOtp} disabled={loading}>
               {loading ? 'Verifying...' : 'Verify OTP'}
             </button>
           </>

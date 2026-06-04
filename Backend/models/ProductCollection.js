@@ -27,6 +27,7 @@ const productCollectionSchema = new mongoose.Schema({
     Material: String,
     Dimensions: String,
     About: String,
+    Added: String,
   },
 
   ratings: [

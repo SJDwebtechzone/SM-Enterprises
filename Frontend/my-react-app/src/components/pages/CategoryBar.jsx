@@ -135,7 +135,7 @@ useEffect(() => {
   };
 
   return (
-    <div className="container py-4" style={{ background: "white" }}>
+    <div className="container py-4" style={{ background: "transparent" }}>
       {/* Dropdown Filters Row */}
       <div className="row g-2 mb-4 align-items-center">
         {/* Categories Dropdown */}

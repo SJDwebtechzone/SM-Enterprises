@@ -24,27 +24,40 @@ const ChatFooter = () => {
   }
 
   return (
-    <div className="whatsapp-wrapper" onClick={handleClick}>
-      <Link
-        to={`https://wa.me/${phoneNumber}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-white text-decoration-none"
-      >
-        <div className="whatsapp-ring">
-          <img
-            src={whatsappIcon}
-            alt="WhatsApp"
-            className="whatsapp-icon"
-          />
-        </div>
+    <>
+      {/* Floating Call Button */}
+      <div className="phone-wrapper">
+        <a
+          href={`tel:+91${phoneNumber.substring(2)}`}
+          className="text-white text-decoration-none"
+        >
+          <div className="phone-ring">
+            <div className="phone-icon-bg">
+              <i className="bi bi-telephone-fill phone-icon" style={{ fontSize: '24px', color: '#fff' }}></i>
+            </div>
+          </div>
+        </a>
+      </div>
 
-
-      </Link>
-      <div className="cracker-effect" />
-
-    </div>
-
+      {/* Floating WhatsApp Button */}
+      <div className="whatsapp-wrapper" onClick={handleClick}>
+        <Link
+          to={`https://wa.me/${phoneNumber}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-white text-decoration-none"
+        >
+          <div className="whatsapp-ring">
+            <img
+              src={whatsappIcon}
+              alt="WhatsApp"
+              className="whatsapp-icon"
+            />
+          </div>
+        </Link>
+        <div className="cracker-effect" />
+      </div>
+    </>
   );
 };
 

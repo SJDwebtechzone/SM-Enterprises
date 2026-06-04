@@ -18,8 +18,9 @@ const AuthLayout = ({ imageSrc, children }) => {
         className="p-4 rounded shadow"
         style={{
           backgroundColor: 'rgba(255, 255, 255, 0.85)', // semi-transparent white
+          border: '1.5px solid #d4af37',
+          backdropFilter: 'blur(8px)',
           width: '400px',
-          
         }}
       >
         {children}

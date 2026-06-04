@@ -41,7 +41,7 @@ const ShippingPolicy = () => {
         <h1 className="sp-title">Shipping Policy</h1>
         <p className="sp-subtitle">
           We’re committed to delivering your order quickly, safely, and in perfect condition.
-          For help, call or WhatsApp <a href="tel:+91XXXXXXXXXX" className="sp-link">+91 [9788661093]</a>
+          For help, call or WhatsApp <a href="tel:+919788661093" className="sp-link">+91 9788661093</a>
           {' '}(10:00 AM – 6:00 PM IST, Mon–Sat).
         </p>
       </header>

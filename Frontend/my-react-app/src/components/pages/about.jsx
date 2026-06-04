@@ -70,17 +70,21 @@ const AboutUs = () => {
       </Container>
 
       {/* Why Choose Us Section */}
-      <section className="py-5 bg-light">
+      <section className="py-5 bg-transparent">
         <Container>
           <h2 className="text-center mb-4">🌟 Why Choose Us</h2>
           <Row>
             {features.map((feature, idx) => (
-              <Col md={4} sm={6} xs={12} key={idx} className="mb-4">
-                <Card className="h-100 text-center shadow-sm border-0 rounded-3">
-                  <Card.Body>
-                    <div className="mb-3">{feature.icon}</div>
-                    <Card.Title>{feature.title}</Card.Title>
-                    <Card.Text>{feature.desc}</Card.Text>
+              <Col md={4} sm={6} xs={6} key={idx} className="mb-4">
+                <Card className="h-100 text-center shadow-sm rounded-3" style={{ border: '1.5px solid #d4af37' }}>
+                  <Card.Body style={{ padding: '12px' }}>
+                    <div className="mb-2">{feature.icon}</div>
+                    <Card.Title style={{ fontSize: '0.95rem', fontWeight: 'bold', minHeight: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      {feature.title}
+                    </Card.Title>
+                    <Card.Text style={{ fontSize: '0.78rem', color: '#555' }}>
+                      {feature.desc}
+                    </Card.Text>
                   </Card.Body>
                 </Card>
               </Col>

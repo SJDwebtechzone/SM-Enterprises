@@ -82,7 +82,7 @@ useEffect(() => {
     <div style={{
             
             // background: " rgba(223, 199, 15, 0.4)",
-            background:'white' ,
+            background:'transparent' ,
     //         backgroundImage:`url(${vilakku5})`,
     //         backgroundSize: 'cover', // 👈 preserves aspect ratio, avoids blur
     // backgroundRepeat: 'no-repeat',

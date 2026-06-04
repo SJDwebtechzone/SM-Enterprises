@@ -212,21 +212,22 @@ const BlessedCheckout = ({ cart, setCart, setCartClickCount }) => {
 
 const styles = {
   page: {
-    background: 'linear-gradient(to bottom right, #fff8e1, #ffe0b2)',
+    background: 'transparent',
     height: '100%',
     minHeight: '100vh',
     padding: '40px 0',
     fontFamily: 'Roboto, sans-serif',
-    color: '#5d4037',
+    color: '#713200',
     display: 'flex',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   pageThankYou: {
-    background: 'linear-gradient(to bottom right, #fff8e1, #ffe0b2)',
+    background: 'transparent',
     minHeight: '100vh',
     padding: '40px 20px',
     fontFamily: 'Roboto, sans-serif',
-    color: '#5d4037',
+    color: '#713200',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center'
@@ -238,11 +239,12 @@ const styles = {
     padding: '0 15px'
   },
   thankYouCard: {
-    background: '#fff3e0',
+    background: 'rgba(255, 255, 255, 0.75)',
+    backdropFilter: 'blur(8px)',
     padding: '40px 30px',
     borderRadius: '15px',
-    boxShadow: '0 10px 30px rgba(212, 175, 55, 0.15)',
-    border: '1px solid #ffe0b2',
+    boxShadow: '0 8px 32px rgba(212, 175, 55, 0.15)',
+    border: '1.5px solid #d4af37',
     textAlign: 'center',
     width: '100%',
     display: 'flex',
@@ -251,18 +253,21 @@ const styles = {
     justifyContent: 'center'
   },
   card: {
-    background: '#fff3e0',
+    background: 'rgba(255, 255, 255, 0.75)',
+    backdropFilter: 'blur(8px)',
     padding: '30px',
     borderRadius: '12px',
-    boxShadow: '0 0 20px rgba(255, 215, 0, 0.4)',
+    border: '1.5px solid #d4af37',
+    boxShadow: '0 8px 32px rgba(212, 175, 55, 0.15)',
     textAlign: 'center',
     maxWidth: '500px',
     width: '90%'
   },
   title: {
-    fontFamily: 'Great Vibes, cursive',
+    fontFamily: "'Cantata One', serif",
     fontSize: '2.5rem',
-    color: '#d4af37',
+    color: '#713200',
+    fontWeight: 'bold',
     marginBottom: '20px'
   },
   section: {
@@ -272,24 +277,27 @@ const styles = {
   sectionTitle: {
     fontSize: '1.2rem',
     marginBottom: '10px',
-    color: '#8d6e63'
+    color: '#713200',
+    fontWeight: 'bold'
   },
   input: {
     width: '100%',
     padding: '10px',
     marginBottom: '10px',
     borderRadius: '6px',
-    border: '1px solid #d7ccc8',
-    fontSize: '1rem'
+    border: '1.5px solid #d4af37',
+    fontSize: '1rem',
+    backgroundColor: '#fff'
   },
   textarea: {
     width: '100%',
     padding: '10px',
     borderRadius: '6px',
-    border: '1px solid #d7ccc8',
+    border: '1.5px solid #d4af37',
     fontSize: '1rem',
     resize: 'vertical',
-    minHeight: '60px'
+    minHeight: '60px',
+    backgroundColor: '#fff'
   },
   checkboxLabel: {
     display: 'block',
@@ -299,7 +307,7 @@ const styles = {
   footer: {
     marginTop: '20px',
     fontSize: '0.85rem',
-    color: '#8d6e63'
+    color: '#713200'
   }
 };
 

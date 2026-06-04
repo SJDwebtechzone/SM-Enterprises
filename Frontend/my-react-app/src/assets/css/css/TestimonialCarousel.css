@@ -20,4 +20,30 @@
 .btn-dark:hover {
     background-color: #0c1354ff;
     border-color: #a91b5bff;
+}
+
+/* Horizontal scrolling wrapper for testimonials */
+.testimonial-scroll-row {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  gap: 20px;
+  padding: 15px 10px;
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+  -ms-overflow-style: none; /* Hide scrollbar for IE/Edge */
+}
+
+.testimonial-scroll-row::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for Chrome/Safari/Opera */
+}
+
+.testimonial-scroll-item {
+  flex: 0 0 330px; /* Consistent card width */
+  margin-bottom: 10px;
+}
+
+@media (max-width: 576px) {
+  .testimonial-scroll-item {
+    flex: 0 0 280px;
   }
+}

@@ -9,7 +9,7 @@ const ProductManager = () => {
   const [formData, setFormData] = useState({
     name: '', price: '', originalPrice: '', discount: '', sale: '',
     category: '', subcategory: '', sku: '', gst: '',
-    offers: '', material: '', dimensions: '', about: '', image: null, productViews: [], video: null, sizes: '', stock: ''
+    offers: '', material: '', dimensions: '', about: '', added: '', image: null, productViews: [], video: null, sizes: '', stock: ''
   });
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
@@ -168,7 +168,7 @@ const ProductManager = () => {
         value.forEach(file => data.append('productViews', file));
       } else if (key === 'video' && value) {
         // handled separately below
-      } else if (!['sizes', 'stock', 'gst', 'material', 'dimensions', 'about', 'productViews', 'video'].includes(key)) {
+      } else if (!['sizes', 'stock', 'gst', 'material', 'dimensions', 'about', 'added', 'productViews', 'video'].includes(key)) {
         data.append(key, value);
       }
     });
@@ -177,7 +177,8 @@ const ProductManager = () => {
     data.append('details', JSON.stringify({
       Material: formData.material,
       Dimensions: formData.dimensions,
-      About: formData.about
+      About: formData.about,
+      Added: formData.added
     }));
 
     data.append('sizes', JSON.stringify(formData.sizes.split(',').map(s => s.trim())));
@@ -197,7 +198,7 @@ const ProductManager = () => {
       setFormData({
         name: '', price: '', originalPrice: '', discount: '', sale: '',
         category: '', subcategory: '', sku: '', gst: '',
-        offers: '', material: '', dimensions: '', about: '', image: null, productViews: [], video: null, sizes: '', stock: ''
+        offers: '', material: '', dimensions: '', about: '', added: '', image: null, productViews: [], video: null, sizes: '', stock: ''
       });
       setEditingId(null);
       setPreviewImage('');
@@ -228,6 +229,7 @@ const ProductManager = () => {
       material: product.details?.Material || '',
       dimensions: product.details?.Dimensions || '',
       about: product.details?.About || '',
+      added: product.details?.Added || '',
       image: null,
       video: null
     });
@@ -277,7 +279,7 @@ const ProductManager = () => {
                 <Form.Control type="number" name="sale" value={formData.sale} onChange={handleChange} />
               </Form.Group>
               <Form.Group className="mb-2">
-                <Form.Label>SKU</Form.Label>
+                <Form.Label>Feet</Form.Label>
                 <Form.Control name="sku" value={formData.sku} onChange={handleChange} />
               </Form.Group>
               <Form.Group className="mb-2">
@@ -424,6 +426,10 @@ const ProductManager = () => {
                 <Form.Label>About</Form.Label>
                 <Form.Control as="textarea" rows={2} name="about" value={formData.about} onChange={handleChange} />
               </Form.Group>
+              <Form.Group className="mb-2">
+                <Form.Label>Added</Form.Label>
+                <Form.Control as="textarea" rows={2} name="added" value={formData.added} onChange={handleChange} />
+              </Form.Group>
               <Button type="submit" variant={editingId ? 'warning' : 'primary'} className="w-100 mt-2">
                 {editingId ? 'Update Product' : 'Add Product'}
               </Button>
@@ -446,7 +452,7 @@ const ProductManager = () => {
               <th>Price</th>
               <th>Sale</th>
               <th>Discount</th>
-              <th>SKU</th>
+              <th>Feet</th>
               <th>GST (%)</th>
               <th>Sizes</th>
               <th>Stock</th>
@@ -455,6 +461,7 @@ const ProductManager = () => {
               <th>Material</th>
               <th>Dimensions</th>
               <th>About</th>
+              <th>Added</th>
               <th>Image</th>
               <th>Actions</th>
             </tr>
@@ -476,13 +483,14 @@ const ProductManager = () => {
                 <td>
                   <ul style={{ paddingLeft: '1rem' }}>
                     {(prod.offers || []).map((offer, idx) => (
-                      <li key={idx}>{offer}</li>
+                      <li key={idx}>{offer.replace(/🎁\s*/g, '')}</li>
                     ))}
                   </ul>
                 </td>
                 <td>{prod.details?.Material}</td>
                 <td>{prod.details?.Dimensions}</td>
                 <td>{prod.details?.About}</td>
+                <td>{prod.details?.Added || '-'}</td>
                 <td>
                   <img
                     src={prod.image?.startsWith('http') ? prod.image : `http://localhost:5000${prod.image}`}

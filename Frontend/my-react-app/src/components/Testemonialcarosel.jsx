@@ -136,17 +136,17 @@ const TestimonialGrid = () => {
     fetchTestimonials();
   }, []);
 
-  const displayedTestimonials = showAll ? testimonials : testimonials.slice(0, 3);
+  const displayedTestimonials = testimonials;
 
   return (
-    <section className="py-5 bg-light">
+    <section className="py-5 bg-transparent">
       <div className="container">
         <div className="text-center mb-5">
           <span className="d-block mb-2" style={{ color: '#713200', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '2px' }}>Testimonial</span>
           <h2 className="mb-3">Our satisfied customer says</h2>
         </div>
 
-        <div className="row justify-content-center">
+        <div className="testimonial-scroll-row">
           {displayedTestimonials && displayedTestimonials.length > 0 ? (
             displayedTestimonials.map((item, index) => {
               const rawImage = item.productId?.image || item.image || '';
@@ -155,8 +155,8 @@ const TestimonialGrid = () => {
                 : 'https://via.placeholder.com/100';
 
               return (
-                <div key={index} className="col-md-6 col-lg-4 mb-4">
-                  <div className="card h-100 text-center shadow-sm border-0">
+                <div key={index} className="testimonial-scroll-item">
+                  <div className="card h-100 text-center shadow-sm" style={{ border: '1.5px solid #d4af37' }}>
                     <div
                       className="rounded-circle mx-auto mt-4"
                       style={{
@@ -181,35 +181,6 @@ const TestimonialGrid = () => {
               <p className="text-muted">No testimonials available</p>
             </div>
           )}
-        </div>
-
-        <div className="text-center mt-4">
-          <button
-            className="btn"
-            style={{
-              backgroundColor: "#8b6914",
-              border: "none",
-              color: "#fff",
-              padding: "8px 16px",
-              fontSize: "14px",
-              fontWeight: "600",
-              borderRadius: "4px",
-              transition: "all 0.3s ease"
-            }}
-            onMouseEnter={(e) => {
-              e.target.style.backgroundColor = "#fff";
-              e.target.style.color = "#8b6914";
-              e.target.style.border = "1px solid #8b6914";
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.backgroundColor = "#8b6914";
-              e.target.style.color = "#fff";
-              e.target.style.border = "none";
-            }}
-            onClick={() => setShowAll(!showAll)}
-          >
-            {showAll ? 'Show Less' : 'Show More'}
-          </button>
         </div>
       </div>
     </section>

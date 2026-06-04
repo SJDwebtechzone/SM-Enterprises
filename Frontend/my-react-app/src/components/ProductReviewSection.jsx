@@ -282,14 +282,16 @@ const ProductReviewSection = ({ productId, productName, productImage }) => {
 
 const styles = {
   card: {
-    background: '#fff3e0',
+    background: 'rgba(255, 255, 255, 0.75)',
+    backdropFilter: 'blur(8px)',
     borderRadius: '15px',
-    boxShadow: '0 4px 15px rgba(212, 175, 55, 0.1)',
-    border: '1px solid #ffe0b2',
+    boxShadow: '0 8px 32px rgba(212, 175, 55, 0.15)',
+    border: '1.5px solid #d4af37',
     padding: '10px'
   },
   productName: {
-    color: '#8d6e63',
+    fontFamily: "'Cantata One', serif",
+    color: '#713200',
     fontWeight: 'bold',
     fontSize: '1.4rem',
     marginBottom: '20px',
@@ -302,13 +304,14 @@ const styles = {
     border: '3px solid #fff'
   },
   reviewsContainer: {
-    background: '#fff8e1',
+    background: 'rgba(255, 255, 255, 0.45)',
+    border: '1px solid #ffe0b2',
     borderRadius: '12px',
     padding: '20px',
     marginBottom: '20px'
   },
   subHeader: {
-    color: '#8d6e63',
+    color: '#713200',
     fontWeight: 'bold',
     marginBottom: '15px',
     fontSize: '1.1rem'
@@ -335,24 +338,24 @@ const styles = {
     fontWeight: 'bold'
   },
   emptyText: {
-    color: '#a1887f',
+    color: '#713200',
     textAlign: 'center',
     padding: '20px',
     fontStyle: 'italic'
   },
   select: {
-    border: '1px solid #ffe0b2',
+    border: '1.5px solid #d4af37',
     borderRadius: '8px',
-    color: '#5d4037'
+    color: '#713200'
   },
   textarea: {
-    border: '1px solid #ffe0b2',
+    border: '1.5px solid #d4af37',
     borderRadius: '10px',
-    color: '#5d4037',
+    color: '#713200',
     resize: 'none'
   },
   submitButton: {
-    background: 'linear-gradient(to right, #d4af37, #ffcc80)',
+    background: 'linear-gradient(135deg, #c9a44a, #8b6914)',
     border: 'none',
     color: 'white',
     padding: '10px 25px',
@@ -360,7 +363,7 @@ const styles = {
     borderRadius: '25px',
     cursor: 'pointer',
     fontWeight: 'bold',
-    boxShadow: '0 4px 8px rgba(212, 175, 55, 0.3)'
+    boxShadow: '0 4px 15px rgba(139, 105, 20, 0.3)'
   }
 };
 

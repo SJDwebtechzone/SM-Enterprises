@@ -125,9 +125,9 @@ const OrderManager = () => {
       {/* Invoice Modal */}
       <Modal show={showModal} onHide={() => setShowModal(false)} size="lg" centered>
         <Modal.Header closeButton style={{ borderBottom: 'none', background: '#fffdf9' }}>
-          <Modal.Title style={{ fontFamily: 'Great Vibes, cursive', color: '#d4af37' }}>Order Invoice Detail</Modal.Title>
+          <Modal.Title style={{ fontFamily: "'Cantata One', serif", fontWeight: 'bold', color: '#713200' }}>Order Invoice Detail</Modal.Title>
         </Modal.Header>
-        <Modal.Body style={{ background: '#fffdf9', padding: '0 20px 20px' }}>
+        <Modal.Body style={{ background: '#fffdf9', padding: '0 20px 20px', maxHeight: '75vh', overflowY: 'auto' }}>
           {selectedOrder && <InvoiceSummary invoice={selectedOrder} />}
         </Modal.Body>
       </Modal>

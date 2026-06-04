@@ -132,22 +132,29 @@ const ProductDetail = ({ product, onClose, onAddToCart }) => {
               <h6 className="fw-bold" style={styles.sectionTitle}>Description:</h6>
               <p className="small text-muted">{product.details?.About}</p>
 
+              {product.details?.Added && (
+                <>
+                  <h6 className="fw-bold" style={styles.sectionTitle}>Added Info:</h6>
+                  <p className="small text-muted">{product.details.Added}</p>
+                </>
+              )}
+
               <ul className="list-unstyled offers-list">
                 {product.offers?.map((offer, i) => (
-                  <li key={i}>✅ {offer}</li>
+                  <li key={i}>✅ {offer.replace(/🎁\s*/g, '')}</li>
                 ))}
               </ul>
 
               <div className="details mb-3">
                 <p className="mb-1"><strong>Material:</strong> {product.details?.Material}</p>
                 <p className="mb-1"><strong>Dimensions:</strong> {product.details?.Dimensions}</p>
-                <p className="mb-1"><strong>SKU:</strong> {product.sku}</p>
-                {product.details?.Size && <p className="mb-1"><strong>Size:</strong> {product.details.Size}</p>}
-                {product.sizes?.length > 0 && (
+                {product.sku && product.sku.trim() !== '' && <p className="mb-1"><strong>Feet:</strong> {product.sku}</p>}
+                {product.details?.Size && product.details.Size.trim() !== '' && <p className="mb-1"><strong>Size:</strong> {product.details.Size}</p>}
+                {product.sizes?.filter(s => s && s.trim() !== '').length > 0 && (
                   <div className="mt-2">
                     <strong className="mb-1 d-block">Select Size:</strong>
                     <div className="d-flex gap-2">
-                      {product.sizes.map(size => (
+                      {product.sizes.filter(s => s && s.trim() !== '').map(size => (
                         <Button
                           key={size}
                           variant={selectedSize === size ? "warning" : "outline-secondary"}

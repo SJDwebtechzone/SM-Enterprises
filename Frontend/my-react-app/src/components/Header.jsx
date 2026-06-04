@@ -9,12 +9,37 @@ import bg_121 from "../assets/images/bg_121.jpg";
 import bell1 from "../assets/images/bell1.png";
 import bell2 from "../assets/images/bell2.png";
 import CartButton from "./pages/CartButton";
+import GoldenFlowers from "./GoldenFlowers";
 
 const Header = ({ cartClickCount, showMessage }) => {
   const [query, setQuery] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
   const [showMobileSearch, setShowMobileSearch] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [dropdownTimeoutId, setDropdownTimeoutId] = useState(null);
+
+  const handleDropdownMouseEnter = () => {
+    if (dropdownTimeoutId) {
+      clearTimeout(dropdownTimeoutId);
+      setDropdownTimeoutId(null);
+    }
+    setShowDropdown(true);
+  };
+
+  const handleDropdownMouseLeave = () => {
+    const id = setTimeout(() => {
+      setShowDropdown(false);
+    }, 400); // 400ms buffer delay so it doesn't instantly close on brief mouse exits
+    setDropdownTimeoutId(id);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (dropdownTimeoutId) {
+        clearTimeout(dropdownTimeoutId);
+      }
+    };
+  }, [dropdownTimeoutId]);
 
   const { user, setUser } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -52,16 +77,65 @@ const Header = ({ cartClickCount, showMessage }) => {
           .nav-item .nav-link:hover .nav-underline {
             width: 100% !important;
           }
+          .header-logout-btn {
+            color: #713200 !important;
+            font-size: 0.9rem;
+            background-color: transparent !important;
+            border: none;
+            transition: all 0.2s ease-in-out;
+            width: 100%;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            cursor: pointer !important;
+          }
+          .header-logout-btn:hover {
+            background-color: #713200 !important;
+            color: #ffffff !important;
+          }
+          .header-logout-btn i {
+            color: inherit !important;
+          }
         `}
       </style>
       {/* ===== DESKTOP HEADER ===== */}
-      <header className="d-none d-lg-block" style={{
+      <header className="d-none d-lg-block position-relative overflow-hidden" style={{
         backgroundColor: "#f7e2b8",
         boxShadow: '0 4px 18px rgba(139,90,0,0.15)',
         borderBottom: '2px solid #d4a84b'
       }}>
+        <GoldenFlowers count={12} />
+
+        {/* Suspended Hanging Diyas on Left and Right */}
+        <img
+          src={bell1}
+          alt="Hanging Diya Left"
+          className="position-absolute d-none d-xl-block"
+          style={{
+            left: "15px",
+            top: "0",
+            height: "230px",
+            width: "auto",
+            zIndex: 10,
+            pointerEvents: 'none'
+          }}
+        />
+        <img
+          src={bell2}
+          alt="Hanging Diya Right"
+          className="position-absolute d-none d-xl-block"
+          style={{
+            right: "15px",
+            top: "0",
+            height: "230px",
+            width: "auto",
+            zIndex: 10,
+            pointerEvents: 'none'
+          }}
+        />
+
         {/* ===== TOP BAR ===== */}
-        <div className="container-fluid px-4 py-2 d-flex align-items-center justify-content-center">
+        <div className="container-fluid px-4 py-2 d-flex align-items-center justify-content-center" style={{ position: 'relative', zIndex: 10 }}>
           {/* Center: Search + Icons */}
           <div className="d-flex align-items-center gap-4">
             <form
@@ -100,12 +174,17 @@ const Header = ({ cartClickCount, showMessage }) => {
 
             {/* Login Button */}
             {user ? (
-              <div className="dropdown position-relative" style={{ zIndex: 20 }}>
+              <div 
+                className="dropdown position-relative" 
+                style={{ zIndex: 2000 }}
+                onMouseEnter={handleDropdownMouseEnter}
+                onMouseLeave={handleDropdownMouseLeave}
+              >
                 <img
                   src={bg_121 || "https://via.placeholder.com/40"}
                   alt="User Avatar"
                   className="rounded-circle"
-                  style={{ width: "40px", height: "40px", cursor: "pointer" }}
+                  style={{ width: "48px", height: "48px", cursor: "pointer" }}
                   onClick={() => setShowDropdown(!showDropdown)}
                 />
 
@@ -114,12 +193,13 @@ const Header = ({ cartClickCount, showMessage }) => {
                     }`}
                   style={{
                     position: "absolute",
-                    right: 0,
-                    top: "100%",
+                    left: 0,
+                    top: "46px", /* Flush with 48px avatar for stable hover transition */
                     backgroundColor: "#fef9ef", // Soft Sandal
                     border: '1.5px solid #d4a84b', // Gold border
                     padding: '8px 0',
-                    zIndex: 1000,
+                    zIndex: 2000,
+                    minWidth: '160px'
                   }}
                 >
                   <li className="px-3 py-2">
@@ -130,21 +210,8 @@ const Header = ({ cartClickCount, showMessage }) => {
                   <li><hr className="dropdown-divider" style={{ backgroundColor: '#d4a84b', height: '1.5px', opacity: 0.3 }} /></li>
                   <li>
                     <button
-                      className="dropdown-item py-2"
-                      style={{
-                        color: "#713200",
-                        fontSize: '0.9rem',
-                        transition: 'all 0.2s'
-                      }}
+                      className="dropdown-item py-2 header-logout-btn"
                       onClick={handleLogout}
-                      onMouseEnter={(e) => {
-                        e.target.style.backgroundColor = '#713200';
-                        e.target.style.color = '#ffffff';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.target.style.backgroundColor = 'transparent';
-                        e.target.style.color = '#713200';
-                      }}
                     >
                       <i className="bi bi-box-arrow-right me-2"></i>
                       Logout
@@ -188,20 +255,6 @@ const Header = ({ cartClickCount, showMessage }) => {
 
         {/* ===== LOGO ===== */}
         <div className="text-center py-2 position-relative">
-          {/* Left Bell */}
-          <img
-            src={bell1}
-            alt="Bell 1"
-            className="position-absolute"
-            style={{
-              left: "20px",
-              top: "50%",
-              transform: "translateY(-50%)",
-              width: "200px",
-              height: "200px"
-            }}
-          />
-
           <Link
             to="/"
             className="navbar-brand fw-bold d-inline-flex align-items-center"
@@ -219,49 +272,49 @@ const Header = ({ cartClickCount, showMessage }) => {
               className="rounded-circle"
               style={{ width: "50px", height: "50px", marginRight: "16px" }}
             />
-            SM Enterprises
+            SM ENTERPRISES
           </Link>
-
-          {/* Right Bell */}
-          <img
-            src={bell2}
-            alt="Bell 2"
-            className="position-absolute"
-            style={{
-              right: "20px",
-              top: "50%",
-              transform: "translateY(-50%)",
-              width: "200px",
-              height: "200px"
-            }}
-          />
+          <div style={{ fontSize: "11px", letterSpacing: "2px", fontWeight: "700", color: "#d4af37", marginTop: "-6px", textTransform: "uppercase" }}>
+            QUALITY - TRUST - VALUE
+          </div>
 
           <div style={{ fontSize: "14px", letterSpacing: "1px", fontWeight: "600", color: "#8d6e63", marginTop: "4px" }}>
-            ALL-INCLUSIVE HINDU SPIRITUAL PLATFORM
+            Every Path Welcomed. Every Soul Nourished.
           </div>
         </div>
 
         {/* ===== NAV MENU ===== */}
-        <nav className="navbar navbar-expand-lg" style={{
-          background: 'rgba(210,160,60,0.08)'
-        }}>
-          <div className="container-fluid justify-content-center">
-            <div className="collapse navbar-collapse justify-content-center" id="navbarNav">
+        <nav className="navbar navbar-expand-lg justify-content-center py-2" style={{ background: 'transparent' }}>
+          <div className="d-flex justify-content-center align-items-center shadow-sm" style={{
+            borderRadius: '30px',
+            border: '1.5px solid #d4af37',
+            padding: '6px 40px',
+            backgroundColor: '#fffdf9',
+            width: '100%',
+            maxWidth: '900px'
+          }}>
+            <div className="collapse navbar-collapse justify-content-center w-100" id="navbarNav">
               <ul
-                className="navbar-nav text-uppercase fw-semibold text-center"
-                style={{ fontSize: "13px", letterSpacing: "1.2px", gap: "10px" }}
+                className="navbar-nav text-uppercase fw-bold text-center d-flex flex-row align-items-center justify-content-between mb-0 w-100"
+                style={{ fontSize: "13px", letterSpacing: "1.2px" }}
               >
-                {[['/', 'Home'], ['/about', 'About Us'], ['/products', 'Products'], ['/reach-us', 'Contact Us']].map(
-                  ([path, label]) => (
-                    <li className="nav-item" key={path}>
+                {[
+                  ['/', 'Home', 'bi-house'],
+                  ['/about', 'About Us', 'bi-person'],
+                  ['/products', 'Products', 'bi-gift'],
+                  ['/reach-us', 'Contact Us', 'bi-telephone']
+                ].map(([path, label, icon]) => (
+                    <li className="nav-item position-relative" key={label}>
                       <Link
-                        className="nav-link"
+                        className="nav-link d-inline-flex align-items-center"
                         to={path}
                         style={{
                           color: '#4a2800',
-                          padding: '10px 16px',
+                          padding: '8px 16px',
                           position: 'relative',
-                          transition: 'color 0.2s'
+                          transition: 'color 0.2s',
+                          fontWeight: '700',
+                          gap: '6px'
                         }}
                         onMouseEnter={e => {
                           e.currentTarget.style.color = '#8b6914';
@@ -270,7 +323,8 @@ const Header = ({ cartClickCount, showMessage }) => {
                           e.currentTarget.style.color = '#4a2800';
                         }}
                       >
-                        {label}
+                        <i className={`bi ${icon}`} style={{ fontSize: '1rem', color: '#d4af37' }}></i>
+                        <span>{label}</span>
                         <span style={{
                           position: 'absolute', bottom: 4, left: '50%',
                           transform: 'translateX(-50%)',
@@ -291,12 +345,13 @@ const Header = ({ cartClickCount, showMessage }) => {
       </header>
 
       {/* ===== MOBILE HEADER ===== */}
-      <div className="d-flex d-lg-none align-items-center justify-content-between px-3 py-2"
+      <div className="d-flex d-lg-none align-items-center justify-content-between px-3 py-2 position-relative overflow-hidden"
         style={{
           backgroundColor: "#f7e2b8",
           borderBottom: '2px solid #d4a84b',
           boxShadow: '0 3px 12px rgba(139,90,0,0.12)'
         }}>
+        <GoldenFlowers count={6} />
 
         {/* Left: Menu + Search */}
         <div className="d-flex align-items-center gap-3">
@@ -332,10 +387,13 @@ const Header = ({ cartClickCount, showMessage }) => {
               fontWeight: "700", 
               fontSize: "21px",
               letterSpacing: "1.2px"
-            }}>SM Enterprises</span>
+            }}>SM ENTERPRISES</span>
+          </div>
+          <div style={{ fontSize: "9px", letterSpacing: "1.5px", fontWeight: "700", color: "#d4af37", marginTop: "-4px", textTransform: "uppercase" }}>
+            QUALITY - TRUST - VALUE
           </div>
           <div style={{ fontSize: "11px", letterSpacing: "0.5px", fontWeight: "600", color: "#8d6e63", marginTop: "2px" }}>
-            ALL-INCLUSIVE HINDU SPIRITUAL PLATFORM
+            Every Path Welcomed. Every Soul Nourished.
           </div>
         </Link>
 
@@ -347,9 +405,20 @@ const Header = ({ cartClickCount, showMessage }) => {
           </Link>
 
           {/* User */}
-          <Link to={user ? "/account" : "/login"} className="text-dark fs-5">
-            <i className="bi bi-person"></i>
-          </Link>
+          {user ? (
+            <Link to="/account" className="d-flex align-items-center">
+              <img
+                src={bg_121 || "https://via.placeholder.com/40"}
+                alt="User Avatar"
+                className="rounded-circle border border-warning"
+                style={{ width: "32px", height: "32px", objectFit: "cover" }}
+              />
+            </Link>
+          ) : (
+            <Link to="/login" className="text-dark fs-5">
+              <i className="bi bi-person"></i>
+            </Link>
+          )}
 
           {/* Cart */}
           <div className="position-relative">
@@ -360,18 +429,26 @@ const Header = ({ cartClickCount, showMessage }) => {
 
       {/* Mobile Navigation Menu */}
       <div className={`collapse d-lg-none ${isMenuOpen ? 'show' : ''}`} id="mobileNavbarNav">
-        <ul className="navbar-nav p-3" style={{ backgroundColor: "#f7e2b8" }}>
-          <li className="nav-item">
-            <Link className="nav-link text-dark" to="/" onClick={() => setIsMenuOpen(false)}>Home</Link>
+        <ul className="navbar-nav p-3 border-bottom border-warning" style={{ backgroundColor: "#fef9ef" }}>
+          <li className="nav-item mb-2">
+            <Link className="nav-link text-dark d-flex align-items-center gap-2 fw-semibold" to="/" onClick={() => setIsMenuOpen(false)}>
+              <i className="bi bi-house text-warning"></i> Home
+            </Link>
+          </li>
+          <li className="nav-item mb-2">
+            <Link className="nav-link text-dark d-flex align-items-center gap-2 fw-semibold" to="/about" onClick={() => setIsMenuOpen(false)}>
+              <i className="bi bi-person text-warning"></i> About Us
+            </Link>
+          </li>
+          <li className="nav-item mb-2">
+            <Link className="nav-link text-dark d-flex align-items-center gap-2 fw-semibold" to="/products" onClick={() => setIsMenuOpen(false)}>
+              <i className="bi bi-gift text-warning"></i> Products
+            </Link>
           </li>
           <li className="nav-item">
-            <Link className="nav-link text-dark" to="/about" onClick={() => setIsMenuOpen(false)}>About Us</Link>
-          </li>
-          <li className="nav-item">
-            <Link className="nav-link text-dark" to="/products" onClick={() => setIsMenuOpen(false)}>Products</Link>
-          </li>
-          <li className="nav-item">
-            <Link className="nav-link text-dark" to="/reach-us" onClick={() => setIsMenuOpen(false)}>Contact Us</Link>
+            <Link className="nav-link text-dark d-flex align-items-center gap-2 fw-semibold" to="/reach-us" onClick={() => setIsMenuOpen(false)}>
+              <i className="bi bi-telephone text-warning"></i> Contact Us
+            </Link>
           </li>
         </ul>
       </div>

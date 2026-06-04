@@ -5,17 +5,19 @@ import SocialIcons from "./pages/socialMedia";
 import logo from "../assets/images/smlogo6.png";
 import footerImg from "../assets/images/footer.png";
 import FooterAccordion from "./FooterAccordion";
+import GoldenFlowers from "./GoldenFlowers";
 
 const Footer = () => {
   return (
     <footer
-      className="pt-5"
+      className="pt-5 position-relative overflow-hidden"
       style={{
         backgroundColor: "#f7e2b8",
         color: "#000",
         borderTop: "2px solid #d4a84b",
       }}
     >
+      <GoldenFlowers count={16} />
       <div className="container">
 
         {/* Desktop Footer Content */}
@@ -24,17 +26,20 @@ const Footer = () => {
           {/* Left: Logo + Info */}
           <div className="col-lg-4 col-md-6 col-12">
             <div className="mb-3">
-              <h5 style={{ color: "#b22222", fontWeight: "bold", fontSize: "30px" }}>SM Enterprises</h5>
+              <h5 style={{ color: "#b22222", fontWeight: "bold", fontSize: "30px", marginBottom: "2px" }}>SM ENTERPRISES</h5>
+              <div style={{ fontSize: "11px", letterSpacing: "1.5px", fontWeight: "700", color: "#8d6e63", marginTop: "-4px", marginBottom: "12px", textTransform: "uppercase" }}>
+                QUALITY - TRUST - VALUE
+              </div>
               <div className="mt-3">
                 <p className="fw-semibold mb-2">GST IN:33CJIPS6916C1Z6</p>
                 <ul className="list-unstyled">
                   <li className="mb-2">
                     <i className="bi bi-geo-alt-fill me-2"></i>
-                    No.392, Thoppu Street, Vadamanapakkkam, Tiruvannamalai, Tamil Nadu - 6004402
+                    No.392, Thoppu Street, Vadamanapakkkam, Thoppu Street, Tiruvannamalai, Tamil Nadu - 604402
                   </li>
                   <li className="mb-2">
                     <i className="bi bi-telephone-fill me-2"></i>
-                    9788661093
+                    <a href="tel:+919788661093" className="text-decoration-none text-dark">9788661093</a>
                   </li>
                   <li className="mb-2">
                     <i className="bi bi-envelope-fill me-2"></i>
@@ -119,7 +124,7 @@ const Footer = () => {
               </li>
               <li className="mb-2">
                 <i className="bi bi-telephone me-2"></i>
-                9788661093
+                <a href="tel:+919788661093" className="text-decoration-none text-dark">9788661093</a>
               </li>
               <li>
                 <i className="bi bi-envelope me-2"></i>

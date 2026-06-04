@@ -47,7 +47,7 @@ const DashboardSidebar = ({ isCollapsed, isMobile }) => {
 
       {/* Sidebar Container */}
       <div
-        className={`sidebar-glow`}
+        className="sidebar-glow sidebar-hide-scrollbar"
         style={{
           position: 'fixed',
           top: 0,
@@ -112,6 +112,13 @@ const DashboardSidebar = ({ isCollapsed, isMobile }) => {
         {/* Custom Styles */}
         <style dangerouslySetInnerHTML={{
           __html: `
+          .sidebar-hide-scrollbar::-webkit-scrollbar {
+            display: none;
+          }
+          .sidebar-hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+          }
           .sidebar-item {
             transition: all 0.2s ease;
             border-radius: 8px;

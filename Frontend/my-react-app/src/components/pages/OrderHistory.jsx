@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const OrderHistory = () => {
   const [orders, setOrders] = useState([]);
@@ -50,6 +51,24 @@ const OrderHistory = () => {
     <div style={styles.page}>
       <div style={styles.container}>
         <h1 style={styles.title}>📜 Blessed Order History</h1>
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
+          <Link 
+            to="/" 
+            style={styles.backButton}
+            onMouseEnter={(e) => {
+              e.target.style.background = '#ffffff';
+              e.target.style.color = '#8b6914';
+              e.target.style.border = '1px solid #c9a44a';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.background = 'linear-gradient(135deg, #c9a44a, #8b6914)';
+              e.target.style.color = '#ffffff';
+              e.target.style.border = 'none';
+            }}
+          >
+            <i className="bi bi-house-door-fill me-2"></i> Back to Home
+          </Link>
+        </div>
 
         {orders.length === 0 ? (
           <div style={styles.card}>
@@ -103,11 +122,27 @@ const OrderHistory = () => {
 
 const styles = {
   page: {
-    background: 'linear-gradient(to bottom right, #fff8e1, #ffe0b2)',
+    background: 'transparent',
     minHeight: '100vh',
     padding: '40px 20px',
     fontFamily: 'Roboto, sans-serif',
     color: '#5d4037',
+  },
+  backButton: {
+    background: 'linear-gradient(135deg, #c9a44a, #8b6914)',
+    color: '#ffffff',
+    border: 'none',
+    borderRadius: '20px',
+    padding: '8px 24px',
+    fontSize: '12px',
+    fontWeight: '700',
+    textTransform: 'uppercase',
+    letterSpacing: '0.8px',
+    textDecoration: 'none',
+    boxShadow: '0 3px 10px rgba(139, 105, 20, 0.35)',
+    display: 'inline-flex',
+    alignItems: 'center',
+    transition: 'all 0.3s ease',
   },
   container: {
     maxWidth: '800px',
@@ -116,7 +151,7 @@ const styles = {
   title: {
     fontFamily: 'Great Vibes, cursive',
     fontSize: '3rem',
-    color: '#d4af37',
+    color: '#8b6914',
     textAlign: 'center',
     marginBottom: '40px',
     textShadow: '1px 1px 2px rgba(0,0,0,0.1)',
@@ -127,10 +162,10 @@ const styles = {
     gap: '20px',
   },
   card: {
-    background: '#fff3e0',
+    background: 'rgba(255, 243, 224, 0.75)',
     padding: '25px',
     borderRadius: '15px',
-    boxShadow: '0 4px 15px rgba(212, 175, 55, 0.2)',
+    boxShadow: '0 4px 15px rgba(212, 175, 55, 0.15)',
     border: '1px solid #ffe0b2',
     transition: 'transform 0.2s ease',
   },

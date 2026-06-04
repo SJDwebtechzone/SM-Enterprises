@@ -4,8 +4,16 @@ import { Link } from 'react-router-dom';
 
 const AdminImageCarousel = () => {
   const [images, setImages] = useState([]);
-
+  const [currentSlide, setCurrentSlide] = useState(0);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (images.length <= 1) return;
+    const interval = setInterval(() => {
+      setCurrentSlide(prev => (prev + 1) % images.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [images]);
 
   useEffect(() => {
     axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/admin/images`)
@@ -88,23 +96,24 @@ const AdminImageCarousel = () => {
         }
 
         #adminCarousel .banner-btn {
-          display: inline-block;
-          margin-top: 15px;
-          background-color: #691a24;
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          background: linear-gradient(135deg, #c9a44a, #8b6914);
+          border: none;
           color: #ffffff !important;
+          padding: 8px 24px;
+          border-radius: 25px;
           font-family: 'Roboto', sans-serif;
-          font-size: 1rem;
-          font-weight: 500;
-          padding: 10px 24px;
-          border-radius: 6px;
+          font-size: 0.9rem;
+          font-weight: bold;
           text-decoration: none;
-          transition: all 0.2s ease;
-          border: 1px solid rgba(255, 255, 255, 0.15);
           box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+          transition: all 0.2s ease;
         }
 
         #adminCarousel .banner-btn:hover {
-          background-color: #80202d;
+          background: linear-gradient(135deg, #d8b860, #a07d1c);
           transform: translateY(-2px);
           box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
         }
@@ -121,14 +130,12 @@ const AdminImageCarousel = () => {
             text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.85), -1px -1px 2px rgba(0, 0, 0, 0.6);
             line-height: 1.2;
           }
-          #adminCarousel .banner-quote span {
-            white-space: nowrap;
-            display: block;
-          }
           #adminCarousel .banner-btn {
             font-size: 0.7rem !important;
-            padding: 5px 12px;
-            margin-top: 6px;
+            padding: 5px 14px !important;
+            margin-top: 6px !important;
+            border-radius: 15px !important;
+            gap: 4px !important;
           }
         }
 
@@ -143,23 +150,74 @@ const AdminImageCarousel = () => {
           }
           #adminCarousel .banner-btn {
             font-size: 0.6rem !important;
-            padding: 3px 8px;
-            margin-top: 4px;
+            padding: 3px 10px !important;
+            margin-top: 4px !important;
+            border-radius: 12px !important;
+            gap: 3px !important;
           }
         }
-      `},StartLine:112,TargetContent:}
+
+        @keyframes slideInFromLeft {
+          0% {
+            opacity: 0;
+            transform: translateX(-80px);
+          }
+          100% {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+
+        #adminCarousel .initial-slide-in {
+          animation: slideInFromLeft 1.4s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+        }
+
+        #adminCarousel .soul-ego-text {
+          display: block;
+          font-size: 2.5rem;
+          text-transform: none;
+          line-height: 1.2;
+        }
+
+        @media (max-width: 768px) {
+          #adminCarousel .soul-ego-text {
+            font-size: 1.15rem !important;
+          }
+          #adminCarousel .ornament-line {
+            max-width: 180px !important;
+            margin-bottom: 8px !important;
+            margin-top: 8px !important;
+          }
+          #adminCarousel .ornament-icon {
+            font-size: 12px !important;
+          }
+        }
+
+        @media (max-width: 480px) {
+          #adminCarousel .soul-ego-text {
+            font-size: 0.9rem !important;
+          }
+          #adminCarousel .ornament-line {
+            max-width: 120px !important;
+            margin-bottom: 4px !important;
+            margin-top: 4px !important;
+          }
+          #adminCarousel .ornament-icon {
+            font-size: 10px !important;
+          }
+        }
+      `}
     </style>
-    <div id="adminCarousel" className="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+    <div id="adminCarousel" className="carousel slide carousel-fade">
         <div className="carousel-indicators">
     {images.map((_, index) => (
       <button
         key={index}
         type="button"
-        data-bs-target="#adminCarousel"
-        data-bs-slide-to={index}
-        className={index === 0 ? 'active' : ''}
-        aria-current={index === 0 ? 'true' : undefined}
+        className={index === currentSlide ? 'active' : ''}
+        aria-current={index === currentSlide ? 'true' : undefined}
         aria-label={`Slide ${index + 1}`}
+        onClick={() => setCurrentSlide(index)}
       ></button>
     ))}
   </div>
@@ -169,12 +227,29 @@ const AdminImageCarousel = () => {
           const formatTitle = (title) => {
             if (!title) return '';
             const normalized = title.trim();
-            if (normalized.includes("The soul knows the way; the ego just blocks the view.")) {
+            if (normalized.toLowerCase().includes("the soul knows the way") || normalized.toLowerCase().includes("ego just blocks")) {
               return (
                 <>
-                  <span style={{ display: 'block' }}>The soul knows the way;</span>
-                  <span style={{ display: 'block' }}>the ego just blocks</span>
-                  <span style={{ display: 'block' }}>the view.</span>
+                  {/* Decorative Ornament at the top */}
+                  <div className="d-flex align-items-center mb-3 ornament-line" style={{ width: '100%', maxWidth: '350px' }}>
+                    <div style={{ flexGrow: 1, height: '1.5px', background: 'linear-gradient(to right, transparent, #c9a44a)' }}></div>
+                    <span className="ornament-icon" style={{ color: '#c9a44a', margin: '0 8px', fontSize: '16px', display: 'inline-flex', alignItems: 'center' }}>⚜</span>
+                    <div style={{ flexGrow: 1, height: '1.5px', background: 'linear-gradient(to left, transparent, #c9a44a)' }}></div>
+                  </div>
+                  
+                  <span className="soul-ego-text">
+                    The <span style={{ color: '#ffd54f', fontWeight: 'bold' }}>soul</span> knows the way,
+                  </span>
+                  <span className="soul-ego-text">
+                    the <span style={{ color: '#ffd54f', fontWeight: 'bold' }}>ego</span> just blocks the view.
+                  </span>
+
+                  {/* Decorative Ornament at the bottom */}
+                  <div className="d-flex align-items-center mt-3 mb-4 ornament-line" style={{ width: '100%', maxWidth: '350px' }}>
+                    <div style={{ flexGrow: 1, height: '1.5px', background: 'linear-gradient(to right, transparent, #c9a44a)' }}></div>
+                    <span className="ornament-icon" style={{ color: '#c9a44a', margin: '0 8px', fontSize: '16px', display: 'inline-flex', alignItems: 'center' }}>⚜</span>
+                    <div style={{ flexGrow: 1, height: '1.5px', background: 'linear-gradient(to left, transparent, #c9a44a)' }}></div>
+                  </div>
                 </>
               );
             }
@@ -191,7 +266,7 @@ const AdminImageCarousel = () => {
           };
 
           return (
-            <div key={img._id} className={`carousel-item ${index === 0 ? 'active' : ''}`}>
+            <div key={img._id} className={`carousel-item ${index === currentSlide ? 'active' : ''}`}>
               <img
                 src={`${import.meta.env.VITE_BACKEND_URL}${img.url}`}
                 alt={img.title || `Slide ${index + 1}`}
@@ -207,12 +282,12 @@ const AdminImageCarousel = () => {
                   zIndex: 2,
                   padding: '0'
                 }}>
-                  <div className="banner-quote-container">
+                  <div className={`banner-quote-container ${index === currentSlide ? 'initial-slide-in' : ''}`}>
                     <h2 className="banner-quote">
                       {formatTitle(img.title)}
                     </h2>
                     <Link to="/products" className="banner-btn">
-                      Explore Collection
+                      Explore Now <i className="bi bi-chevron-right" style={{ fontSize: '0.85rem' }}></i>
                     </Link>
                   </div>
                 </div>

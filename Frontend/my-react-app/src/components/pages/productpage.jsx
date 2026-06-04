@@ -63,14 +63,14 @@ const ProductPage = ({ onAddToCart, onAddToWishlist, wishlist = [] }) => {
 
   return (
     <div className="container-fluid py-5" style={{
-      background: "white"
+      background: "transparent"
     }}>
       <h2 className="mb-4 text-uppercase fw-bold text-center" style={{ color: '#8b0000', fontFamily: "'Poppins', sans-serif" }}>{decodedCategory}</h2>
       {products.length > 0 ? (
         <div className="row">
           {products.map((product, index) => (
             <div key={index} className="col-6 col-md-6 col-lg-3 mb-4">
-              <div className="card product-card h-100 shadow-sm border-1">
+              <div className="card product-card h-100 shadow-sm border border-warning" style={{ backgroundColor: 'rgba(255, 255, 255, 0.75)', backdropFilter: 'blur(8px)' }}>
                 <div className="position-relative">
                   <img
                     // src={product.image}

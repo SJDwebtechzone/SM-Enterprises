@@ -10,11 +10,11 @@ const CartTable = ({ wishlist = [], onRemoveItem, onAddToCart }) => {
   }
 
   return (
-<section className="py-5 bg-light">
+<section className="py-5 bg-transparent">
   <div className="container">
     <div className="row">
       <div className="col-md-12">
-        <div className="table-responsive shadow-sm rounded">
+        <div className="table-responsive shadow-sm rounded border border-warning" style={{ backgroundColor: 'rgba(255, 255, 255, 0.75)', backdropFilter: 'blur(8px)' }}>
           <table className="table table-hover align-middle text-center cart-table">
             <thead className="table-warning text-dark">
               <tr>

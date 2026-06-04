@@ -15,6 +15,9 @@
 } */
 
 /* === Global Layout === */
+html {
+  scroll-behavior: smooth;
+}
 html,
 body {
   margin: 0;
@@ -22,6 +25,9 @@ body {
   box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
   overflow-x: hidden;
+  background-color: #fdf6e2; /* Sandalwood / Devotional light gold */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cdefs%3E%3CradialGradient id='core-glow' cx='50%25' cy='65%25' r='40%25'%3E%3Cstop offset='0%25' stop-color='%23FFFDE7' stop-opacity='0.08'/%3E%3Cstop offset='30%25' stop-color='%23FFE082' stop-opacity='0.06'/%3E%3Cstop offset='70%25' stop-color='%23FFB300' stop-opacity='0.03'/%3E%3Cstop offset='100%25' stop-color='%23FF8F00' stop-opacity='0'/%3E%3C/radialGradient%3E%3ClinearGradient id='petal-grad' x1='0%25' y1='100%25' x2='0%25' y2='0%25'%3E%3Cstop offset='0%25' stop-color='%23FFB300' stop-opacity='0.02'/%3E%3Cstop offset='50%25' stop-color='%23FFF9C4' stop-opacity='0.04'/%3E%3Cstop offset='100%25' stop-color='%23FFFFFF' stop-opacity='0.08'/%3E%3C/linearGradient%3E%3ClinearGradient id='stroke-grad' x1='0%25' y1='100%25' x2='0%25' y2='0%25'%3E%3Cstop offset='0%25' stop-color='%23FF8F00' stop-opacity='0.04'/%3E%3Cstop offset='50%25' stop-color='%23FFE082' stop-opacity='0.08'/%3E%3Cstop offset='100%25' stop-color='%23FFFFFF' stop-opacity='0.12'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg transform='translate%2815, 15%29 scale%280.9%29'%3E%3Ccircle cx='70' cy='75' r='35' fill='url%28%23core-glow%29'/%3E%3Ccircle cx='45' cy='30' r='2.5' fill='%23FFF9C4' opacity='0.08'/%3E%3Ccircle cx='95' cy='30' r='3.5' fill='%23FFE082' opacity='0.06'/%3E%3Ccircle cx='35' cy='50' r='1.5' fill='%23FFFFFF' opacity='0.1'/%3E%3Ccircle cx='105' cy='50' r='2' fill='%23FFE082' opacity='0.08'/%3E%3Ccircle cx='70' cy='20' r='4' fill='%23FFF9C4' opacity='0.06'/%3E%3Ccircle cx='55' cy='45' r='1' fill='%23FFFFFF' opacity='0.09'/%3E%3Ccircle cx='85' cy='45' r='1.2' fill='%23FFF59D' opacity='0.08'/%3E%3Cpath d='M70,85 C15,80 25,45 70,75 C25,55 35,85 70,85 Z' fill='url%28%23petal-grad%29' stroke='url%28%23stroke-grad%29' stroke-width='0.8'/%3E%3Cpath d='M70,85 C125,80 115,45 70,75 C115,55 105,85 70,85 Z' fill='url%28%23petal-grad%29' stroke='url%28%23stroke-grad%29' stroke-width='0.8'/%3E%3Cpath d='M70,82 C35,65 45,35 70,72 C45,45 55,75 70,82 Z' fill='url%28%23petal-grad%29' stroke='url%28%23stroke-grad%29' stroke-width='0.8'/%3E%3Cpath d='M70,82 C105,65 95,35 70,72 C95,45 85,75 70,82 Z' fill='url%28%23petal-grad%29' stroke='url%28%23stroke-grad%29' stroke-width='0.8'/%3E%3Cpath d='M70,80 C60,40 62,25 70,18 C78,25 80,40 70,80 Z' fill='url%28%23petal-grad%29' stroke='url%28%23stroke-grad%29' stroke-width='0.8'/%3E%3Cpath d='M70,82 C45,75 55,50 70,75 C55,60 62,80 70,82 Z' fill='url%28%23petal-grad%29' stroke='url%28%23stroke-grad%29' stroke-width='0.9'/%3E%3Cpath d='M70,82 C95,75 85,50 70,75 C85,60 78,80 70,82 Z' fill='url%28%23petal-grad%29' stroke='url%28%23stroke-grad%29' stroke-width='0.9'/%3E%3Cpath d='M70,78 C65,65 67,55 70,52 C73,55 75,65 70,78 Z' fill='%23FFF59D' stroke='%23FFB300' stroke-dasharray='1 1' stroke-width='0.5' opacity='0.15'/%3E%3Ccircle cx='70' cy='65' r='4' fill='%23FF8F00' opacity='0.08'/%3E%3Cpath d='M50,95 C30,95 40,88 55,90 C45,91 40,95 50,95 Z' fill='url%28%23petal-grad%29' stroke='url%28%23stroke-grad%29' stroke-width='0.6' opacity='0.08'/%3E%3Cpath d='M90,95 C110,95 100,88 85,90 C95,91 100,95 90,95 Z' fill='url%28%23petal-grad%29' stroke='url%28%23stroke-grad%29' stroke-width='0.6' opacity='0.08'/%3E%3Cpath d='M70,98 C55,102 65,94 75,95 C65,95 60,98 70,98 Z' fill='url%28%23petal-grad%29' stroke='url%28%23stroke-grad%29' stroke-width='0.6' opacity='0.08'/%3E%3C/g%3E%3C/svg%3E");
+  background-attachment: scroll;
 }
 
 /* === Header Styles === */
