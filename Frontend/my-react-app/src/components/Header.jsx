@@ -5,11 +5,20 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
 import devspectra from "../assets/images/smlogo6.png";
-import bg_121 from "../assets/images/bg_121.jpg";
 import bell1 from "../assets/images/bell1.png";
 import bell2 from "../assets/images/bell2.png";
 import CartButton from "./pages/CartButton";
 import GoldenFlowers from "./GoldenFlowers";
+
+const getAvatarColor = (name) => {
+  if (!name) return '#713200';
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) {
+    hash = name.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const colors = ['#c9a44a', '#713200', '#8b0000', '#8b6914', '#e65100', '#8d6e63', '#d4af37', '#a0522d'];
+  return colors[Math.abs(hash) % colors.length];
+};
 
 const Header = ({ cartClickCount, showMessage }) => {
   const [query, setQuery] = useState("");
@@ -71,7 +80,7 @@ const Header = ({ cartClickCount, showMessage }) => {
             display: block !important;
           }
           #mobileNavbarNav.show {
-            max-height: 250px;
+            max-height: 380px;
             opacity: 1;
           }
           .nav-item .nav-link:hover .nav-underline {
@@ -180,13 +189,27 @@ const Header = ({ cartClickCount, showMessage }) => {
                 onMouseEnter={handleDropdownMouseEnter}
                 onMouseLeave={handleDropdownMouseLeave}
               >
-                <img
-                  src={bg_121 || "https://via.placeholder.com/40"}
-                  alt="User Avatar"
-                  className="rounded-circle"
-                  style={{ width: "48px", height: "48px", cursor: "pointer" }}
+                <div
                   onClick={() => setShowDropdown(!showDropdown)}
-                />
+                  style={{
+                    width: "40px",
+                    height: "40px",
+                    borderRadius: "50%",
+                    backgroundColor: getAvatarColor(user.userName || user.email),
+                    color: "#ffffff",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "1.2rem",
+                    fontWeight: "bold",
+                    cursor: "pointer",
+                    boxShadow: "0 2px 5px rgba(0,0,0,0.15)",
+                    textTransform: "uppercase",
+                    userSelect: "none"
+                  }}
+                >
+                  {user.userName ? user.userName.charAt(0) : user.email.charAt(0)}
+                </div>
 
                 <ul
                   className={`dropdown-menu dropdown-menu-end shadow-sm border-0 ${showDropdown ? "show" : ""
@@ -345,7 +368,7 @@ const Header = ({ cartClickCount, showMessage }) => {
       </header>
 
       {/* ===== MOBILE HEADER ===== */}
-      <div className="d-flex d-lg-none align-items-center justify-content-between px-3 py-2 position-relative overflow-hidden"
+      <div className="d-flex d-lg-none align-items-center justify-content-between px-3 py-2 position-relative"
         style={{
           backgroundColor: "#f7e2b8",
           borderBottom: '2px solid #d4a84b',
@@ -406,14 +429,61 @@ const Header = ({ cartClickCount, showMessage }) => {
 
           {/* User */}
           {user ? (
-            <Link to="/account" className="d-flex align-items-center">
-              <img
-                src={bg_121 || "https://via.placeholder.com/40"}
-                alt="User Avatar"
-                className="rounded-circle border border-warning"
-                style={{ width: "32px", height: "32px", objectFit: "cover" }}
-              />
-            </Link>
+            <div className="dropdown position-relative" style={{ zIndex: 2000 }}>
+              <div
+                onClick={() => setShowDropdown(!showDropdown)}
+                style={{
+                  width: "32px",
+                  height: "32px",
+                  borderRadius: "50%",
+                  backgroundColor: getAvatarColor(user.userName || user.email),
+                  color: "#ffffff",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: "0.95rem",
+                  fontWeight: "bold",
+                  cursor: "pointer",
+                  boxShadow: "0 2px 4px rgba(0,0,0,0.15)",
+                  textTransform: "uppercase",
+                  userSelect: "none"
+                }}
+              >
+                {user.userName ? user.userName.charAt(0) : user.email.charAt(0)}
+              </div>
+              <ul
+                className={`dropdown-menu dropdown-menu-end shadow-sm border-0 ${showDropdown ? "show" : ""}`}
+                style={{
+                  position: "absolute",
+                  right: 0,
+                  top: "38px",
+                  backgroundColor: "#fef9ef", // Soft Sandal
+                  border: '1.5px solid #d4a84b', // Gold border
+                  padding: '8px 0',
+                  zIndex: 2000,
+                  minWidth: '160px'
+                }}
+              >
+                <li className="px-3 py-2">
+                  <span className="fw-bold" style={{ color: "#713200", fontSize: '0.9rem' }}>
+                    Hello, {user.userName}
+                  </span>
+                </li>
+                <li><hr className="dropdown-divider" style={{ backgroundColor: '#d4a84b', height: '1.5px', opacity: 0.3 }} /></li>
+                <li>
+                  <button
+                    className="dropdown-item py-2 header-logout-btn"
+                    onClick={() => {
+                      handleLogout();
+                      setShowDropdown(false);
+                    }}
+                  >
+                    <i className="bi bi-box-arrow-right me-2"></i>
+                    Logout
+                  </button>
+                </li>
+              </ul>
+            </div>
           ) : (
             <Link to="/login" className="text-dark fs-5">
               <i className="bi bi-person"></i>
@@ -445,11 +515,38 @@ const Header = ({ cartClickCount, showMessage }) => {
               <i className="bi bi-gift text-warning"></i> Products
             </Link>
           </li>
-          <li className="nav-item">
+          <li className="nav-item mb-2">
             <Link className="nav-link text-dark d-flex align-items-center gap-2 fw-semibold" to="/reach-us" onClick={() => setIsMenuOpen(false)}>
               <i className="bi bi-telephone text-warning"></i> Contact Us
             </Link>
           </li>
+          {user ? (
+            <>
+              <li className="nav-item mb-2 border-top pt-2 mt-2" style={{ borderColor: 'rgba(212, 168, 75, 0.3)' }}>
+                <span className="nav-link text-dark d-flex align-items-center gap-2 fw-bold" style={{ color: '#713200' }}>
+                  Hello, {user.userName}
+                </span>
+              </li>
+              <li className="nav-item">
+                <button 
+                  className="nav-link text-dark d-flex align-items-center gap-2 fw-semibold bg-transparent border-0 w-100 text-start"
+                  onClick={() => {
+                    handleLogout();
+                    setIsMenuOpen(false);
+                  }}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <i className="bi bi-box-arrow-right text-warning"></i> Logout
+                </button>
+              </li>
+            </>
+          ) : (
+            <li className="nav-item border-top pt-2 mt-2" style={{ borderColor: 'rgba(212, 168, 75, 0.3)' }}>
+              <Link className="nav-link text-dark d-flex align-items-center gap-2 fw-semibold" to="/login" onClick={() => setIsMenuOpen(false)}>
+                <i className="bi bi-box-arrow-in-right text-warning"></i> Login
+              </Link>
+            </li>
+          )}
         </ul>
       </div>
 
