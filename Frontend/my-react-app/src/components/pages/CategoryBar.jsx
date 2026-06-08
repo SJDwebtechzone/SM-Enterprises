@@ -27,6 +27,7 @@ const CategorySidebar = ({ onAddToCart, onAddToWishlist,wishlist}) => {
 
   
   const [selectedSize, setSelectedSize] = useState('');
+  const [selectedFeet, setSelectedFeet] = useState('');
 
   const fetchProducts = (size = '') => {
     const url = size ? `${import.meta.env.VITE_BACKEND_URL}/api/products?size=${size}` : `${import.meta.env.VITE_BACKEND_URL}/api/products`;
@@ -84,7 +85,12 @@ const fetchCategories = async () => {
   setSelectedSize(size);
     setSelectedCategory(null);
   setPrice(0); // 👈 Reset price when size changes
+  setSelectedFeet(''); // 👈 Reset feet when size changes
   fetchProducts(size);
+};
+
+const handleFeetChange = (e) => {
+  setSelectedFeet(e.target.value);
 };
 
 
@@ -99,8 +105,21 @@ const fetchCategories = async () => {
 //       });
 //   }, []);
 
-
-
+  // Extract dynamic Feet options from loaded products
+  const feetOptions = Array.from(
+    new Set(
+      products
+        .map(p => p.sku)
+        .filter(sku => sku && sku.trim() !== '')
+    )
+  ).sort((a, b) => {
+    const numA = parseFloat(a);
+    const numB = parseFloat(b);
+    if (!isNaN(numA) && !isNaN(numB)) {
+      return numA - numB;
+    }
+    return a.localeCompare(b);
+  });
   
 useEffect(() => {
   const updatedList = products.filter((product) => {
@@ -109,19 +128,31 @@ useEffect(() => {
   ? product.category?.name?.toLowerCase() === selectedCategory.toLowerCase()
   : true;
     const isMatchingSize = selectedSize
-      ? product.sizes?.includes(selectedSize)
+      ? product.sizes?.some(s => {
+          const val = s.trim().toLowerCase();
+          const sel = selectedSize.toLowerCase();
+          if (val === sel) return true;
+          if (sel === 'small' && val === 's') return true;
+          if (sel === 'medium' && val === 'm') return true;
+          if (sel === 'large' && val === 'l') return true;
+          return false;
+        })
+      : true;
+    const isMatchingFeet = selectedFeet
+      ? product.sku === selectedFeet
       : true;
 
-    return isWithinPrice && isMatchingCategory && isMatchingSize;
+    return isWithinPrice && isMatchingCategory && isMatchingSize && isMatchingFeet;
   });
 
   setFilteredProducts(updatedList);
-}, [selectedCategory, price, selectedSize, products]);
+}, [selectedCategory, price, selectedSize, selectedFeet, products]);
 
  const handlePriceChange = (e) => {
   const newPrice = Number(e.target.value);
   setPrice(newPrice);
   setSelectedSize(''); // 👈 Reset size when price changes
+  setSelectedFeet(''); // 👈 Reset feet when price changes
 
   if (newPrice > 0 && selectedCategory) {
     setSelectedCategory(null);
@@ -131,6 +162,7 @@ useEffect(() => {
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
     setSelectedSize(''); 
+    setSelectedFeet(''); // 👈 Reset feet when category changes
     setPrice(0);
   };
 
@@ -139,7 +171,7 @@ useEffect(() => {
       {/* Dropdown Filters Row */}
       <div className="row g-2 mb-4 align-items-center">
         {/* Categories Dropdown */}
-        <div className="col-4">
+        <div className="col-6 col-md-3">
           <label className="form-label fw-bold text-muted small mb-1">Category</label>
           <select 
             className="form-select py-2" 
@@ -160,7 +192,7 @@ useEffect(() => {
         </div>
 
         {/* Price Dropdown */}
-        <div className="col-4">
+        <div className="col-6 col-md-3">
           <label className="form-label fw-bold text-muted small mb-1">Filter by Price</label>
           <div className="dropdown">
             <button 
@@ -203,7 +235,7 @@ useEffect(() => {
         </div>
 
         {/* Sizes Dropdown */}
-        <div className="col-4">
+        <div className="col-6 col-md-3">
           <label className="form-label fw-bold text-muted small mb-1">Filter by Sizes</label>
           <select 
             className="form-select py-2" 
@@ -212,9 +244,30 @@ useEffect(() => {
             style={{ borderRadius: '8px', border: '1px solid #ddd' }}
           >
             <option value="">All Sizes</option>
-            <option value="S">Small (S)</option>
-            <option value="M">Medium (M)</option>
-            <option value="L">Large (L)</option>
+            <option value="Zero">Zero</option>
+            <option value="Small">Small</option>
+            <option value="Medium">Medium</option>
+            <option value="Big">Big</option>
+            <option value="Super Big">Super Big</option>
+            <option value="Mega">Mega</option>
+          </select>
+        </div>
+
+        {/* Feet Dropdown */}
+        <div className="col-6 col-md-3">
+          <label className="form-label fw-bold text-muted small mb-1">Filter by Feet</label>
+          <select 
+            className="form-select py-2" 
+            value={selectedFeet} 
+            onChange={handleFeetChange}
+            style={{ borderRadius: '8px', border: '1px solid #ddd' }}
+          >
+            <option value="">All Feet</option>
+            {feetOptions.map((feet, index) => (
+              <option key={index} value={feet}>
+                {feet}
+              </option>
+            ))}
           </select>
         </div>
       </div>

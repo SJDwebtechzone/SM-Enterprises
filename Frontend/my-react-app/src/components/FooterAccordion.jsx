@@ -40,10 +40,10 @@ const FooterAccordion = () => {
 
       <Accordion flush>
 
-        {/* SHOP */}
+        {/* Links */}
         <Accordion.Item eventKey="0" className="footer-item">
           <Accordion.Header>
-            <span>SHOP</span>
+            <span>Links</span>
             <span className="plus-icon">+</span>
           </Accordion.Header>
           <Accordion.Body>
