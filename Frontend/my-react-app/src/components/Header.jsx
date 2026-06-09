@@ -368,138 +368,188 @@ const Header = ({ cartClickCount, showMessage }) => {
       </header>
 
       {/* ===== MOBILE HEADER ===== */}
-      <div className="d-flex d-lg-none align-items-center justify-content-between px-3 py-2 position-relative"
-        style={{
-          backgroundColor: "#f7e2b8",
-          borderBottom: '2px solid #d4a84b',
-          boxShadow: '0 3px 12px rgba(139,90,0,0.12)'
-        }}>
-        <GoldenFlowers count={6} />
-
-        {/* Left: Menu + Search */}
-        <div className="d-flex align-items-center gap-3">
-          {/* Hamburger */}
+      <div className="d-block d-lg-none px-3 py-2" style={{ backgroundColor: "transparent" }}>
+        <div className="d-flex align-items-center justify-content-between px-3 py-2"
+          style={{
+            backgroundColor: "#fef9ef",
+            border: '1.5px solid #d4a84b',
+            borderRadius: '16px',
+            boxShadow: '0 4px 15px rgba(139,90,0,0.12)',
+            position: 'relative'
+          }}>
+          
+          {/* Left: Menu Hamburger */}
           <button
-            className="btn p-0 border-0 bg-transparent"
+            className="btn p-0 border-0 d-flex align-items-center justify-content-center"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
+            style={{
+              width: "44px",
+              height: "44px",
+              backgroundColor: "#f5ebda",
+              borderRadius: "12px",
+              color: "#713200",
+              boxShadow: "0 1px 3px rgba(0,0,0,0.05)"
+            }}
           >
-            <i className="bi bi-list fs-2 text-dark"></i>
+            <i className="bi bi-list fs-2"></i>
           </button>
 
-          {/* Search Icon */}
-          <button
-            className="btn p-0 border-0 bg-transparent"
-            onClick={() => setShowMobileSearch(!showMobileSearch)}
-          >
-            <i className="bi bi-search fs-5 text-dark"></i>
-          </button>
-        </div>
-
-        {/* Center: Logo */}
-        <Link to="/" className="text-decoration-none text-center d-flex flex-column align-items-center">
-          <div className="d-flex align-items-center">
+          {/* Center: Logo and Site Name */}
+          <Link to="/" className="text-decoration-none d-flex align-items-center mx-2" style={{ flexGrow: 1, justifyContent: "center" }}>
             <img
               src={devspectra}
               alt="Logo"
               className="rounded-circle"
-              style={{ height: "36px", marginRight: "12px" }}
+              style={{
+                height: "42px",
+                width: "42px",
+                marginRight: "8px",
+                boxShadow: "0 2px 6px rgba(0,0,0,0.1)"
+              }}
             />
-            <span style={{ 
-              color: "#8b0000", 
-              fontFamily: "'Cinzel', serif", 
-              fontWeight: "700", 
-              fontSize: "21px",
-              letterSpacing: "1.2px"
-            }}>SM ENTERPRISES</span>
-          </div>
-          <div style={{ fontSize: "9px", letterSpacing: "1.5px", fontWeight: "700", color: "#d4af37", marginTop: "-4px", textTransform: "uppercase" }}>
-            QUALITY - TRUST - VALUE
-          </div>
-          <div style={{ fontSize: "11px", letterSpacing: "0.5px", fontWeight: "600", color: "#8d6e63", marginTop: "2px" }}>
-            Every Path Welcomed. Every Soul Nourished.
-          </div>
-        </Link>
-
-        {/* Right: User + Cart */}
-        <div className="d-flex align-items-center gap-3">
-          {/* Wishlist */}
-          <Link to="/wishlist" className="text-dark fs-5">
-            <i className="bi bi-heart"></i>
+            <div className="d-flex flex-column align-items-center text-center">
+              <span style={{ 
+                color: "#8b0000", 
+                fontFamily: "'Cinzel', serif", 
+                fontWeight: "700", 
+                fontSize: "18px",
+                letterSpacing: "1px",
+                lineHeight: "1.2"
+              }}>SM ENTERPRISES</span>
+              
+              {/* Tagline styled with lines on both sides */}
+              <div className="d-flex align-items-center justify-content-center gap-1 mt-1" style={{ width: '100%' }}>
+                <span style={{ width: "10px", height: "1px", backgroundColor: "#d4af37", display: "inline-block" }}></span>
+                <span style={{ 
+                  fontSize: "7.5px", 
+                  letterSpacing: "0.8px", 
+                  fontWeight: "700", 
+                  color: "#8d6e63", 
+                  textTransform: "uppercase",
+                  whiteSpace: "nowrap"
+                }}>
+                  QUALITY - TRUST - VALUE
+                </span>
+                <span style={{ width: "10px", height: "1px", backgroundColor: "#d4af37", display: "inline-block" }}></span>
+              </div>
+            </div>
           </Link>
 
-          {/* User */}
-          {user ? (
-            <div className="dropdown position-relative" style={{ zIndex: 2000 }}>
-              <div
-                onClick={() => setShowDropdown(!showDropdown)}
-                style={{
-                  width: "32px",
-                  height: "32px",
-                  borderRadius: "50%",
-                  backgroundColor: getAvatarColor(user.userName || user.email),
-                  color: "#ffffff",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: "0.95rem",
-                  fontWeight: "bold",
-                  cursor: "pointer",
-                  boxShadow: "0 2px 4px rgba(0,0,0,0.15)",
-                  textTransform: "uppercase",
-                  userSelect: "none"
-                }}
-              >
-                {user.userName ? user.userName.charAt(0) : user.email.charAt(0)}
+          {/* Right Action Icons: User, Cart */}
+          <div className="d-flex align-items-center gap-2">
+            {/* User Icon */}
+            {user ? (
+              <div className="dropdown position-relative" style={{ zIndex: 2000 }}>
+                <div
+                  onClick={() => setShowDropdown(!showDropdown)}
+                  style={{
+                    width: "38px",
+                    height: "38px",
+                    borderRadius: "50%",
+                    backgroundColor: getAvatarColor(user.userName || user.email),
+                    color: "#ffffff",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "0.95rem",
+                    fontWeight: "bold",
+                    cursor: "pointer",
+                    boxShadow: "0 2px 5px rgba(0,0,0,0.15)",
+                    textTransform: "uppercase",
+                    userSelect: "none"
+                  }}
+                >
+                  {user.userName ? user.userName.charAt(0) : user.email.charAt(0)}
+                </div>
+                <ul
+                  className={`dropdown-menu dropdown-menu-end shadow-sm border-0 ${showDropdown ? "show" : ""}`}
+                  style={{
+                    position: "absolute",
+                    right: 0,
+                    top: "44px",
+                    backgroundColor: "#fef9ef",
+                    border: '1.5px solid #d4a84b',
+                    padding: '8px 0',
+                    zIndex: 2000,
+                    minWidth: '160px'
+                  }}
+                >
+                  <li className="px-3 py-2">
+                    <span className="fw-bold" style={{ color: "#713200", fontSize: '0.9rem' }}>
+                      Hello, {user.userName}
+                    </span>
+                  </li>
+                  <li><hr className="dropdown-divider" style={{ backgroundColor: '#d4a84b', height: '1.5px', opacity: 0.3 }} /></li>
+                  <li>
+                    <button
+                      className="dropdown-item py-2 header-logout-btn"
+                      onClick={() => {
+                        handleLogout();
+                        setShowDropdown(false);
+                      }}
+                    >
+                      <i className="bi bi-box-arrow-right me-2"></i>
+                      Logout
+                    </button>
+                  </li>
+                </ul>
               </div>
-              <ul
-                className={`dropdown-menu dropdown-menu-end shadow-sm border-0 ${showDropdown ? "show" : ""}`}
+            ) : (
+              <Link
+                to="/login"
+                className="d-flex align-items-center justify-content-center"
                 style={{
-                  position: "absolute",
-                  right: 0,
-                  top: "38px",
-                  backgroundColor: "#fef9ef", // Soft Sandal
-                  border: '1.5px solid #d4a84b', // Gold border
-                  padding: '8px 0',
-                  zIndex: 2000,
-                  minWidth: '160px'
+                  width: "38px",
+                  height: "38px",
+                  backgroundColor: "#c9a44a",
+                  color: "#ffffff",
+                  borderRadius: "50%",
+                  textDecoration: "none",
+                  boxShadow: "0 2px 5px rgba(139,90,0,0.15)"
                 }}
               >
-                <li className="px-3 py-2">
-                  <span className="fw-bold" style={{ color: "#713200", fontSize: '0.9rem' }}>
-                    Hello, {user.userName}
-                  </span>
-                </li>
-                <li><hr className="dropdown-divider" style={{ backgroundColor: '#d4a84b', height: '1.5px', opacity: 0.3 }} /></li>
-                <li>
-                  <button
-                    className="dropdown-item py-2 header-logout-btn"
-                    onClick={() => {
-                      handleLogout();
-                      setShowDropdown(false);
-                    }}
-                  >
-                    <i className="bi bi-box-arrow-right me-2"></i>
-                    Logout
-                  </button>
-                </li>
-              </ul>
-            </div>
-          ) : (
-            <Link to="/login" className="text-dark fs-5">
-              <i className="bi bi-person"></i>
-            </Link>
-          )}
+                <i className="bi bi-person-fill fs-6"></i>
+              </Link>
+            )}
 
-          {/* Cart */}
-          <div className="position-relative">
-            <CartButton cartClickCount={cartClickCount} showMessage={showMessage} />
+            {/* Cart Icon */}
+            <CartButton cartClickCount={cartClickCount} showMessage={showMessage} variant="circular" />
           </div>
+
         </div>
       </div>
 
       {/* Mobile Navigation Menu */}
       <div className={`collapse d-lg-none ${isMenuOpen ? 'show' : ''}`} id="mobileNavbarNav">
         <ul className="navbar-nav p-3 border-bottom border-warning" style={{ backgroundColor: "#fef9ef" }}>
+          {/* Search bar inside mobile menu */}
+          <li className="nav-item mb-3">
+            <form
+              onSubmit={(e) => {
+                handleSearch(e);
+                setIsMenuOpen(false);
+              }}
+              className="d-flex align-items-center w-100"
+              style={{
+                borderRadius: '25px',
+                border: '1.5px solid #c9a44a',
+                padding: '4px 14px',
+                background: '#fff'
+              }}
+            >
+              <input
+                type="text"
+                className="form-control border-0 bg-transparent shadow-none"
+                placeholder="Search products..."
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+              />
+              <button type="submit" className="btn p-0 border-0 bg-transparent">
+                <i className="bi bi-search fs-5" style={{ color: '#8b6914' }}></i>
+              </button>
+            </form>
+          </li>
+
           <li className="nav-item mb-2">
             <Link className="nav-link text-dark d-flex align-items-center gap-2 fw-semibold" to="/" onClick={() => setIsMenuOpen(false)}>
               <i className="bi bi-house text-warning"></i> Home
@@ -513,6 +563,21 @@ const Header = ({ cartClickCount, showMessage }) => {
           <li className="nav-item mb-2">
             <Link className="nav-link text-dark d-flex align-items-center gap-2 fw-semibold" to="/products" onClick={() => setIsMenuOpen(false)}>
               <i className="bi bi-gift text-warning"></i> Products
+            </Link>
+          </li>
+          <li className="nav-item mb-2">
+            <Link className="nav-link text-dark d-flex align-items-center gap-2 fw-semibold" to="/cart" onClick={() => setIsMenuOpen(false)}>
+              <i className="bi bi-cart text-warning"></i> My Cart
+            </Link>
+          </li>
+          <li className="nav-item mb-2">
+            <Link className="nav-link text-dark d-flex align-items-center gap-2 fw-semibold" to="/wishlist" onClick={() => setIsMenuOpen(false)}>
+              <i className="bi bi-heart text-warning"></i> Wishlist
+            </Link>
+          </li>
+          <li className="nav-item mb-2">
+            <Link className="nav-link text-dark d-flex align-items-center gap-2 fw-semibold" to="/orderhistory" onClick={() => setIsMenuOpen(false)}>
+              <i className="bi bi-receipt-cutoff text-warning"></i> Order History
             </Link>
           </li>
           <li className="nav-item mb-2">
@@ -549,37 +614,6 @@ const Header = ({ cartClickCount, showMessage }) => {
           )}
         </ul>
       </div>
-
-      {/* Mobile Search Bar Dropdown */}
-      {showMobileSearch && (
-        <div className="d-lg-none p-2 w-100" style={{ backgroundColor: "#fef9ef", borderBottom: '1.5px solid #d4a84b' }}>
-          <form
-            onSubmit={(e) => {
-              handleSearch(e);
-              setShowMobileSearch(false);
-            }}
-            className="d-flex align-items-center w-100"
-            style={{
-              borderRadius: '25px',
-              border: '1.5px solid #c9a44a',
-              padding: '4px 14px',
-              background: '#fff'
-            }}
-          >
-            <input
-              type="text"
-              className="form-control border-0 bg-transparent shadow-none"
-              placeholder="Search products..."
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              autoFocus
-            />
-            <button type="submit" className="btn p-0 border-0 bg-transparent">
-              <i className="bi bi-search fs-5" style={{ color: '#8b6914' }}></i>
-            </button>
-          </form>
-        </div>
-      )}
     </>
   );
 };
