@@ -286,10 +286,11 @@ const ProductManager = () => {
                 <Form.Label>GST (%)</Form.Label>
                 <Form.Control
                   type="number"
+                  step="any"
                   name="gst"
                   value={formData.gst}
                   onChange={handleChange}
-                  placeholder="e.g. 18"
+                  placeholder="e.g. 12.5"
                   min="0"
                   max="100"
                 />
