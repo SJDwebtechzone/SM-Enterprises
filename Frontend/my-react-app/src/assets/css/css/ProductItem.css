@@ -229,9 +229,9 @@ body {
   }
   .product-title {
     font-size: 0.8rem !important;
-    line-height: 1.25 !important;
+    line-height: 1.25em !important;
     margin-bottom: 0.25rem !important;
-    min-height: 38px !important;
+    height: 2.5em !important;
     display: -webkit-box !important;
     -webkit-line-clamp: 2 !important;
     -webkit-box-orient: vertical !important;
