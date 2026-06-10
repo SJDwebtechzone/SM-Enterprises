@@ -51,6 +51,10 @@ const AdminImageCarousel = () => {
           position: relative;
         }
         
+        #adminCarousel .carousel-indicators {
+          display: none !important;
+        }
+        
         #adminCarousel .carousel-item {
           height: auto;
           position: relative;
@@ -244,12 +248,7 @@ const AdminImageCarousel = () => {
                     the <span style={{ color: '#ffd54f', fontWeight: 'bold' }}>ego</span> just blocks the view.
                   </span>
 
-                  {/* Decorative Ornament at the bottom */}
-                  <div className="d-flex align-items-center mt-3 mb-4 ornament-line" style={{ width: '100%', maxWidth: '350px' }}>
-                    <div style={{ flexGrow: 1, height: '1.5px', background: 'linear-gradient(to right, transparent, #c9a44a)' }}></div>
-                    <span className="ornament-icon" style={{ color: '#c9a44a', margin: '0 8px', fontSize: '16px', display: 'inline-flex', alignItems: 'center' }}>⚜</span>
-                    <div style={{ flexGrow: 1, height: '1.5px', background: 'linear-gradient(to left, transparent, #c9a44a)' }}></div>
-                  </div>
+
                 </>
               );
             }

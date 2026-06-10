@@ -229,3 +229,60 @@ h6 {
   background-color: #fff;
   /* or any highlight color */
 }
+
+/* --- Mobile UI Improvements --- */
+
+/* Banner Image */
+.hero-banner {
+  width: 100%;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .hero-banner {
+    height: 220px;
+    object-fit: cover;
+    object-position: center;
+  }
+}
+
+/* Banner Content */
+.hero-content {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  z-index: 10;
+}
+
+@media (max-width: 768px) {
+  .hero-content h1 {
+    font-size: 20px;
+  }
+
+  .hero-content p {
+    font-size: 14px;
+  }
+
+  .hero-content button {
+    padding: 8px 16px;
+  }
+}
+
+/* Collections Section */
+@media (max-width: 768px) {
+  .collection-card {
+    min-width: 90px;
+  }
+
+  .collection-card img {
+    width: 70px;
+    height: 70px;
+  }
+}
+
+/* Header Logo */
+@media (max-width: 768px) {
+  .logo {
+    max-width: 140px;
+  }
+}

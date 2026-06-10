@@ -255,14 +255,14 @@ useEffect(() => {
 
         {/* Feet Dropdown */}
         <div className="col-6 col-md-3">
-          <label className="form-label fw-bold text-muted small mb-1">Filter by Feet</label>
+          <label className="form-label fw-bold text-muted small mb-1">Filter by Feet/Inch</label>
           <select 
             className="form-select py-2" 
             value={selectedFeet} 
             onChange={handleFeetChange}
             style={{ borderRadius: '8px', border: '1px solid #ddd' }}
           >
-            <option value="">All Feet</option>
+            <option value="">All Feet/Inch</option>
             {feetOptions.map((feet, index) => (
               <option key={index} value={feet}>
                 {feet}

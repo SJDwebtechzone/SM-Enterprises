@@ -148,7 +148,7 @@ const ProductDetail = ({ product, onClose, onAddToCart }) => {
               <div className="details mb-3">
                 <p className="mb-1"><strong>Material:</strong> {product.details?.Material}</p>
                 <p className="mb-1"><strong>Dimensions:</strong> {product.details?.Dimensions}</p>
-                {product.sku && product.sku.trim() !== '' && <p className="mb-1"><strong>Feet:</strong> {product.sku}</p>}
+                {product.sku && product.sku.trim() !== '' && <p className="mb-1"><strong>Feet/Inch:</strong> {product.sku}</p>}
                 {product.details?.Size && product.details.Size.trim() !== '' && <p className="mb-1"><strong>Size:</strong> {product.details.Size}</p>}
                 {product.sizes?.filter(s => s && s.trim() !== '').length > 0 && (
                   <div className="mt-2">

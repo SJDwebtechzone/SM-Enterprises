@@ -219,7 +219,7 @@ const ProductManager = () => {
       originalPrice: product.originalPrice,
       discount: product.discount,
       sale: product.sale,
-      category: product.category,
+      category: product.category?._id || product.category || '',
       sizes: (product.sizes || []).join(', '),
       stock: product.stock ?? '',
       subcategory: product.subcategory || '',
@@ -279,7 +279,7 @@ const ProductManager = () => {
                 <Form.Control type="number" name="sale" value={formData.sale} onChange={handleChange} />
               </Form.Group>
               <Form.Group className="mb-2">
-                <Form.Label>Feet</Form.Label>
+                <Form.Label>Feet/Inch</Form.Label>
                 <Form.Control name="sku" value={formData.sku} onChange={handleChange} />
               </Form.Group>
               <Form.Group className="mb-2">
@@ -453,7 +453,7 @@ const ProductManager = () => {
               <th>Price</th>
               <th>Sale</th>
               <th>Discount</th>
-              <th>Feet</th>
+              <th>Feet/Inch</th>
               <th>GST (%)</th>
               <th>Sizes</th>
               <th>Stock</th>
@@ -494,7 +494,7 @@ const ProductManager = () => {
                 <td>{prod.details?.Added || '-'}</td>
                 <td>
                   <img
-                    src={prod.image?.startsWith('http') ? prod.image : `http://localhost:5000${prod.image}`}
+                    src={prod.image?.startsWith('http') ? prod.image : `${import.meta.env.VITE_BACKEND_URL}${prod.image}`}
                     alt={prod.name}
                     style={{ width: '80px', height: 'auto', borderRadius: '6px' }}
                     onError={(e) => { e.target.src = '/default.jpg'; }}
