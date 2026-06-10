@@ -236,6 +236,7 @@ body {
     -webkit-line-clamp: 2 !important;
     -webkit-box-orient: vertical !important;
     overflow: hidden !important;
+    text-overflow: ellipsis !important;
   }
   .pricing p {
     font-size: 0.8rem !important;
