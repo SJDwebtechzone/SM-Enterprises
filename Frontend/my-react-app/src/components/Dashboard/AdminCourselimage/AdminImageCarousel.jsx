@@ -57,6 +57,7 @@ const AdminImageCarousel = () => {
         
         #adminCarousel .carousel-item {
           height: auto;
+          min-height: auto !important;
           position: relative;
         }
         

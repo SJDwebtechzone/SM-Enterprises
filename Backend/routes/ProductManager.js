@@ -165,7 +165,7 @@ router.post('/upload', upload.fields([
     const product = new ProductCollection({
       name,
       price,
-      originalPrice,
+      originalPrice: (originalPrice && originalPrice !== 'null' && originalPrice !== 'undefined') ? Number(originalPrice) : 0,
       discount,
       sale,
       category,
@@ -236,7 +236,7 @@ router.put('/:id', upload.fields([
     const updateData = {
       name,
       price,
-      originalPrice,
+      originalPrice: (originalPrice && originalPrice !== 'null' && originalPrice !== 'undefined') ? Number(originalPrice) : 0,
       discount,
       sale,
       category,
