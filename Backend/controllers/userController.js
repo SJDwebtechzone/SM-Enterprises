@@ -22,7 +22,7 @@ exports.addToCart = async (req, res) => {
     }
 
     const existingIndex = user.cart.findIndex(item =>
-      item.product.equals(productId) && (!item.size || item.size === size)
+      item.product && item.product.toString() === productId && (!item.size || item.size === size)
     );
 
     if (existingIndex !== -1) {
@@ -97,7 +97,7 @@ exports.removeFromCart = async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    user.cart = user.cart.filter(item => !item.product.equals(productId));
+    user.cart = user.cart.filter(item => item.product && item.product.toString() !== productId);
     await user.save();
 
     await user.populate({

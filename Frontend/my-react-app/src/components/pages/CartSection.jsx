@@ -54,13 +54,13 @@ const CartSection = ({ cart, setCart, setCartClickCount }) => {
       const normalizedCart = rawCart.map(item => ({
         _id: item._id,
         name: item.name,
-        price: typeof item.price === 'number' ? item.price : 0,
-        originalPrice: typeof item.originalPrice === 'number' ? item.originalPrice : 0,
+        price: Number(item.price) || 0,
+        originalPrice: Number(item.originalPrice) || 0,
         discountStr: item.discountStr || '',
-        gst: typeof item.gst === 'number' ? item.gst : 0,
+        gst: Number(item.gst) || 0,
         size: item.size || '',
         image: item.image || product3,
-        quantity: typeof item.quantity === 'number' ? item.quantity : 1
+        quantity: Number(item.quantity) || 1
       }));
 
 
@@ -78,12 +78,12 @@ const CartSection = ({ cart, setCart, setCartClickCount }) => {
   useEffect(() => {
     const safeCart = cart.map(item => ({
       ...item,
-      price: typeof item.price === 'number' ? item.price : 0,
-      originalPrice: typeof item.originalPrice === 'number' ? item.originalPrice : (typeof item.product?.price === 'number' ? item.product.price : 0),
+      price: Number(item.price) || 0,
+      originalPrice: Number(item.originalPrice) || Number(item.product?.price) || 0,
       discountStr: item.discountStr || item.discount || item.product?.discount || '',
-      gst: typeof item.gst === 'number' ? item.gst : 0,
+      gst: Number(item.gst) || 0,
       size: item.size || '',
-      quantity: typeof item.quantity === 'number' ? item.quantity : 1
+      quantity: Number(item.quantity) || 1
     }));
     setCartItems(safeCart);
   }, [cart]);
