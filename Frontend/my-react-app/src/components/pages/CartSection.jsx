@@ -33,6 +33,12 @@ const CartSection = ({ cart, setCart, setCartClickCount }) => {
   const handleDelete = async (id) => {
     const token = localStorage.getItem('token');
 
+    // Optimistically remove from local UI state first
+    const localFiltered = cartItems.filter(item => item._id !== id);
+    setCartItems(localFiltered);
+    setCart(localFiltered);
+    setCartClickCount(Math.max(localFiltered.length, 0));
+
     try {
       const res = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/user/cart/${id}`, {
         withCredentials: true,
@@ -43,14 +49,6 @@ const CartSection = ({ cart, setCart, setCartClickCount }) => {
 
       const rawCart = res.data.cart;
 
-      // Normalize cart format
-      // const normalizedCart = rawCart.map(item => ({
-      //   _id: item.product?._id || item._id,
-      //   name: item.product?.name || item.name,
-      //   price: typeof item.product?.price === 'number' ? item.product.price : item.price || 0,
-      //   image: item.product?.image || item.image || product3,
-      //   quantity: typeof item.quantity === 'number' ? item.quantity : 1
-      // }));
       const normalizedCart = rawCart.map(item => ({
         _id: item._id,
         name: item.name,
@@ -63,13 +61,11 @@ const CartSection = ({ cart, setCart, setCartClickCount }) => {
         quantity: Number(item.quantity) || 1
       }));
 
-
-
       setCartItems(normalizedCart);
       setCart(normalizedCart);
       setCartClickCount(Math.max(normalizedCart.length, 0));
     } catch (err) {
-      console.error('Failed to delete cart item:', err.response?.data || err.message);
+      console.error('Failed to delete cart item from database, but removed from UI:', err.response?.data || err.message);
     }
   };
 
