@@ -290,13 +290,26 @@ function App() {
       const selectedSize = product.selectedSize || fallbackSize;
 
       // 🛒 Optimistic local update
+      const cartItem = {
+        _id: product._id,
+        name: product.name,
+        price: Number(product.sale) || Number(product.price) || 0,
+        originalPrice: Number(product.price) || 0,
+        discountStr: product.discount || '',
+        gst: Number(product.gst) || 0,
+        image: product.image,
+        description: product.description,
+        quantity: product.quantity || 1,
+        size: selectedSize
+      };
+
       const updatedCart = cart.some(item => item._id === product._id && (!item.size || item.size === selectedSize))
         ? cart.map(item =>
           item._id === product._id && (!item.size || item.size === selectedSize)
             ? { ...item, quantity: item.quantity + (product.quantity || 1) }
             : item
         )
-        : [...cart, { ...product, quantity: product.quantity || 1, size: selectedSize }];
+        : [...cart, cartItem];
 
       setCart(updatedCart);
       setCartClickCount(updatedCart.length);

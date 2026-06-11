@@ -90,20 +90,16 @@ const CheckoutSection = ({ subtotal, gstAmount, shippingEstimate, discount, deli
                 <div className="p-4 shadow-sm rounded border border-warning" style={{ backgroundColor: 'rgba(255, 255, 255, 0.75)', backdropFilter: 'blur(8px)' }}>
                   <h3 className="mb-4" style={{ color: "#713200", fontFamily: "'Cantata One', serif" }}>Cart Total</h3>
                   <div className="d-flex justify-content-between mb-2">
-                    <span>Subtotal</span>
+                    <span>Product Price</span>
                     <span>₹{subtotal?.toFixed(2)}</span>
                   </div>
                   <div className="d-flex justify-content-between mb-2">
                     <span>GST</span>
                     <span>₹{(gstAmount ?? 0).toFixed(2)}</span>
                   </div>
-                  <div className="d-flex justify-content-between mb-2">
-                    <span>Shipping</span>
-                    <span>₹{(shippingEstimate ?? delivery ?? 0).toFixed(2)}</span>
-                  </div>
                   <div className="d-flex justify-content-between mb-2 text-success">
-                    <span>Discount</span>
-                    <span>-₹{(discount ?? 0).toFixed(2)}</span>
+                    <span>discount</span>
+                    <span>{discount > 0 ? `-₹${discount.toFixed(2)}` : `₹0.00`}</span>
                   </div>
                   <hr style={{ borderColor: '#d4af37' }} />
                   <div className="d-flex justify-content-between fw-bold">

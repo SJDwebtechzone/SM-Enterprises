@@ -55,7 +55,7 @@ exports.getCart = async (req, res) => {
     const user = await User.findById(req.user._id).populate({
       path: 'cart.product',
       model: 'ProductCollection',
-      select: 'name price gst image description'
+      select: 'name price sale discount gst image description'
     });
 
 
@@ -67,7 +67,9 @@ exports.getCart = async (req, res) => {
         quantity: item.quantity,
         size: item.size,
         name: item.product.name,
-        price: item.product.price,
+        price: item.product.sale || item.product.price,
+        originalPrice: item.product.price,
+        discountStr: item.product.discount || '',
         gst: item.product.gst ?? 0,
         image: item.product.image,
         description: item.product.description
@@ -86,20 +88,43 @@ exports.removeFromCart = async (req, res) => {
     const userId = req.user._id;
     const productId = req.params.productId;
 
+    if (!mongoose.Types.ObjectId.isValid(productId)) {
+      return res.status(400).json({ message: 'Invalid product ID format' });
+    }
 
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      { $pull: { cart: { product: productId } } },
-      { new: true }
-    ).populate({
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    user.cart = user.cart.filter(item => !item.product.equals(productId));
+    await user.save();
+
+    await user.populate({
       path: 'cart.product',
       model: 'ProductCollection',
-      select: 'name price gst image description'
+      select: 'name price sale discount gst image description'
     });
 
-    res.json({ cart: updatedUser.cart });
+    const enrichedCart = user.cart
+      .filter(item => item.product)
+      .map(item => ({
+        _id: item.product._id,
+        quantity: item.quantity,
+        size: item.size,
+        name: item.product.name,
+        price: item.product.sale || item.product.price,
+        originalPrice: item.product.price,
+        discountStr: item.product.discount || '',
+        gst: item.product.gst ?? 0,
+        image: item.product.image,
+        description: item.product.description
+      }));
+
+    res.json({ cart: enrichedCart });
   } catch (err) {
-    res.status(500).json({ message: 'Failed to remove item from cart' });
+    console.error('Remove from cart error:', err.message);
+    res.status(500).json({ message: 'Failed to remove item from cart', error: err.message });
   }
 };
 

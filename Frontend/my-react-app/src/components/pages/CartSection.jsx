@@ -51,17 +51,17 @@ const CartSection = ({ cart, setCart, setCartClickCount }) => {
       //   image: item.product?.image || item.image || product3,
       //   quantity: typeof item.quantity === 'number' ? item.quantity : 1
       // }));
-      const normalizedCart = rawCart
-        .filter(item => item.product && item.product._id) // only include valid items
-        .map(item => ({
-          _id: item.product._id,
-          name: item.product.name,
-          price: typeof item.product.price === 'number' ? item.product.price : 0,
-          gst: typeof item.product.gst === 'number' ? item.product.gst : 0,
-          size: item.size || '',
-          image: item.product.image || product3,
-          quantity: typeof item.quantity === 'number' ? item.quantity : 1
-        }));
+      const normalizedCart = rawCart.map(item => ({
+        _id: item._id,
+        name: item.name,
+        price: typeof item.price === 'number' ? item.price : 0,
+        originalPrice: typeof item.originalPrice === 'number' ? item.originalPrice : 0,
+        discountStr: item.discountStr || '',
+        gst: typeof item.gst === 'number' ? item.gst : 0,
+        size: item.size || '',
+        image: item.image || product3,
+        quantity: typeof item.quantity === 'number' ? item.quantity : 1
+      }));
 
 
 
@@ -79,6 +79,8 @@ const CartSection = ({ cart, setCart, setCartClickCount }) => {
     const safeCart = cart.map(item => ({
       ...item,
       price: typeof item.price === 'number' ? item.price : 0,
+      originalPrice: typeof item.originalPrice === 'number' ? item.originalPrice : (typeof item.product?.price === 'number' ? item.product.price : 0),
+      discountStr: item.discountStr || item.discount || item.product?.discount || '',
       gst: typeof item.gst === 'number' ? item.gst : 0,
       size: item.size || '',
       quantity: typeof item.quantity === 'number' ? item.quantity : 1
@@ -88,7 +90,10 @@ const CartSection = ({ cart, setCart, setCartClickCount }) => {
 
 
   const subtotal = Array.isArray(cartItems)
-    ? cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0)
+    ? cartItems.reduce((acc, item) => {
+        const itemOriginalPrice = item.originalPrice || item.price || 0;
+        return acc + itemOriginalPrice * item.quantity;
+      }, 0)
     : 0;
 
   // ✅ Professional GST: calculated per product (supports mixed rates like 5%, 12%, 18%, 28%)
@@ -106,8 +111,17 @@ const CartSection = ({ cart, setCart, setCartClickCount }) => {
       ? `${gstRates[0]}%`
       : 'as per product rate';
 
-  const shippingEstimate = subtotal > 1000 ? 0 : 50; // Free shipping over ₹1000
-  const discount = 3.0;
+  const shippingEstimate = 0; // Free shipping
+  const discount = Array.isArray(cartItems)
+    ? cartItems.reduce((acc, item) => {
+        if (item.discountStr && String(item.discountStr).trim() !== '') {
+          const itemOriginalPrice = item.originalPrice || item.price || 0;
+          const diff = itemOriginalPrice > item.price ? (itemOriginalPrice - item.price) * item.quantity : 0;
+          return acc + diff;
+        }
+        return acc;
+      }, 0)
+    : 0;
   const delivery = 0.0;
   const amount_sum = subtotal + gstAmount + shippingEstimate - discount;
   const total = Math.round(amount_sum);
@@ -167,9 +181,9 @@ const CartSection = ({ cart, setCart, setCartClickCount }) => {
                   <table className="table table-bordered table-hover cart-table text-center mb-0">
                     <thead className="bg-warning text-dark">
                       <tr>
-                        <th>Action</th>
+                        <th style={{ minWidth: '120px' }}>Action</th>
                         <th>Image</th>
-                        <th>Product</th>
+                        <th style={{ minWidth: '250px' }}>Product</th>
                         <th>Price</th>
                         <th>Qty</th>
                         <th>Total</th>
@@ -178,15 +192,15 @@ const CartSection = ({ cart, setCart, setCartClickCount }) => {
                     <tbody>
                       {cartItems.map((item) => (
                         <tr key={item._id}>
-                          <td>
+                          <td style={{ verticalAlign: 'middle' }}>
                             <button
-                              className="btn btn-sm btn-outline-danger"
+                              className="btn btn-sm btn-outline-danger d-inline-flex align-items-center"
                               onClick={() => handleDelete(item?._id)}
                             >
-                              <i className="bi bi-trash-fill"></i>
+                              <i className="bi bi-trash-fill me-1"></i> Remove
                             </button>
                           </td>
-                          <td>
+                          <td style={{ verticalAlign: 'middle' }}>
                             <img
                               src={item.image?.startsWith('http') ? item.image : `${import.meta.env.VITE_BACKEND_URL}${item.image}`}
                               alt={item.name}
@@ -194,16 +208,29 @@ const CartSection = ({ cart, setCart, setCartClickCount }) => {
                               style={{ width: '60px', height: '60px', objectFit: 'cover' }}
                             />
                           </td>
-                          <td>
-                            <h6 className="mb-0">{item?.name}</h6>
-                            <small className="text-muted">{item.description}</small>
-                            {item.size && <div className="text-muted small">Size: {item.size}</div>}
+                          <td style={{ minWidth: '250px', textAlign: 'left', verticalAlign: 'middle', whiteSpace: 'normal' }}>
+                            <h6 className="mb-0 fw-bold">{item?.name}</h6>
+                            <small className="text-muted d-block">{item.description}</small>
+                            {item.size && <div className="text-muted small mt-1">Size: {item.size}</div>}
                           </td>
-                          <td>र{item.price.toFixed(2)}</td>
-                          <td>
+                          <td style={{ verticalAlign: 'middle' }}>
+                            {item.originalPrice && item.originalPrice > item.price ? (
+                              <div className="d-flex flex-column align-items-center">
+                                <span className="text-muted text-decoration-line-through small">
+                                  र{item.originalPrice.toFixed(2)}
+                                </span>
+                                <span className="fw-bold text-dark">
+                                  र{item.price.toFixed(2)}
+                                </span>
+                              </div>
+                            ) : (
+                              <span>र{item.price.toFixed(2)}</span>
+                            )}
+                          </td>
+                          <td style={{ verticalAlign: 'middle' }}>
                             <span className="quantity-pill">{item.quantity}</span>
                           </td>
-                          <td>र{(item.price * item.quantity).toFixed(2)}</td>
+                          <td style={{ verticalAlign: 'middle' }}>र{(item.price * item.quantity).toFixed(2)}</td>
                         </tr>
                       ))}
                       {cartItems.length === 0 && (
@@ -223,7 +250,7 @@ const CartSection = ({ cart, setCart, setCartClickCount }) => {
           {/* Cart Actions */}
           <div className="row justify-content-end mt-5">
             {/* Coupon Code */}
-            <div className="col-lg-4 mb-4">
+            <div className="col-lg-6 mb-4">
               <div className="p-4 shadow-sm rounded border border-warning" style={{ backgroundColor: 'rgba(255, 255, 255, 0.75)', backdropFilter: 'blur(8px)' }}>
                 <div className="d-flex align-items-center mb-3">
                   <i className="bi bi-gift-fill text-warning fs-3 me-2"></i>
@@ -248,59 +275,24 @@ const CartSection = ({ cart, setCart, setCartClickCount }) => {
               </div>
             </div>
 
-            {/* Estimate Shipping */}
-            <div className="col-lg-4 mb-4">
-              <div className="p-4 shadow-sm rounded border border-warning" style={{ backgroundColor: 'rgba(255, 255, 255, 0.75)', backdropFilter: 'blur(8px)' }}>
-                <div className="d-flex align-items-center mb-3">
-                  <i className="bi bi-truck fs-3 text-warning me-2"></i>
-                  <h4 className="mb-0">Estimate Shipping & Tax</h4>
-                </div>
-                <p className="text-muted">Enter your destination to calculate delivery charges and taxes.</p>
-
-                <div className="mb-2">
-                  <label className="form-label fw-semibold">Country</label>
-                  <input type="text" className="form-control border-warning" placeholder="e.g. India" />
-                </div>
-
-                <div className="mb-2">
-                  <label className="form-label fw-semibold">State / Province</label>
-                  <input type="text" className="form-control border-warning" placeholder="e.g. Tamil Nadu" />
-                </div>
-
-                <div className="mb-3">
-                  <label className="form-label fw-semibold">Zip / Postal Code</label>
-                  <input type="text" className="form-control border-warning" placeholder="e.g. 600095" />
-                </div>
-
-                <button className="btn btn-warning w-100 text-dark fw-bold">
-                  <i className="bi bi-calculator me-2"></i> Estimate Now
-                </button>
-              </div>
-            </div>
-
             {/* Cart Totals */}
-            <div className="col-lg-4 mb-4">
+            <div className="col-lg-6 mb-4">
               <div className="p-4 shadow-sm rounded border border-warning total-card" style={{ backgroundColor: 'rgba(255, 255, 255, 0.75)', backdropFilter: 'blur(8px)' }}>
                 <h4 className="mb-3">Cart Totals</h4>
 
                 <div className="d-flex justify-content-between mb-2">
-                  <span>Subtotal</span>
+                  <span>Product Price</span>
                   <span>र{subtotal.toFixed(2)}</span>
                 </div>
 
                 <div className="d-flex justify-content-between mb-2">
-                  <span>GST ({averageGstDisplay})</span>
+                  <span>GST</span>
                   <span>र{gstAmount.toFixed(2)}</span>
                 </div>
 
-                <div className="d-flex justify-content-between mb-2">
-                  <span>Estimated Shipping</span>
-                  <span>र{shippingEstimate.toFixed(2)}</span>
-                </div>
-
                 <div className="d-flex justify-content-between mb-2 text-success">
-                  <span>Discount</span>
-                  <span>-र{discount.toFixed(2)}</span>
+                  <span>discount</span>
+                  <span>{discount > 0 ? `-र${discount.toFixed(2)}` : `र0.00`}</span>
                 </div>
 
                 <hr style={{ borderColor: '#d4af37' }} />
