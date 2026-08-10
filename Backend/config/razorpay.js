@@ -1,8 +1,12 @@
 const Razorpay = require('razorpay');
+const path = require('path');
+
+// Explicitly load .env file from the Backend root directory
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 
 const razorpay = new Razorpay({
-	key_id: process.env.RAZORPAY_KEY_ID || 'rzp_test_SBa5AvR1nSg2Je',
-	key_secret: process.env.RAZORPAY_KEY_SECRET || '4KLfEPitpd5xgoMc3RmAYJm6'
+	key_id: process.env.RAZORPAY_KEY_ID,
+	key_secret: process.env.RAZORPAY_KEY_SECRET
 });
 
 module.exports = razorpay;

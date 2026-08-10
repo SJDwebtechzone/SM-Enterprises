@@ -67,6 +67,49 @@ router.put('/:id/status', async (req, res) => {
   await Order.findByIdAndUpdate(req.params.id, { status });
   res.send('Status updated');
 });
+// ✅ Dedicated route to download/generate PDF
+router.get('/download/:orderId', async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    const order = await Order.findOne({
+      $or: [ { orderId }, { invoiceId: orderId } ]
+    });
+
+    if (!order) {
+      return res.status(404).send('Order not found');
+    }
+
+    const fs = require('fs');
+    const path = require('path');
+    const fileName = `${orderId}.pdf`;
+    let filePath = path.join(__dirname, '../public/invoices', fileName);
+
+    // If file doesn't exist physically, generate it
+    if (!fs.existsSync(filePath)) {
+      console.log(`📄 PDF missing for ${orderId}, generating now...`);
+      filePath = await generateInvoicePDF(order);
+      const baseUrl = process.env.BASE_URL || 'http://localhost:5000';
+      order.pdfUrl = `${baseUrl}/invoices/${fileName}`;
+      await order.save();
+    }
+
+    // Force download
+    res.download(filePath, fileName, (err) => {
+      if (err) {
+        console.error('❌ File download failed:', err);
+        if (!res.headersSent) {
+          res.status(500).send('Failed to download PDF');
+        }
+      }
+    });
+  } catch (err) {
+    console.error('❌ PDF on-the-fly generation/download failed:', err);
+    if (!res.headersSent) {
+      res.status(500).send('Failed to generate/download PDF');
+    }
+  }
+});
+
 // ✅ Get order by orderId/invoiceId for review page
 router.get('/:orderId', async (req, res) => {
   try {
@@ -83,39 +126,6 @@ router.get('/:orderId', async (req, res) => {
   } catch (err) {
     console.error('❌ Failed to fetch order:', err);
     res.status(500).json({ error: 'Server error' });
-  }
-});
-
-// ✅ Dedicated route to download/generate PDF
-router.get('/download/:orderId', async (req, res) => {
-  try {
-    const { orderId } = req.params;
-    const order = await Order.findOne({
-      $or: [ { orderId }, { invoiceId: orderId } ]
-    });
-
-    if (!order) {
-      return res.status(404).send('Order not found');
-    }
-
-    // If PDF URL already exists, redirect to it
-    if (order.pdfUrl) {
-      return res.redirect(order.pdfUrl);
-    }
-
-    // Otherwise, generate it on the fly
-    console.log(`📄 PDF missing for ${orderId}, generating now...`);
-    const filePath = await generateInvoicePDF(order);
-    const fileName = `${orderId}.pdf`;
-    const baseUrl = process.env.BASE_URL || 'http://localhost:5000';
-
-    order.pdfUrl = `${baseUrl}/invoices/${fileName}`;
-    await order.save();
-
-    res.redirect(order.pdfUrl);
-  } catch (err) {
-    console.error('❌ PDF on-the-fly generation failed:', err);
-    res.status(500).send('Failed to generate PDF');
   }
 });
 
